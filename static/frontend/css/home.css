@@ -1,0 +1,48 @@
+.btn {
+    background: black;
+    color: white;
+    margin-top: 1rem;
+}
+
+
+.wallet {
+    margin-top: 1rem;
+}
+.wallet_help{
+	font-size:0.8rem;
+}
+
+
+.create{
+color:#000;
+border-bottom:2px solid #000;
+-webkit-transition:border-bottom .3s ease-in-out,color .3s ease-in-out;
+-moz-transition:border-bottom .3s ease-in-out,color .3s ease-in-out;
+-o-transition:border-bottom .3s ease-in-out,color .3s ease-in-out;
+transition:border-bottom 0.3s ease-in-out,color 0.3s ease-in-out
+}
+.right{
+	margin-right:40px;
+	white-space: nowrap;
+}
+
+.openfile{
+	text-decoration:none;
+	font-size:20px;
+	font-weight:bold;
+	height:50px;
+	line-height:50px;
+	border:1px solid red; 
+	display:block; 
+	text-align:center
+	} 
+	
+
+.send {
+    margin-top: 1rem;
+    display:none;
+}
+.transaction {
+    margin-top: 1rem;
+    display:none;
+}

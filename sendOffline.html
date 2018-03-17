@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>星云链测试网 | Nebulas Testnet</title>
+<link href="https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="static/frontend/img/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="static/frontend/img/logo.png">
+<link rel="stylesheet" href="static/frontend/css/base.css" />
+<link rel="stylesheet" href="static/frontend/css/home.css" />
+<script type="text/javascript" src="static/frontend/js/wallet.js"></script>
+</head>
+<body>
+<section id="menu" class="white">
+    <nav class="navbar navbar-dropdown bg-color">
+        <div class="container">
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+                    <div class="navbar-brand">
+                        <a href="#" class="navbar-logo">
+                        <img src="static/frontend/img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
+            	<span class="right"><a href="index.html">Create New Wallet</a></span>
+                <span class="right"><a href="sendNas.html">Send NAS</a></span>
+                <span class="right"><a class="create" href="sendOffline.html">Send Offline</a></span>
+                <span class="right"><a href="viewWalletInfo.html">View Wallet Info</a></span>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</section>
+
+
+<div id="step1" class="container wallet">
+	<div id="generate_infomation" class="col-md-12">
+		<h1><label>Step 1: Generate Information (Online Computer)</label></h1>
+		<div class="form-group">
+			<label for="fromaddress">From Address:</label>
+			<input type="text" id="fromaddress" class="form-control" placeholder="c66d758fbf64ef62a371801570cde8fe1e7f08bce3daf8e4">
+		</div>
+		<button id="Generate_info" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" >Generate Information</button>		
+		<div class="row" id="information" style="display:none;">
+			<div class="form-group col-md-6">
+				<label for="fa_gasprice">Gas Price:</label>
+				<input type="text" id="fa_gasprice" class="form-control" placeholder="">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="fa_nonce">Nonce:</label>
+				<input type="text" id="fa_nonce" class="form-control" placeholder="">
+			</div>
+		</div>
+	</div>
+</div><!-- step1 -->
+
+<div id="step2" class="container wallet">
+	<div id="generate_transaction" class="col-md-12">
+		<h1><label>Step 2: Generate Transaction (Offline Computer)</label></h1>
+		<div class="form-group">
+			<label for="toaddress">To Address</label>
+			<input type="text" class="form-control" id="toaddress" placeholder="">
+		</div>
+		<div class="form-group">
+			<label for="amount">Value / Amount to Send</label>			
+			<div class="input-group">
+		      <input type="text" class="form-control" id="amount" placeholder="Amount">
+		      <div class="input-group-addon">NAS</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="limit">Gas Limit</label>
+			<input type="text" class="form-control" id="limit" value="20000" placeholder="">
+		</div>
+		<div class="form-group">
+			<label for="price">Gas Price</label>			
+			<div class="input-group">
+		      <input type="text" class="form-control" id="price" value="1000000" placeholder="">
+		      <div class="input-group-addon">NIS</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="nonce">Nonce</label>
+			<input type="text" class="form-control" id="nonce" placeholder="">
+		</div>
+		
+
+	</div>
+</div><!-- step2 -->
+<div id="unlock" class="container wallet">
+	<div id="unlockWallet" class="col-md-12">
+		<div class="form-group">
+			<label for="openfile">Select Your Wallet File:</label>
+			<a class="form-control openfile" onclick="openFiledialog()">SELECT WALLET FILE...</a>
+			<input type="file" id="openfile" style="display:none;">
+		</div>
+		<div class="form-group" id="password_div" style="display:none;">
+			<label for="password">Your wallet is encrypted. Good! Please enter the password.</label>
+			<input type="password" class="form-control" id="password" placeholder="">
+		</div>
+		<button id="unlock" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="unlock()">Unlock</button>		
+	</div>
+	<div class="col-xs-12">
+	<p class="wallet_help">This is not a recommended way to access your wallet.<br />
+Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. </p>
+	</div>
+</div><!-- unlock -->
+
+<div id="transaction" class="container transaction">
+<div class="col-md-12">
+<button id="generate" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="generate()">Generate Transaction</button>	
+</div>
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="raw">Raw Transaction</label>
+		<textarea class="form-control" rows="8" id="raw"></textarea>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="signed">Signed Transaction</label>
+		<textarea class="form-control" rows="8" id="signed"></textarea>
+	</div>
+</div>
+
+</div><!-- Transaction -->
+
+
+<div id="step3" class="container wallet">
+	<div id="send" class="col-md-12">
+		<h1><label>Step 3: Send / Publish Transaction (Online Computer)</label></h1>
+	</div>
+	<div class="form-group col-md-6">
+		<label for="signedoffline">Signed Transaction</label>
+		<textarea class="form-control" rows="8" id="signedoffline"></textarea>
+	</div>
+	<div class="form-group col-md-6">
+		<div id="qrcode" style="text-align:center;">
+		</div>
+	</div>
+	<div class="col-md-12">
+	<button id="sendtransaction" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="sendtransaction()">Send Transaction</button>
+	</div>
+
+</div><!-- step3 -->
+
+
+
+<div class="container transaction" id="receipt_div" style="display:none;">
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="raw">txhash</label>
+		<textarea readonly id="receipt" rows="6" class="form-control"></textarea>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="signed">receipt</label>
+		<textarea readonly id="receipt_state" rows="6" class="form-control"></textarea>
+	</div>
+</div>
+</div><!-- hxhash -->
+
+
+
+
+<!-- footer -->
+<section class=" mbr-section mbr-section-sm-padding mbr-footer ">
+	<div class="container ">
+		<div class="row ">
+			<div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
+				<a href="# ">
+					<img src="static/frontend/img/logo-b.png " alt="Nebulas Testnet ">
+				</a>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>
+					<a href="https://nebulas.io/">Home</a>
+					<a href="https://nebulas.io/technology.html">Technology</a>
+					<a href="https://nebulas.io/community.html">Community</a>
+					<a href="https://nebulas.io/team.html">Team</a>
+					<a href="https://nebulas.io/resources.html">Resources</a>
+					<a href="https://medium.com/nebulasio" target="_blank">Blog</a>
+				</p>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="modal fade" tabindex="-1" id="info" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">info</h4>
+      </div>
+      <div class="modal-body">
+        <p>unlocking&hellip;</p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script src="https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js "></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js "></script>
+<script src="https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js "></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js "></script>
+<script src="static/frontend/js/home.v1.js "></script>
+<script src="static/frontend/js/jquery.qrcode.min.js"></script>
+<script>
+var Neb = require("wallet").Neb;
+var Account = require("wallet").Account;
+var Transaction = require("wallet").Transaction;
+var utils = require("wallet").Utils;
+var neb = new Neb();
+neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+var account,toaccount,state,gas_price,tx,txhash;
+account= new Account();
+var testnetchainID = 1001;
+var unitMap = {
+		  'none': '0',
+		  'nis': '1',
+		  'knis': '1000',
+		  'mnis': '1000000',
+		  'nanonas': '1000000000',
+		  'micronas': '1000000000000',
+		  'millinas': '1000000000000000',
+		  'nas': '1000000000000000000'
+		};
+
+var unitValue = function (unit) {
+  unit = unit ? unit.toLowerCase() : 'nas';
+  var unitValue = unitMap[unit];
+  if (unitValue === undefined) {
+    throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
+  }
+  return new utils.toBigNumber(unitValue, 10);
+};
+
+
+//Generate_info
+$("#Generate_info").click(function(){
+	fromaddress = $("#fromaddress").val();
+	try
+	{
+		account = Account.fromAddress(fromaddress);
+		state = neb.api.getAccountState(account.getAddressString());
+		gasprice = neb.api.gasPrice();
+        balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+        $("#fa_gasprice").val(gasprice.gas_price);
+        $("#fa_nonce").val(state.nonce);
+        $("#price").val(gasprice.gas_price);
+        $("#nonce").val(parseInt(state.nonce)+1);
+        $("#information").show();
+		
+	}catch(e){
+		bootbox.dialog(
+				{
+					title:'Error',
+					message:e,size:'large'
+				}
+				);
+	}
+});
+
+function openFiledialog(){
+	return $("#openfile").click();
+}
+$("#openfile").change(function(){
+	var selectedFile = document.getElementById("openfile").files[0];
+    var name = selectedFile.name;
+    try{
+    	account = Account.fromAddress(name);
+    	$("#password_div").show();
+    }catch(e){
+    	bootbox.dialog(
+				{
+					title:'Error',
+					message:e,size:'large'
+				}
+				);
+    }
+});
+function unlock(){
+	var objFile = $("#openfile");
+	if(objFile.val()==""){
+		bootbox.dialog(
+				{
+					title:'please select your wallet',
+					message:"please upload your wallet file,thanks",size:'large'
+				}
+				);
+	}else{
+		var selectedFile = document.getElementById("openfile").files[0];
+	    var name = selectedFile.name;
+	    var size = selectedFile.size;
+	    var password = $("#password").val();	    
+	    setTimeout(function () {
+	    	var reader = new FileReader();
+		    reader.readAsText(selectedFile);
+		    reader.onload = function(){
+		　　　　　　	try{
+		　　　　　　		account.fromKey(this.result,password)
+		   	    	$("#transaction").show();　
+		　　　　　　	}catch(e){
+		　　　　　　		bootbox.dialog(
+		　　　　				{
+		　　　　					title:'Error',
+		　　　　					message:e,size:'large'
+		　　　　				}
+		　　　　				);
+		　　　　　　	}	       	
+		　　　　　　	$('#info').modal('hide');
+		    };      		    
+		　　　　}, 1000);
+	    $('#info').modal('show');
+	}
+	return false;  
+}
+
+function generate(){
+	fromaddress = $("#fromaddress").val();
+	toaddress = $("#toaddress").val();
+	try{
+    	toaccount = Account.fromAddress(toaddress);
+    	amount = $("#amount").val();
+    	balance = $("#balance").val();    	
+    	gaslimit = $("#limit").val();
+    	gasprice = $("#price").val();
+    	nonce = $("#nonce").val();
+    	tmp = utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)).dividedBy(unitValue("nas"));
+    	console.log(tmp);
+    	if(utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp))){
+    		amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
+    	}
+        tx = new Transaction(testnetchainID, account, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+        tx.signTransaction();
+        $("#raw").val(tx.toString());
+        $("#signed").val(tx.toProtoString());
+        $("#signedoffline").val(tx.toProtoString());     
+        $("#qrcode").qrcode(tx.toProtoString());
+    	$("#transaction").show();
+    }catch(e){
+    	bootbox.dialog(
+				{
+					title:'Error',
+					message:e,size:'large'
+				}
+				);
+    }
+    
+	return false;
+}
+function sendtransaction(){
+	try
+	{
+		txProtoString = $("#signedoffline").val();
+		var resp = neb.api.sendRawTransaction(txProtoString);
+	    txhash = resp.txhash;
+	    if(txhash === undefined){
+	    	$("#receipt_state").val('');
+	    	$("#receipt").val('');
+	    	throw resp.error;
+	    }
+	    neb.api.getTransactionReceipt(txhash, function (err, resps) {
+	        $("#receipt_state").val(JSON.stringify(resps));
+	    });
+	    $("#receipt").val(txhash);
+	    $("#receipt_div").show();
+	}catch(e){
+		bootbox.dialog(
+				{
+					title:'Error',
+					message:e,size:'large'
+				}
+				);
+	}
+}
+
+</script>
+</body>
+</html>

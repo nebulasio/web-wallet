@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>星云链测试网 | Nebulas Testnet</title>
+<link href="https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="static/frontend/img/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="static/frontend/img/logo.png">
+<link rel="stylesheet" href="static/frontend/css/base.css" />
+<link rel="stylesheet" href="static/frontend/css/home.css" />
+<script type="text/javascript" src="static/frontend/js/wallet.js"></script>
+<script type="text/javascript" src="static/frontend/js/Blob.js"></script>
+<script type="text/javascript" src="static/frontend/js/FileSaver.min.js"></script>
+</head>
+<body>
+<section id="menu" class="white">
+    <nav class="navbar navbar-dropdown bg-color">
+        <div class="container">
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+                    <div class="navbar-brand">
+                        <a href="#" class="navbar-logo">
+                        <img src="static/frontend/img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
+            <span class="right"><a class="create" href="index.html">Create New Wallet</a></span>
+               <span class="right"><a href="sendNas.html">Send NAS</a></span>
+               <span class="right"><a href="sendOffline.html">Send Offline</a></span>
+               <span class="right"><a href="viewWalletInfo.html">View Wallet Info</a></span>
+               </div>
+            <hr/>
+        </div>
+    </div>
+</section>
+
+
+<div class="container wallet">
+	<form id="newWallet" class="col-md-12">
+		<div class="form-group">
+			<label for="password">Enter a password:</label>
+			<input type="password" class="form-control" id="password" placeholder="Do NOT forget to save this!">
+		</div>
+		<button id="genNewWallet" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Create New Wallet</button>		
+	</form>
+	<div class="col-xs-12">
+	<p class="wallet_help">This password encrypts your private key. <br />This does not act as a seed to generate your keys. <br />You will need this password + your private key to unlock your wallet.</p>
+	</div>
+</div>
+
+<!-- footer -->
+<section class=" mbr-section mbr-section-sm-padding mbr-footer ">
+	<div class="container ">
+		<div class="row ">
+			<div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
+				<a href="# ">
+					<img src="static/frontend/img/logo-b.png " alt="Nebulas Testnet ">
+				</a>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>
+					<a href="https://nebulas.io/">Home</a>
+					<a href="https://nebulas.io/technology.html">Technology</a>
+					<a href="https://nebulas.io/community.html">Community</a>
+					<a href="https://nebulas.io/team.html">Team</a>
+					<a href="https://nebulas.io/resources.html">Resources</a>
+					<a href="https://medium.com/nebulasio" target="_blank">Blog</a>
+				</p>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="modal fade" tabindex="-1" id="info" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">info</h4>
+      </div>
+      <div class="modal-body">
+        <p>waiting&hellip;</p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script src="https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js "></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js "></script>
+<script src="https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js "></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js "></script>
+<script src="static/frontend/js/home.v1.js "></script>
+<script src="static/frontend/js/jquery.query-object.js"></script>
+<script type="text/javascript">
+var Neb = require("wallet").Neb;
+var Account = require("wallet").Account;
+var Transaction = require("wallet").Transaction;
+var neb = new Neb();
+neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+var account, state;
+account = Account.NewAccount();
+$("#genNewWallet").click(function(){
+	password = $("#password").val();
+	if(password.length<1){
+		alert("must input a password");
+		return false;		
+	}
+	$('#info').modal('show');
+/* 	url = 'tokey.html?password='+password;
+	window.open(url,'_blank') */
+ 	setTimeout(function () {
+　　　　　　address = account.getAddressString();
+	  keyStr = account.toKeyString(password);
+	  $('#info').modal('hide');
+	  var blob = new Blob([keyStr], {type: "application/json;charset=utf-8"});
+	  saveAs(blob, address);
+　　　　}, 4000); 
+	return false;
+});
+</script>
+</body>
+</html>
