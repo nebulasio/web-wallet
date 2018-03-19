@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" >
-
+<html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Blockchain playground</title>
-
-      <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/home.css">
-
-
-
-
-    <!------------- code mirror libraries ------------------>
-
+    <meta charset=utf-8>
+    <link rel="icon shortcut" href=img/logo.png type=image/png>
+    <link rel=apple-touch-icon href=img/logo.png>
+    <link rel=stylesheet href=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css>
+    <link rel=stylesheet href=https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css>
+    <link rel=stylesheet href=css/base.css>
+    <link rel=stylesheet href=css/contract.css>
+    <meta name=viewport content="width=device-width">
+    <!-- code mirror libraries -->
+    <link rel=stylesheet href="codeMirror/codemirror.css">
+    <link rel=stylesheet href="codeMirror/dracula.css">
+    <link rel=stylesheet href="codeMirror/show-hint.css">
     <script src="codeMirror/codemirror.js"></script>
-    <link rel="stylesheet" href="codeMirror/codemirror.css">
     <script src="codeMirror/javascript.js"></script>
-    <script src="codeMirror/show-hint.js"></script>
     <script src="codeMirror/javascript-hint.js"></script>
-    <link rel="stylesheet" href="codeMirror/show-hint.css">
-    <link rel="stylesheet" href="codeMirror/dracula.css">
-
-
+    <script src="codeMirror/show-hint.js"></script>
+    <title>Blockchain playground</title>
 </head>
 <body>
 
@@ -30,26 +26,61 @@
     <h1>Learn to Use Nebulas</h1>
 </header>
 
+    <section id="menu" class="white">
+        <nav class="navbar navbar-dropdown bg-color">
+            <div class="container">
+                <div class="mbr-table">
+                    <div class="mbr-table-cell">
+                        <div class="navbar-brand">
+                            <a href="#" class="navbar-logo">
+                                <img src="img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="col-md-12">
+                <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
+                    <span class="right">
+                        <a href="index.html">Create New Wallet</a>
+                    </span>
+                    <span class="right">
+                        <a href="sendNas.html">Send NAS</a>
+                    </span>
+                    <span class="right">
+                        <a href="sendOffline.html">Send Offline</a>
+                    </span>
+                    <span class="right">
+                        <a href="viewWalletInfo.html">View Wallet Info</a>
+                    </span>
+                    <span class="right">
+                        <a href="query.html">Query transaction</a>
+                    </span>
+                    <span class="right">
+                        <a class="create" href="contract.html">Contract</a>
+                    </span>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
 
-<!---------- Code Editor window ---------------------------->
-<div class="wrapperExample1">
-    <button style="font-size: 30px" onclick="submit()">Submit</button>
-    <div id="js"></div>
-    <button style="font-size: 30px" onclick="submit()">Submit</button>
-    <!--<button onclick="exampleContract1()">Example Contract</button>-->
-</div>
+    <!-- Code Editor window -->
+    <div class="wrapperExample1">
+        <div id="js"></div>
+        <button onclick="submit()">Submit</button>
+        <button onclick="exampleContract1()">Example Contract</button>
+        <button onclick="getBalance()">Get Balance</button>
+        <button onclick="runJavascript()">run</button>
+    </div>
+    <div>
+        <iframe id="output" srcdoc="&lt;p>Blockchain playground&lt;/p>"></iframe>
+    </div>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-
-
-  <script src="js/wallet.js"></script>
-  <script src="js/nebApi.js"></script>
-    <script src="js/index.js"></script>
-  <script src="js/codeEditor.js"></script>
-
-
-
+    <script src="js/wallet.js"></script>
+    <script src="js/nebApi.js"></script>
+    <script src="js/codeEditor.js"></script>
 </body>
 </html>
