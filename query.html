@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -10,7 +11,22 @@
     <link rel=stylesheet href=css/home.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
+
+    <style>
+        .block {
+            height:500px;
+            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
+            padding: 1.5rem 2rem;
+            min-height: 1.5rem;
+            margin: 1rem auto;
+            position: relative;
+            text-align: center;
+        }
+
+    </style>
+
 </head>
+
 <body>
     <section id="menu" class="white">
         <nav class="navbar navbar-dropdown bg-color">
@@ -42,7 +58,7 @@
                         <a href="viewWalletInfo.html">View Wallet Info</a>
                     </span>
                     <span class="right">
-                        <a class="create" href="query.html">Query transaction</a>
+                        <a class="create" href="query.html">Check TX Status</a>
                     </span>
                     <span class="right">
                         <a href="contract.html">Contract</a>
@@ -53,24 +69,26 @@
         </div>
     </section>
 
-    <div id="unlock" class="container wallet">
-        <div id="unlockWallet" class="col-md-12">
-            <div class="form-group">
-                <label for="openfile">Select Your Wallet File:</label>
-                <a class="form-control openfile">SELECT WALLET FILE...</a>
-                <input type="file" id="openfile" style="display:none;">
-            </div>
-            <div class="form-group" id="password_div" style="display:none;">
-                <label for="password">Your wallet is encrypted. Good! Please enter the password.</label>
-                <input type="password" class="form-control" id="password" placeholder="">
-            </div>
-            <button id="unlock-button" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Unlock</button>
-        </div>
-        <div class="col-xs-12">
-            <p class="wallet_help">This is not a recommended way to access your wallet.
-                <br> Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. </p>
-        </div>
-    </div>
+    <section class="block">
+        <article class="row"></article>
+        <section class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+            <h1 translate="NAV_CheckTxStatus" class="ng-scope">Check TX Status</h1>
+            <p translate="tx_Summary" class="ng-scope">During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool
+                aims to give you the ability to find and "cancel" / replace these TXs.
+                <strong> This is not typically something you can do. It should not be relied upon &amp; will only work when the TX
+                    Pools are full.
+                    <a target="_blank" rel="noopener noreferrer" href="https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html">Please, read about this tool here.</a>
+                </strong>
+            </p>
+        </section>
+        <section class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
+            <input class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched is-valid" type="text" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
+                ng-model="txInfo.hash" ng-keyup="$event.keyCode == 13 &amp;&amp; checkTxStatus()" aria-label="TX Hash
+      " ng-class="Validator.isValidTxHash(txInfo.hash) ? 'is-valid' : 'is-invalid'">
+            <button tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
+        </section>
+        </article>
+    </section>
 
     <div id="send" class="container send">
         <div id="sendNas" class="col-md-12">
@@ -203,4 +221,5 @@
     <script src=js/wallet.js></script>
 
 </body>
+
 </html>
