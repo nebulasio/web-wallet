@@ -1,0 +1,15 @@
+
+.logo > div {
+    background: url(/img/logo-b.png) left center no-repeat;
+    height: 70px;
+}
+
+.header > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header .checked {
+    border-bottom: 2px solid #000;
+}
+
