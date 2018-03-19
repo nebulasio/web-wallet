@@ -1,6 +1,6 @@
 
 .logo > div {
-    background: url(/img/logo-b.png) left center no-repeat;
+    background: url(../img/logo-b.png) left center no-repeat;
     height: 70px;
 }
 

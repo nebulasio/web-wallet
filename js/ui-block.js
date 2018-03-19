@@ -51,7 +51,7 @@ function uiBlock(opt) {
             '        <a href=' + arr[1] + '>Send NAS</a>' +
             '        <a href=' + arr[2] + '>Send Offline</a>' +
             '        <a href=' + arr[3] + '>View Wallet Info</a>' +
-            '        <a href=' + arr[4] + '>Query transaction</a>' +
+            '        <a href=' + arr[4] + '>Check TX Status</a>' +
             '        <a href=' + arr[5] + '>Contract</a>' +
             '    </div>' +
             '    <hr>' +

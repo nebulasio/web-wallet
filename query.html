@@ -9,6 +9,7 @@
     <link rel=stylesheet href=https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/home.css>
+    <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
 
@@ -41,46 +42,8 @@
 </head>
 
 <body>
-    <section id="menu" class="white">
-        <nav class="navbar navbar-dropdown bg-color">
-            <div class="container">
-                <div class="mbr-table">
-                    <div class="mbr-table-cell">
-                        <div class="navbar-brand">
-                            <a href="#" class="navbar-logo">
-                                <img src="img/logo-b.png" alt="Nebulas" style="height: 54px;">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <div class="container">
-            <div class="col-md-12">
-                <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
-                    <span class="right">
-                        <a href="index.html">Create New Wallet</a>
-                    </span>
-                    <span class="right">
-                        <a href="sendNas.html">Send NAS</a>
-                    </span>
-                    <span class="right">
-                        <a href="sendOffline.html">Send Offline</a>
-                    </span>
-                    <span class="right">
-                        <a href="viewWalletInfo.html">View Wallet Info</a>
-                    </span>
-                    <span class="right">
-                        <a class="create" href="query.html">Check TX Status</a>
-                    </span>
-                    <span class="right">
-                        <a href="contract.html">Contract</a>
-                    </span>
-                </div>
-                <hr>
-            </div>
-        </div>
-    </section>
+    <div class="logo"></div>
+    <div class="header"></div>
 
     <section class="hash">
         <article class="row"></article>
@@ -338,9 +301,15 @@
     <script src=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js data-depends="jquery tether"></script>
     <script src=js/home.v1.js></script>
     <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends=jquery></script>
+
     <script>
         $(function () {
 
+            uiBlock({
+                header: ".header",
+                logo: ".logo"
+            });
 
             $("#btn").click(function () {
                 $("#info").removeClass("active");
