@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Blockchain playground</title>
 
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
 
 
 
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="codeMirror/show-hint.css">
     <link rel="stylesheet" href="codeMirror/dracula.css">
 
-  
+
 </head>
 <body>
 
@@ -32,25 +33,18 @@
 
 <!---------- Code Editor window ---------------------------->
 <div class="wrapperExample1">
+    <button style="font-size: 30px" onclick="submit()">Submit</button>
     <div id="js"></div>
-    <button onclick="submit()">Submit</button>
-    <button onclick="exampleContract1()">Example Contract</button>
-    <button onclick="getBalance()">Get Balance</button>
-    <button onclick="runJavascript()">run</button>
+    <button style="font-size: 30px" onclick="submit()">Submit</button>
+    <!--<button onclick="exampleContract1()">Example Contract</button>-->
 </div>
-<div>
-    <iframe id="output" srcdoc="<p>Blockchain playground</p>"></iframe>
-</div>
-
-
-
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 
 
-  <script src="nebulas/wallet.js"></script>
+  <script src="js/wallet.js"></script>
   <script src="js/nebApi.js"></script>
     <script src="js/index.js"></script>
   <script src="js/codeEditor.js"></script>
