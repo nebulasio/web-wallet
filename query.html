@@ -32,6 +32,10 @@
             position: relative;
             text-align: center;
         }
+
+        .active {
+            display: none;
+        }
     </style>
 
 </head>
@@ -94,12 +98,12 @@
             <input class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched is-valid" type="text" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
                 ng-model="txInfo.hash" ng-keyup="$event.keyCode == 13 &amp;&amp; checkTxStatus()" aria-label="TX Hash
       " ng-class="Validator.isValidTxHash(txInfo.hash) ? 'is-valid' : 'is-invalid'">
-            <button tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
+            <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
         </section>
         </article>
     </section>
 
-    <section class="information">
+    <section class="information active" id="info">
         <div class="cont-md" ng-show="txInfo.status == txStatus.mined">
             <h3 class="text-success ng-scope" translate="tx_FoundOnChain">Transaction Found</h3>
             <h5>
@@ -134,8 +138,7 @@
                     <tr>
                         <td translate="x_TxHash" class="ng-scope">TX Hash</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer"
-                                class="ng-binding">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
                                 xxxxxxxx
                             </a>
                         </td>
@@ -143,8 +146,7 @@
                     <tr>
                         <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer"
-                                class="ng-binding">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
                                 xxxxxxx
                             </a>
                         </td>
@@ -152,8 +154,7 @@
                     <tr>
                         <td translate="OFFLINE_Step2_Label_1" class="ng-scope">To Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer"
-                                class="ng-binding">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
                                 xxxxxxx
                             </a>
                         </td>
@@ -166,8 +167,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a class="account-help-icon" href="#" target="_blank"
-                                rel="noopener noreferrer">
+                            <a class="account-help-icon" href="#" target="_blank" rel="noopener noreferrer">
                             </a>
                             <span translate="OFFLINE_Step2_Label_5" class="ng-scope">Nonce</span>
                         </td>
@@ -177,8 +177,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a class="account-help-icon" href="#" target="_blank"
-                                rel="noopener noreferrer">
+                            <a class="account-help-icon" href="#" target="_blank" rel="noopener noreferrer">
                             </a>
                             <span translate="OFFLINE_Step2_Label_4" class="ng-scope">Gas Limit</span>
                         </td>
@@ -188,8 +187,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a class="account-help-icon" href="#" target="_blank"
-                                rel="noopener noreferrer">
+                            <a class="account-help-icon" href="#" target="_blank" rel="noopener noreferrer">
                             </a>
                             <span translate="OFFLINE_Step2_Label_3" class="ng-scope">Gas Price</span>
                         </td>
@@ -340,6 +338,18 @@
     <script src=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js data-depends="jquery tether"></script>
     <script src=js/home.v1.js></script>
     <script src=js/wallet.js></script>
+    <script>
+        $(function () {
+
+
+            $("#btn").click(function () {
+                $("#info").removeClass("active");
+            });
+
+
+        });
+
+    </script>
 
 </body>
 
