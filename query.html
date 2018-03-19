@@ -33,7 +33,7 @@
                         <a href="index.html">Create New Wallet</a>
                     </span>
                     <span class="right">
-                        <a class="create" href="sendNas.html">Send NAS</a>
+                        <a href="sendNas.html">Send NAS</a>
                     </span>
                     <span class="right">
                         <a href="sendOffline.html">Send Offline</a>
@@ -42,7 +42,7 @@
                         <a href="viewWalletInfo.html">View Wallet Info</a>
                     </span>
                     <span class="right">
-                        <a href="query.html">Query transaction</a>
+                        <a class="create"  href="query.html">Query transaction</a>
                     </span>
                 </div>
                 <hr>
@@ -198,189 +198,6 @@
     <script src=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js data-depends="jquery tether"></script>
     <script src=js/home.v1.js></script>
     <script src=js/wallet.js></script>
-    <script>
-        "use strict";
 
-        var wallet = require("wallet"),
-            Account = wallet.Account,
-            Neb = wallet.Neb,
-            Transaction = wallet.Transaction,
-            Utils = wallet.Utils,
-            neb = new Neb(),
-            testnetchainID = 1001,
-            unitMap = {
-                none: '0',
-                nis: '1',
-                knis: '1000',
-                mnis: '1000000',
-                nanonas: '1000000000',
-                micronas: '1000000000000',
-                millinas: '1000000000000000',
-                nas: '1000000000000000000'
-            },
-            gAccount, gTx;
-
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
-
-        $("#generate").on("click", onClickGenerate);
-        $("#openfile").on({
-            change: onChangeOpenFile,
-            click: onClickOpenFile
-        });
-        $("#sendtransaction").on("click", onClickSendTransaction);
-        $("#unlock a").on("click", onClickUnlockA);
-        $("#unlock-button").on("click", onClickUnlockButton);
-
-        function onClickUnlockA() {
-            return $("#openfile").click();
-        }
-
-        function onClickOpenFile() {
-            // clear file input
-            // https://stackoverflow.com/questions/12030686/html-input-file-selection-event-not-firing-upon-selecting-the-same-file
-            this.value = null;
-        }
-
-        // read address from json file content, not it's file name
-        function onChangeOpenFile(e) {
-            var file = e.target.files[0],
-                fr = new FileReader();
-
-            fr.onload = onLoadOnChangeOpenFile;
-            fr.readAsText(file);
-        }
-
-        function onLoadOnChangeOpenFile(e) {
-            var o;
-
-            try {
-                o = JSON.parse(e.target.result);
-                gAccount = Account.fromAddress(o.address);
-                $("#password_div").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: 'large',
-                    title: 'Error'
-                });
-            }
-        }
-
-        function unitValue(unit) {
-            var unitValue = unitMap[(unit || "nas").toLowerCase()];
-
-            if (unitValue === undefined)
-                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
-
-            return new Utils.toBigNumber(unitValue, 10);
-        }
-
-        function onClickUnlockButton() {
-            if ($("#openfile").val() == "")
-                bootbox.dialog({
-                    message: "please upload your wallet file, thanks",
-                    size: 'large',
-                    title: 'please select your wallet'
-                });
-            else {
-                var selectedFile = document.getElementById("openfile").files[0],
-                    fileReader = new FileReader();
-
-                $('#info').modal('show');
-                fileReader.onload = onLoadOnClickUnlockButton;
-                fileReader.readAsText(selectedFile);
-            }
-
-            return false;
-        }
-
-        function onLoadOnClickUnlockButton() {
-            var password = $("#password").val(),
-                state, balance_nas;
-
-            try {
-                gAccount.fromKey(this.result, password);
-                $("#fromaddress").val(gAccount.getAddressString());
-                $("#unlock").hide();
-                $("#send").show();
-
-                state = neb.api.getAccountState(gAccount.getAddressString());
-                balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
-
-                $("#balance").val(balance_nas);
-                $("#nonce").val(parseInt(state.nonce) + 1);
-            } catch (e) {
-                bootbox.dialog({
-                    title: 'Error',
-                    message: e,
-                    size: 'large'
-                });
-            }
-
-            $('#info').modal('hide');
-        }
-
-        function onClickGenerate() {
-            var amount = $("#amount").val(),
-                balance = $("#balance").val(),
-                gaslimit = $("#limit").val(),
-                gasprice = $("#price").val(),
-                nonce = $("#nonce").val(),
-                tmp,
-                fromaddress = $("#fromaddress").val(),
-                toaccount,
-                toaddress = $("#toaddress").val();
-
-            try {
-                toaccount = Account.fromAddress(toaddress);
-
-                tmp = Utils.toBigNumber(gaslimit)
-                    .times(Utils.toBigNumber(gasprice))
-                    .dividedBy(unitValue("nas"));
-
-                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) {
-                    amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
-                }
-
-                gTx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
-                gTx.signTransaction();
-                $("#raw").val(gTx.toString());
-                $("#signed").val(gTx.toProtoString());
-                $("#transaction").show();
-            } catch (e) {
-                bootbox.dialog({
-                    title: 'Error',
-                    message: e,
-                    size: 'large'
-                });
-            }
-
-            return false;
-        }
-
-        function onClickSendTransaction() {
-            var resp, txhash;
-
-            if (gTx) {
-                resp = neb.api.sendRawTransaction(gTx.toProtoString());
-                txhash = resp.txhash;
-
-                neb.api.getTransactionReceipt(txhash, function (err, resps) {
-                    $("#receipt_state").val(JSON.stringify(resps));
-                });
-
-                $("#receipt").val(txhash);
-                $("#receipt_div").show();
-
-                setTimeout(function () {
-                    var state = neb.api.getAccountState(gAccount.getAddressString()),
-                        balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas"));
-
-                    $("#balance").val(balance_nas);
-                    $("#nonce").val(state.nonce);
-                }, 60000);
-            }
-        }
-    </script>
 </body>
 </html>
