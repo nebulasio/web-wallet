@@ -1,90 +1,4 @@
-
-
-var js_editor = CodeMirror(document.getElementById("js"), {
-    value: "function test() { \n\talert('Hello Blockchain World');\n\t \n}" + "\n\t \n"+"test()\n\n",
-    mode: "javascript",
-    theme: "dracula",
-    lineNumbers: true,
-    lineWrapping: true,
-    firstLineNumber: 1
-});
-
-
-
-
-function runJavascript() {
-
-    js_editor.on(render())
-}
-
-
-
-
-    function render() {
-
-        var js = js_editor.getValue();
-
-        js = '<script>' + js + '<\/script>';
-
-        var iframe = document.getElementById('output');
-        var iframeDoc = iframe.contentDocument;
-
-        iframeDoc.open();
-        iframeDoc.write(js);
-        iframeDoc.close();
-    }
-
-
-function submit() {
-    var from = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
-    var to = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
-    var value = "0";
-    var nonce = 0;
-    var gasPrice, gasLimit;
-
-    gasPrice = "1000000";
-    gasLimit = "2000000";
-
-
-    var editorText = js_editor.getValue()
-    console.log(editorText);
-    var testnetchainID = 1001;
-// console.log("erc20:"+erc20);
-
-
-    var contract = {
-        "source": editorText,
-        "sourceType": "js"
-    }
-
-   // testnetchainID, account, toAddress, value, nonce = nonce + 1, gasPrice, gasLimit
-
-    var result = neb.api.call(from, to, value, 1, gasPrice, gasLimit, contract);
-
-    console.log(result);
-
-}
-    
-    
-
-    //---------- getBalance shows js code to get balance
-    function getBalance() {
-
-        neb.api.getAccountState()
-    //------- setValue will add text to the editor
-       // js_editor.setValue(js_editor.getValue()+" balance " + "current value ")
-    }
-
-
-
-    
-    
-    
-    
-    
-    function exampleContract1() {
-
-    var contract1 =  `"use strict";
+var contract1 =  `"use strict";
 
 var DepositeContent = function (text) {
     if (text) {
@@ -187,17 +101,60 @@ module.exports = BankVaultContract;
 `;
 
 
-        js_editor.setValue(contract1)
+
+var js_editor = CodeMirror(document.getElementById("js"), {
+    value: contract1,
+    mode: "javascript",
+    theme: "dracula",
+    lineNumbers: true,
+    lineWrapping: true,
+    firstLineNumber: 1
+});
 
 
+
+
+
+
+function submit() {
+    var from = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
+    var to = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
+    var value = "0";
+    var nonce = 0;
+    var gasPrice, gasLimit;
+
+    gasPrice = "1000000";
+    gasLimit = "2000000";
+
+
+    var editorText = js_editor.getValue()
+    console.log(editorText);
+    var testnetchainID = 1001;
+// console.log("erc20:"+erc20);
+
+
+    var contract = {
+        "source": contract1,
+        "sourceType": "js"
     }
 
+    // testnetchainID, account, toAddress, value, nonce = nonce + 1, gasPrice, gasLimit
+
+    var result = neb.api.call(from, to, value, 1, gasPrice, gasLimit, contract);
+
+    console.log(result);
+
+}
 
 
 
 
+function exampleContract1() {
+
+    js_editor.setValue(contract1)
 
 
+}
 
 
 
