@@ -13,8 +13,8 @@
     <title>星云链测试网 | Nebulas Testnet</title>
 
     <style>
-        .block {
-            height:500px;
+        .hash {
+            height: 400px;
             box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
             padding: 1.5rem 2rem;
             min-height: 1.5rem;
@@ -23,6 +23,15 @@
             text-align: center;
         }
 
+        .information {
+            height: 830px;
+            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
+            padding: 1.5rem 2rem;
+            min-height: 1.5rem;
+            margin: 1rem auto;
+            position: relative;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -69,7 +78,7 @@
         </div>
     </section>
 
-    <section class="block">
+    <section class="hash">
         <article class="row"></article>
         <section class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
             <h1 translate="NAV_CheckTxStatus" class="ng-scope">Check TX Status</h1>
@@ -88,6 +97,118 @@
             <button tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
         </section>
         </article>
+    </section>
+
+    <section class="information">
+        <div class="cont-md" ng-show="txInfo.status == txStatus.mined">
+            <h3 class="text-success ng-scope" translate="tx_FoundOnChain">Transaction Found</h3>
+            <h5>
+                <a href="https://etherscan.io/tx/" target="_blank" rel="noopener noreferrer" class="ng-binding"> </a>
+            </h5>
+            <p>
+                <strong translate="tx_FoundOnChain_1" class="ng-scope">Your transaction was successfully mined and is on the blockchain.</strong>
+            </p>
+            <ul>
+                <li translate="tx_FoundOnChain_2" class="ng-scope">
+                    <strong>If you see a red
+                        <code>( ! )</code>, a
+                        <code>BAD INSTRUCTION</code> or
+                        <code>OUT OF GAS</code> error message</strong>, it means that the transaction was not successfully
+                    <em>sent</em>. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received
+                    an "Out of Gas" error, you should double the gas limit you specified originally.</li>
+                <li translate="tx_FoundOnChain_3" class="ng-scope">
+                    <strong>If you do not see any errors, your transaction was successfully sent.</strong> Your ETH or Tokens are
+                    where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account,
+                    and it has been 24+ hours since you sent, please
+                    <a target="_blank" rel="noopener noreferrer" href="https://myetherwallet.github.io/knowledge-base/diving-deeper/ethereum-list-of-support-and-communities.html">contact that service</a>. Send them the
+                    <em>link</em> to your transaction and ask them, nicely, to look into your situation.</li>
+            </ul>
+        </div>
+
+        <div ng-show="txInfo.status == txStatus.found || txInfo.status == txStatus.mined" class="">
+            <h4 translate="tx_Details" class="cont-md ng-scope">Transaction Details</h4>
+            <br>
+            <table class="table table-striped txstatus__2 cont-md">
+                <!-- ng-show="tx.status=='foundOnChain' || foundInPending'"-->
+                <tbody>
+                    <tr>
+                        <td translate="x_TxHash" class="ng-scope">TX Hash</td>
+                        <td>
+                            <a href="#" target="_blank" rel="noopener noreferrer"
+                                class="ng-binding">
+                                xxxxxxxx
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
+                        <td>
+                            <a href="#" target="_blank" rel="noopener noreferrer"
+                                class="ng-binding">
+                                xxxxxxx
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td translate="OFFLINE_Step2_Label_1" class="ng-scope">To Address</td>
+                        <td>
+                            <a href="#" target="_blank" rel="noopener noreferrer"
+                                class="ng-binding">
+                                xxxxxxx
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td translate="SEND_amount_short" class="ng-scope">Amount</td>
+                        <td class="ng-binding">
+                            0 ETH
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="account-help-icon" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                            </a>
+                            <span translate="OFFLINE_Step2_Label_5" class="ng-scope">Nonce</span>
+                        </td>
+                        <td class="ng-binding">
+                            982
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="account-help-icon" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                            </a>
+                            <span translate="OFFLINE_Step2_Label_4" class="ng-scope">Gas Limit</span>
+                        </td>
+                        <td class="ng-binding">
+                            xxxxxxxx
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="account-help-icon" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                            </a>
+                            <span translate="OFFLINE_Step2_Label_3" class="ng-scope">Gas Price</span>
+                        </td>
+                        <td class="ng-binding">
+                            4 GWEI
+                            <small class="ng-binding">
+                                (4000000000 WEI)
+                            </small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td translate="OFFLINE_Step2_Label_6" class="ng-scope">Data</td>
+                        <td class="ng-binding">
+                            xxxxxxxx
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <div id="send" class="container send">
