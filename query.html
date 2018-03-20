@@ -37,6 +37,10 @@
         .active {
             display: none;
         }
+
+        .errmsg {
+            color: red;
+        }
     </style>
 
 </head>
@@ -58,10 +62,10 @@
             </p>
         </section>
         <section class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
-            <input id="input" class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched is-valid" type="text" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
-                ng-model="txInfo.hash" ng-keyup="$event.keyCode == 13 &amp;&amp; checkTxStatus()" aria-label="TX Hash
-      " ng-class="Validator.isValidTxHash(txInfo.hash) ? 'is-valid' : 'is-invalid'">
-            <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
+            <input id="input" class="form-control" type="text" placeholder="...... ......">
+            <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope">Check TX Status</button>
+            <br>
+            <span class="errmsg active">Please enter a valid TX hash</span>
         </section>
         </article>
     </section>
@@ -207,30 +211,33 @@
 
 
             $("#btn").click(function () {
+                if ($("#input").val().length < 46) {
+                    $(".errmsg").removeClass("active");
+                }
+                else {
+                    $.ajax({
 
-                $.ajax({
+                        type: 'get',
 
-                    type: 'get',
+                        url: 'https://explorer.nebulas.io/test/api/tx/' + $("#input").val(),
 
-                    url: 'https://explorer.nebulas.io/test/api/tx/' + $("#input").val(),
-
-                    success: function (o) {
-                        // alert('请求成功');
-                        console.log(o);
-                        $("#info").removeClass("active");
-                        $(".tx_hash").append(o.data.hash);
-                        $(".from_address").append(o.data.from.hash);
-                        $(".to_address").append(o.data.to.hash);
-                        $(".nonce").append(o.data.nonce);
-                        $(".gasLimit").append(o.data.gasLimit);
-                        $(".gasPrice").append(o.data.gasPrice);
-                        $(".data").append(o.data.data);
-                        $(".value").append(o.data.value);
-                    }
-                });
+                        success: function (o) {
+                            // alert('请求成功');
+                            console.log(o);
+                            $("#info").removeClass("active");
+                            $(".tx_hash").append(o.data.hash);
+                            $(".from_address").append(o.data.from.hash);
+                            $(".to_address").append(o.data.to.hash);
+                            $(".nonce").append(o.data.nonce);
+                            $(".gasLimit").append(o.data.gasLimit);
+                            $(".gasPrice").append(o.data.gasPrice);
+                            $(".data").append(o.data.data);
+                            $(".value").append(o.data.value);
+                        }
+                    });
+                }
 
             });
-
 
         });
 
