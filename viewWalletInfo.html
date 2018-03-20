@@ -8,69 +8,14 @@
     <link rel=stylesheet href=https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/home.css>
+    <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
 <body>
-    <section id="menu" class="white">
-        <nav class="navbar navbar-dropdown bg-color">
-            <div class="container">
-                <div class="mbr-table">
-                    <div class="mbr-table-cell">
-                        <div class="navbar-brand">
-                            <a href="#" class="navbar-logo">
-                                <img src="img/logo-b.png" alt="Nebulas" style="height: 54px;">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <div class="container">
-            <div class="col-md-12">
-                <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
-                    <span class="right">
-                        <a href="index.html">Create New Wallet</a>
-                    </span>
-                    <span class="right">
-                        <a href="sendNas.html">Send NAS</a>
-                    </span>
-                    <span class="right">
-                        <a href="sendOffline.html">Send Offline</a>
-                    </span>
-                    <span class="right">
-                        <a class="create" href="viewWalletInfo.html">View Wallet Info</a>
-                    </span>
-                    <span class="right">
-                        <a href="query.html">Query transaction</a>
-                    </span>
-                    <span class="right">
-                        <a href="contract.html">Contract</a>
-                    </span>
-                </div>
-                <hr>
-            </div>
-        </div>
-    </section>
-
-    <div id="unlock" class="container wallet">
-        <div id="unlockWallet" class="col-md-12">
-            <div class="form-group">
-                <label for="openfile">Select Your Wallet File:</label>
-                <a class="form-control openfile">SELECT WALLET FILE...</a>
-                <input type="file" id="openfile" style="display:none;">
-            </div>
-            <div class="form-group" id="password_div" style="display:none;">
-                <label for="password">Your wallet is encrypted. Good! Please enter the password.</label>
-                <input type="password" class="form-control" id="password" placeholder="">
-            </div>
-            <button id="unlock-button" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Unlock</button>
-        </div>
-        <div class="col-xs-12">
-            <p class="wallet_help">This is not a recommended way to access your wallet.
-                <br> Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. </p>
-        </div>
-    </div>
+    <div class=logo-main></div>
+    <div class=header></div>
+    <div class=select-wallet-file></div>
 
     <div id="walletinfo" class="container transaction">
         <div class="col-md-8">
@@ -116,30 +61,7 @@
         </div>
     </div>
 
-    <section class=" mbr-section mbr-section-sm-padding mbr-footer ">
-        <div class="container ">
-            <div class="row ">
-                <div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
-                    <a href="# ">
-                        <img src="img/logo-b.png " alt="Nebulas Testnet ">
-                    </a>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>
-                        <a href="https://nebulas.io/">Home</a>
-                        <a href="https://nebulas.io/technology.html">Technology</a>
-                        <a href="https://nebulas.io/community.html">Community</a>
-                        <a href="https://nebulas.io/team.html">Team</a>
-                        <a href="https://nebulas.io/resources.html">Resources</a>
-                        <a href="https://medium.com/nebulasio" target="_blank">Blog</a>
-                    </p>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class=footer></div>
 
     <div class="modal fade" tabindex="-1" id="info" role="dialog">
         <div class="modal-dialog" role="document">
@@ -165,6 +87,7 @@
     <script src=js/FileSaver.min.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/jquery.qrcode.min.js data-depends=jquery></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
     <script src=js/wallet.js></script>
     <script>
         "use strict";
@@ -185,131 +108,58 @@
                 millinas: "1000000000000000",
                 nas: "1000000000000000000"
             },
-            gAccount, gKeyStr;
+            gAccount, gFileJson;
 
         neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
-
         $("#keystore").on("click", onClickKeystore);
-        $("#openfile").on({
-            change: onChangeOpenFile,
-            click: onClickOpenFile
+
+        uiBlock({
+            footer: ".footer",
+            header: ".header",
+            logoMain: ".logo-main",
+            selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
-        $("#unlock a").on("click", onClickUnlockA);
-        $("#unlock-button").on("click", onClickUnlockButton);
+
+        function onUnlockFile(fileJson, account, password) {
+            var state;
+
+            try {
+                gAccount = account;
+                gFileJson = fileJson;
+                account.fromKey(fileJson, password);
+
+                $("#address").val(account.getAddressString());
+                $("#sideaddress").text(account.getAddressString());
+                $("#Privatekey").val(account.getPrivateKeyString());
+                state = neb.api.getAccountState(account.getAddressString());
+
+                $("#amount").text(Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber() + "  NAS");
+                $("#addressqr").text("");
+                $("#privateqr").text("");
+                $("#addressqr").qrcode(account.getAddressString());
+                $("#privateqr").qrcode(account.getPrivateKeyString());
+                $("#walletinfo").show();
+            } catch (e) {
+                bootbox.dialog({
+                    message: e,
+                    size: "large",
+                    title: "Error"
+                });
+            }
+        }
 
         function unitValue(unit) {
             var unitValue = unitMap[(unit || "nas").toLowerCase()];
 
             if (unitValue === undefined)
-                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
+                throw new Error("The unit undefined, please use the following units:" + JSON.stringify(unitMap, null, 2));
 
             return new Utils.toBigNumber(unitValue, 10);
         }
 
         function onClickKeystore() {
-            var blob = new Blob([gKeyStr], { type: "application/json; charset=utf-8" });
+            var blob = new Blob([JSON.stringify(gFileJson)], { type: "application/json; charset=utf-8" });
             saveAs(blob, gAccount.getAddressString());
-        }
-
-        //
-        // read address from json file
-
-        function onChangeOpenFile(e) {
-            var file = e.target.files[0],
-                fr = new FileReader();
-
-            fr.onload = onLoadOnChangeOpenFile;
-            fr.readAsText(file);
-        }
-
-        function onLoadOnChangeOpenFile(e) {
-            var o;
-
-            try {
-                o = JSON.parse(e.target.result);
-                gAccount = Account.fromAddress(o.address);
-                $("#password_div").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: 'large',
-                    title: 'Error'
-                });
-            }
-        }
-
-        function onClickOpenFile() {
-            // clear file input
-            // https://stackoverflow.com/questions/12030686/html-input-file-selection-event-not-firing-upon-selecting-the-same-file
-            this.value = null;
-        }
-
-        function onClickUnlockA() {
-            return $("#openfile").click();
-        }
-
-        function onLoadOnChangeOpenFile(e) {
-            var o;
-
-            try {
-                o = JSON.parse(e.target.result);
-                gAccount = Account.fromAddress(o.address);
-                $("#password_div").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: 'large',
-                    title: 'Error'
-                });
-            }
-        }
-
-        function onClickUnlockButton() {
-            if ($("#openfile").val() == "")
-                bootbox.dialog({
-                    message: "please upload your wallet file, thanks",
-                    size: 'large',
-                    title: 'please select your wallet'
-                });
-            else {
-                var selectedFile = document.getElementById("openfile").files[0],
-                    fileReader = new FileReader();
-
-                $('#info').modal('show');
-                fileReader.onload = onLoadOnClickUnlockButton;
-                fileReader.readAsText(selectedFile);
-            }
-
-            return false;
-        }
-
-        function onLoadOnClickUnlockButton() {
-            var password = $("#password").val(), state;
-
-            try {
-                gKeyStr = this.result;
-                gAccount.fromKey(this.result, password);
-
-                $("#address").val(gAccount.getAddressString());
-                $("#sideaddress").text(gAccount.getAddressString());
-                $("#Privatekey").val(gAccount.getPrivateKeyString());
-                state = neb.api.getAccountState(gAccount.getAddressString());
-
-                $("#amount").text(Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber() + '  NAS');
-                $("#addressqr").text('');
-                $("#privateqr").text('');
-                $("#addressqr").qrcode(gAccount.getAddressString());
-                $("#privateqr").qrcode(gAccount.getPrivateKeyString());
-                $("#walletinfo").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: 'large',
-                    title: 'Error'
-                });
-            }
-
-            $('#info').modal('hide');
         }
     </script>
 </body>

@@ -28,10 +28,9 @@ var BankVaultContract = function () {
     });
 };
 
-// save value to contract, only after height of block, users can takeout
 BankVaultContract.prototype = {
     init: function () {
-        //TODO:
+      
     },
 
     save: function (height) {
@@ -91,7 +90,6 @@ BankVaultContract.prototype = {
     },
 
     verifyAddress: function(address) {
-        // 1-valid, 0-invalid
         var result = Blockchain.verifyAddress(address);
         return {valid: result == 0 ? false : true};
     }
@@ -129,16 +127,35 @@ function submit() {
         "args": "[0]"
     };
 
+
+
     var result = neb.api.call(from, to, value, 1, gasPrice, gasLimit, contract);
 
-    document.getElementById("result").innerHTML = "<h1>" + "Results:" + JSON.parse(result) + "</h1>";
+    //alert("WARNING\n\n if this was a real contract it would cost gas");
 
-    console.log(JSON.stringify(result));
-    console.log(JSON.parse(result));
+    var user;
+    if (confirm("WARNING\n\n if this was a real contract its would cost gas. Press ok to submit the contract")){
+        user = "ok"
+    }else{
+        return
+    }
 
+    function myFunction() {
+        var txt;
+        if (confirm("Press a button!")) {
+            txt = "You pressed OK!";
+        } else {
+            txt = "You pressed Cancel!";
+        }
+    }
 
+    if (result.result === "undefined") {
+document.getElementById("result").innerHTML = "<h1>" + "Successful" + "</h1>";
+
+    }else{
+        document.getElementById("result").innerHTML = "<h1>" + "not Successful" + "</h1>";
+    }
 }
-
 
 function exampleContract1() {
 
