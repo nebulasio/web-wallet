@@ -8,7 +8,7 @@ function uiBlock(opt) {
         bag = {
             footer: footer,
             header: header,
-            logo: logo,
+            logoMain: logoMain,
             selectWalletFile: selectWalletFile
         };
 
@@ -16,7 +16,7 @@ function uiBlock(opt) {
         switch (i) {
             case "footer":
             case "header":
-            case "logo":
+            case "logoMain":
             case "selectWalletFile":
                 break;
             default: continue;
@@ -26,7 +26,19 @@ function uiBlock(opt) {
     }
 
     function footer(selector) {
-        console.log("footer", el);
+        $(selector).replaceWith(
+            '<div class="container footer">' +
+            "    <div class=logo></div>" +
+            "    <nav class=text-xs-center>" +
+            "        <a href=https://nebulas.io/>Home</a>" +
+            "        <a href=https://nebulas.io/technology.html>Technology</a>" +
+            "        <a href=https://nebulas.io/community.html>Community</a>" +
+            "        <a href=https://nebulas.io/team.html>Team</a>" +
+            "        <a href=https://nebulas.io/resources.html>Resources</a>" +
+            "        <a href=https://medium.com/nebulasio target=_blank>Blog</a>" +
+            "    </nav>" +
+            '    <div class="copyright text-xs-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
+            "</div>");
     }
 
     function header(selector) {
@@ -58,11 +70,8 @@ function uiBlock(opt) {
             '</div>');
     }
 
-    function logo(selector) {
-        $(selector).replaceWith(
-            '<div class="container logo">' +
-            "    <div></div>" +
-            "</div>");
+    function logoMain(selector) {
+        $(selector).replaceWith('<div class="container logo-main"></div>');
     }
 
     function selectWalletFile(selector) {
