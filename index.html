@@ -45,32 +45,6 @@
         </div>
     </div>
 
-    <!-- footer -->
-    <section class=" mbr-section mbr-section-sm-padding mbr-footer ">
-        <div class="container ">
-            <div class="row ">
-                <div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
-                    <a href="# ">
-                        <img src="img/logo-b.png " alt="Nebulas Testnet ">
-                    </a>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>
-                        <a href="https://nebulas.io/">Home</a>
-                        <a href="https://nebulas.io/technology.html">Technology</a>
-                        <a href="https://nebulas.io/community.html">Community</a>
-                        <a href="https://nebulas.io/team.html">Team</a>
-                        <a href="https://nebulas.io/resources.html">Resources</a>
-                        <a href="https://medium.com/nebulasio" target="_blank">Blog</a>
-                    </p>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <div class=footer></div>
 
     <div class="modal fade" tabindex="-1" id="info" role="dialog">
@@ -95,7 +69,7 @@
     <script src=js/Blob.js></script>
     <script src=js/FileSaver.min.js></script>
     <script src=js/home.v1.js></script>
-    <script src=js/ui-block.js data-depends=jquery></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
     <script src=js/wallet.js></script>
     <script>
         "use strict";
@@ -105,13 +79,13 @@
             account = wallet.Account.NewAccount(),
             neb = new Neb();
 
+        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+
         uiBlock({
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main"
         });
-
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
 
         $("#genNewWallet").click(function () {
             var password = $("#password").val(),

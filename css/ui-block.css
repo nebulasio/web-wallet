@@ -65,3 +65,48 @@
     height: 70px;
 }
 
+/*
+    .select-wallet-file
+    ============================================================
+    */
+
+.select-wallet-file label.file {
+    background-color: #f5f5f5;
+    border: 1px solid red;
+    border-radius: 3px;
+    cursor: pointer;
+    display: block;
+    font-size: 19px;
+    font-weight: bold;
+    height: auto; /* override bootstrap */
+    line-height: 50px;
+    text-align: center;
+}
+
+.select-wallet-file input[type=file] {
+    display: none;
+}
+
+.select-wallet-file label.pass {
+    display: block;
+}
+
+.select-wallet-file input[type=password] {
+    background-color: #f5f5f5;
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    display: block;
+    height: 3em;
+    letter-spacing: .3em;
+    margin-top: 10px;
+    padding: 0 10px;
+    width: 100%;
+}
+
+.select-wallet-file label.hide {
+    display: none;
+}
+
+.select-wallet-file .comment {
+    font-size: .8rem;
+}
