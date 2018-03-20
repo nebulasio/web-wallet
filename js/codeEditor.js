@@ -112,49 +112,41 @@ var js_editor = CodeMirror(document.getElementById("js"), {
 });
 
 
-
-
-
-
 function submit() {
     var from = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
     var to = "9694551ecd4cc42bbd9dadb732a534aa8ef56a51c9653aee";
-    var value = "0";
+    var value = "100000";
     var nonce = 0;
-    var gasPrice, gasLimit;
+    var gasPrice = "1000000";
+    var gasLimit = "2000000";
 
-    gasPrice = "1000000";
-    gasLimit = "2000000";
-
-
-    var editorText = js_editor.getValue()
-    console.log(editorText);
-    var testnetchainID = 1001;
-// console.log("erc20:"+erc20);
-
-
+    //var editorText = js_editor.getValue();
+    //console.log(editorText);
+    
     var contract = {
         "source": contract1,
-        "sourceType": "js"
-    }
-
-    // testnetchainID, account, toAddress, value, nonce = nonce + 1, gasPrice, gasLimit
+        "sourceType": "js",
+        "args": "[0]"
+    };
 
     var result = neb.api.call(from, to, value, 1, gasPrice, gasLimit, contract);
 
-    console.log(result);
-
+    console.log(JSON.stringify(result));
+    console.log(JSON.parse(result));
 }
-
-
 
 
 function exampleContract1() {
 
     js_editor.setValue(contract1)
 
-
 }
+
+
+
+
+
+
 
 
 
