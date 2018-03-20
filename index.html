@@ -27,7 +27,7 @@
         删除 js/Blob.js
         本地创建的过程在 js/wallet.js 里, 不支持 webpack 的 require, 有时间提出来, 有时间把 js/wallet.js 删掉
         -->
-    <div class=logo></div>
+    <div class=logo-main></div>
     <div class=header></div>
 
     <div class="container wallet">
@@ -71,6 +71,8 @@
         </div>
     </section>
 
+    <div class=footer></div>
+
     <div class="modal fade" tabindex="-1" id="info" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -104,8 +106,9 @@
             neb = new Neb();
 
         uiBlock({
+            footer: ".footer",
             header: ".header",
-            logo: ".logo"
+            logoMain: ".logo-main"
         });
 
         neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
