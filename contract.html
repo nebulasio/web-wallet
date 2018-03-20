@@ -20,50 +20,43 @@
     <title>Blockchain playground</title>
 </head>
 <body>
-
-<header class="header">
-    <img src="https://nebulas.io/assets/images/nebulasx60.png">
-    <h1>Learn to Use Nebulas</h1>
-</header>
-
-    <section id="menu" class="white">
-        <nav class="navbar navbar-dropdown bg-color">
-            <div class="container">
-                <div class="mbr-table">
-                    <div class="mbr-table-cell">
-                        <div class="navbar-brand">
-                            <a href="#" class="navbar-logo">
-                                <img src="img/logo-b.png" alt="Nebulas" style="height: 54px;">
-                            </a>
-                        </div>
+<section id="menu" class="white">
+    <nav class="navbar navbar-dropdown bg-color">
+        <div class="container">
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+                    <div class="navbar-brand">
+                        <a href="#" class="navbar-logo">
+                            <img src="img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                        </a>
                     </div>
                 </div>
             </div>
-        </nav>
-        <div class="container">
-            <div class="col-md-12">
-                <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
                     <span class="right">
                         <a href="index.html">Create New Wallet</a>
                     </span>
-                    <span class="right">
+                <span class="right">
                         <a href="sendNas.html">Send NAS</a>
                     </span>
-                    <span class="right">
+                <span class="right">
                         <a href="sendOffline.html">Send Offline</a>
                     </span>
-                    <span class="right">
+                <span class="right">
                         <a href="viewWalletInfo.html">View Wallet Info</a>
                     </span>
-                    <span class="right">
+                <span class="right">
                         <a href="query.html">Query transaction</a>
                     </span>
-                    <span class="right">
+                <span class="right">
                         <a class="create" href="contract.html">Contract</a>
                     </span>
-                </div>
-                <hr>
             </div>
+            <hr>
         </div>
     </section>
 
@@ -73,9 +66,17 @@
         <button onclick="submit()">Submit</button>
         <button onclick="exampleContract1()">Example Contract</button>
     </div>
+</section>
 
-    <script src="js/wallet.js"></script>
-    <script src="js/nebApi.js"></script>
-    <script src="js/codeEditor.js"></script>
+<!-- Code Editor window -->
+<div class="wrapperExample1">
+    <div id="js"></div>
+    <button onclick="submit()">Submit</button>
+    <button onclick="exampleContract1()">Example Contract</button>
+</div>
+
+<script src="js/wallet.js"></script>
+<script src="js/nebApi.js"></script>
+<script src="js/codeEditor.js"></script>
 </body>
 </html>

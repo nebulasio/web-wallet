@@ -42,7 +42,7 @@
 </head>
 
 <body>
-    <div class="logo"></div>
+    <div class="logo-main"></div>
     <div class="header"></div>
 
     <section class="hash">
@@ -58,7 +58,7 @@
             </p>
         </section>
         <section class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
-            <input class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched is-valid" type="text" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
+            <input id="input" class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched is-valid" type="text" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
                 ng-model="txInfo.hash" ng-keyup="$event.keyCode == 13 &amp;&amp; checkTxStatus()" aria-label="TX Hash
       " ng-class="Validator.isValidTxHash(txInfo.hash) ? 'is-valid' : 'is-invalid'">
             <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope" ng-click="checkTxStatus()" translate="NAV_CheckTxStatus">Check TX Status</button>
@@ -101,31 +101,31 @@
                     <tr>
                         <td translate="x_TxHash" class="ng-scope">TX Hash</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
-                                xxxxxxxx
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="tx_hash">
+
                             </a>
                         </td>
                     </tr>
                     <tr>
                         <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
-                                xxxxxxx
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="from_address">
+
                             </a>
                         </td>
                     </tr>
                     <tr>
                         <td translate="OFFLINE_Step2_Label_1" class="ng-scope">To Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="ng-binding">
-                                xxxxxxx
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="to_address">
+
                             </a>
                         </td>
                     </tr>
                     <tr>
                         <td translate="SEND_amount_short" class="ng-scope">Amount</td>
-                        <td class="ng-binding">
-                            0 ETH
+                        <td class="value">
+
                         </td>
                     </tr>
                     <tr>
@@ -134,8 +134,8 @@
                             </a>
                             <span translate="OFFLINE_Step2_Label_5" class="ng-scope">Nonce</span>
                         </td>
-                        <td class="ng-binding">
-                            982
+                        <td class="nonce">
+
                         </td>
                     </tr>
                     <tr>
@@ -144,8 +144,8 @@
                             </a>
                             <span translate="OFFLINE_Step2_Label_4" class="ng-scope">Gas Limit</span>
                         </td>
-                        <td class="ng-binding">
-                            xxxxxxxx
+                        <td class="gasLimit">
+
                         </td>
                     </tr>
                     <tr>
@@ -154,17 +154,14 @@
                             </a>
                             <span translate="OFFLINE_Step2_Label_3" class="ng-scope">Gas Price</span>
                         </td>
-                        <td class="ng-binding">
-                            4 GWEI
-                            <small class="ng-binding">
-                                (4000000000 WEI)
-                            </small>
+                        <td class="gasPrice">
+
                         </td>
                     </tr>
                     <tr>
                         <td translate="OFFLINE_Step2_Label_6" class="ng-scope">Data</td>
-                        <td class="ng-binding">
-                            xxxxxxxx
+                        <td class="data">
+
                         </td>
                     </tr>
                 </tbody>
@@ -172,112 +169,7 @@
         </div>
     </section>
 
-    <div id="send" class="container send">
-        <div id="sendNas" class="col-md-12">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="fromaddress">From Address</label>
-                        <input type="text" class="form-control" id="fromaddress" placeholder="" disabled>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="balance">Balance</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="balance" placeholder="">
-                            <div class="input-group-addon">NAS</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="toaddress">To Address</label>
-                <input type="text" class="form-control" id="toaddress" placeholder="">
-            </div>
-            <div class="form-group">
-                <label for="amount">Value / Amount to Send</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="amount" placeholder="Amount">
-                    <div class="input-group-addon">NAS</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="limit">Gas Limit</label>
-                <input type="text" class="form-control" id="limit" value="20000" placeholder="">
-            </div>
-            <div class="form-group">
-                <label for="price">Gas Price</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="price" value="1000000" placeholder="">
-                    <div class="input-group-addon">NIS</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="nonce">Nonce</label>
-                <input type="text" class="form-control" id="nonce" placeholder="">
-            </div>
-            <button id="generate" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Generate Transaction</button>
-        </div>
-    </div>
-    <!-- send -->
-    <div id="transaction" class="container transaction">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="raw">Raw Transaction</label>
-                <textarea class="form-control" rows="8" id="raw"></textarea>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="signed">Signed Transaction</label>
-                <textarea class="form-control" rows="8" id="signed"></textarea>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <button id="sendtransaction" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Send Transaction</button>
-        </div>
-    </div>
-    <!-- Transaction -->
-    <div class="container transaction" id="receipt_div" style="display:none;">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="raw">txhash</label>
-                <textarea readonly id="receipt" rows="6" class="form-control"></textarea>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="signed">receipt</label>
-                <textarea readonly id="receipt_state" rows="6" class="form-control"></textarea>
-            </div>
-        </div>
-    </div>
-    <!-- hxhash -->
-
-    <!-- footer -->
-    <section class=" mbr-section mbr-section-sm-padding mbr-footer ">
-        <div class="container ">
-            <div class="row ">
-                <div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
-                    <a href="# ">
-                        <img src="img/logo-b.png " alt="Nebulas Testnet ">
-                    </a>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>
-                        <a href="https://nebulas.io/">Home</a>
-                        <a href="https://nebulas.io/technology.html">Technology</a>
-                        <a href="https://nebulas.io/community.html">Community</a>
-                        <a href="https://nebulas.io/team.html">Team</a>
-                        <a href="https://nebulas.io/resources.html">Resources</a>
-                        <a href="https://medium.com/nebulasio" target="_blank">Blog</a>
-                    </p>
-                </div>
-                <div class="mbr-footer-content col-xs-12 text-xs-center ">
-                    <p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="footer"></div>
 
     <div class="modal fade" tabindex="-1" id="info" role="dialog">
         <div class="modal-dialog" role="document">
@@ -304,15 +196,39 @@
     <script src=js/ui-block.js data-depends=jquery></script>
 
     <script>
+
         $(function () {
 
             uiBlock({
+                footer: ".footer",
                 header: ".header",
-                logo: ".logo"
+                logoMain: ".logo-main"
             });
 
+
             $("#btn").click(function () {
-                $("#info").removeClass("active");
+
+                $.ajax({
+
+                    type: 'get',
+
+                    url: 'https://explorer.nebulas.io/test/api/tx/' + $("#input").val(),
+
+                    success: function (o) {
+                        // alert('请求成功');
+                        console.log(o);
+                        $("#info").removeClass("active");
+                        $(".tx_hash").append(o.data.hash);
+                        $(".from_address").append(o.data.from.hash);
+                        $(".to_address").append(o.data.to.hash);
+                        $(".nonce").append(o.data.nonce);
+                        $(".gasLimit").append(o.data.gasLimit);
+                        $(".gasPrice").append(o.data.gasPrice);
+                        $(".data").append(o.data.data);
+                        $(".value").append(o.data.value);
+                    }
+                });
+
             });
 
 
