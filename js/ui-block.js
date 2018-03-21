@@ -72,7 +72,30 @@ function uiBlock(opt) {
     }
 
     function logoMain(selector) {
-        $(selector).replaceWith('<div class="container logo-main"></div>');
+        $(selector).replaceWith(
+            '<div class="container logo-main">' +
+            "    <div class=row>" +
+            "        <div class=col></div>" +
+            "        <div class=col>" +
+            "            <div class=dropdown>" +
+            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>switch api</button>' +
+            "                <div class=dropdown-menu aria-labelledby=logo-main-dropdown-1>" +
+            "                    <button class=dropdown-item type=button>Action</button>" +
+            "                    <button class=dropdown-item type=button>Another action</button>" +
+            "                    <button class=dropdown-item type=button>Something else here</button>" +
+            "                </div>" +
+            "            </div>" +
+            "            <div class=dropdown>" +
+            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false>switch lang</button>' +
+            "                <div class=dropdown-menu aria-labelledby=logo-main-dropdown-2>" +
+            "                    <button class=dropdown-item type=button>Action</button>" +
+            "                    <button class=dropdown-item type=button>Another action</button>" +
+            "                    <button class=dropdown-item type=button>Something else here</button>" +
+            "                </div>" +
+            "            </div>" +
+            "        </div>" +
+            "    </div>" +
+            "</div>");
     }
 
     function selectWalletFile(selector, callback) {

@@ -60,9 +60,23 @@
     ============================================================
     */
 
-.logo-main {
+.logo-main .col:first-child {
     background: url(../img/logo-b.png) left center no-repeat content-box;
     height: 70px;
+}
+
+.logo-main .col:last-child {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* overrides - base.css, home.css */
+.logo-main .col:last-child .btn {
+    background-color: white;
+    color: #aaa;
+    margin: 0 10px 0 0;
+    padding: 0;
 }
 
 /*
