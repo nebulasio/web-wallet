@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -12,25 +13,41 @@
     <link rel=stylesheet href=codeMirror/dracula.css>
     <meta name=viewport content="width=device-width">
     <title>Blockchain playground</title>
+    <style>
+        .code {
+            height: 300px;
+        }
+
+        .active1 {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
     <div class=logo-main></div>
     <div class=header></div>
 
     <!-- Code Editor window -->
     <div class="wrapperExample1">
-        <div id="js"></div>
-        <div id="result">Results</div>
-        <button onclick="submit()">Submit</button>
-        <button onclick="exampleContract1()">Example Contract</button>
+        <!-- <div id="js"></div> -->
+        <span>Byte Code</span>
+        <textarea name="code" id="code" cols="30" rows="10"></textarea>
+
+        <span>Gas Limit</span>
+        <input type="text" id="gas">
+
+
+        <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
+        <!-- <button onclick="submit()">RUN</button> -->
+        <button id="run">RUN</button>
+        <div class="next  active1" >
+            <div class="select-wallet-file"></div>
+            <button onclick="exampleContract1()">Deploy Contract</button>
+        </div>
+
     </div>
 
-    <!-- Code Editor window -->
-    <div class="wrapperExample1">
-        <div id="js"></div>
-        <button onclick="submit()">Submit</button>
-        <button onclick="exampleContract1()">Example Contract</button>
-    </div>
     <div class=footer></div>
 
     <script src=codeMirror/codemirror.js></script>
@@ -47,8 +64,41 @@
         uiBlock({
             footer: ".footer",
             header: ".header",
-            logoMain: ".logo-main"
+            logoMain: ".logo-main",
+            selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
+        function onUnlockFile(fileJson, account, password) {
+            var state, balance_nas;
+
+            try {
+                account.fromKey(fileJson, password);
+                $("#fromaddress").val(account.getAddressString());
+                $("#unlock").hide();
+                $("#send").show();
+
+                state = neb.api.getAccountState(account.getAddressString());
+                balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+
+                $("#balance").val(balance_nas);
+                $("#nonce").val(parseInt(state.nonce) + 1);
+            } catch (e) {
+                bootbox.dialog({
+                    title: "Error",
+                    message: e,
+                    size: "large"
+                });
+            }
+        }
+        $(function () {
+
+            $("#run").click(function () {
+                $(".result").removeClass("active1");
+                $(".next").removeClass("active1");
+                
+            })
+
+        })
     </script>
 </body>
+
 </html>

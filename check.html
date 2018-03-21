@@ -224,7 +224,7 @@
         function done(o) {
             console.log(o);
 
-            $("#info").removeClass("active");
+            $("#info").removeClass("active1");
             $(".tx_hash").append(o.hash);
 
             $(".status").append(o.status == 1 ? "success" : ( o.status == 0 ? "fail" : "pending" ));
