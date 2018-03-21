@@ -54,7 +54,7 @@
 
     <section class="hash">
         <article class="row"></article>
-        <section class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+        <section class="col">
             <h1 translate="NAV_CheckTxStatus" class="ng-scope">Check TX Status</h1>
             <p translate="tx_Summary" class="ng-scope">During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool
                 aims to give you the ability to find and "cancel" / replace these TXs.
@@ -64,7 +64,7 @@
                 </strong>
             </p>
         </section>
-        <section class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
+        <section class="col text-center">
             <input id="input" class="form-control" type="text" placeholder="...... ......">
             <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope">Check TX Status</button>
             <br>
@@ -173,7 +173,7 @@
                     <tr>
                         <td translate="OFFLINE_Step2_Label_6" class="ng-scope">Data</td>
                         <td class="data">
-
+                            <pre><code class=language-javascript v-html=formatCode></code></pre>
                         </td>
                     </tr>
                 </tbody>
@@ -199,7 +199,7 @@
         </div>
     </div>
 
-    <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+    <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
     <script src=js/api.js data-depends=jquery></script>
@@ -241,28 +241,43 @@
             return (i == len ? numberAddComma(n) : n) + " " + arr[i];
         }
 
+        function toNas(n) {
+            var arr = ["kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"],
+                i, len = arr.length - 1;
+
+            for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
+
+            n = n.toFixed();
+            return (i == len ? numberAddComma(n) : n) + " " + arr[i];
+        }
+
+
         function done(o) {
             // alert('请求成功');
             console.log(o);
+
+
+
             $("#info").removeClass("active");
-            $(".tx_hash").append(o.data.hash);
+            $(".tx_hash").append(o.hash);
 
-            $(".status").append(o.msg);
+            $(".status").append(o.status == 1 ? "success" :"pending" );
 
-            $(".from_address").append(o.data.from.hash);
-            
-            $(".to_address").append(o.data.to.hash);
-            
-            $(".nonce").append(o.data.nonce);
-            
-            $(".gasLimit").append(o.data.gasLimit);
+            $(".from_address").append(o.from);
 
-            var num = toWei(o.data.gasPrice);
+            $(".to_address").append(o.to);
+
+            $(".nonce").append(o.nonce);
+
+            $(".gasLimit").append(o.gas_limit);
+
+            var num = toWei(o.gas_price);
             $(".gasPrice").append(num);
-            
-            $(".data").append(o.data.data);
 
-            $(".value").append(o.data.value + 'NAS');
+            $(".data").append();
+
+            var nas = toNas(o.value);
+            $(".value").append(nas);
         }
 
         function fail() {

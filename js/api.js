@@ -6,11 +6,12 @@
 var api = {
 
     getTx: function (tx) {
-        var apiPrefix = localStorage.apiPrefix || "https://explorer.nebulas.io/test/api/";
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
 
         return $.ajax({
-            type: 'get',
-            url: apiPrefix + 'tx/' + tx
+            data: JSON.stringify({ hash: tx }),
+            type: 'post',
+            url: apiPrefix + "v1/user/getTransactionReceipt"
         });
     }
 };
