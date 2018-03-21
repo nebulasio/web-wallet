@@ -80,9 +80,6 @@
             <h5>
                 <a href="https://etherscan.io/tx/" target="_blank" rel="noopener noreferrer" class="ng-binding"> </a>
             </h5>
-            <p>
-                <strong translate="tx_FoundOnChain_1" class="ng-scope">Your transaction was successfully mined and is on the blockchain.</strong>
-            </p>
             <ul>
                 <li translate="tx_FoundOnChain_2" class="ng-scope">
                     <strong>If you see a red
@@ -104,7 +101,6 @@
             <h4 translate="tx_Details" class="cont-md ng-scope">Transaction Details</h4>
             <br>
             <table class="table table-striped txstatus__2 cont-md">
-                <!-- ng-show="tx.status=='foundOnChain' || foundInPending'"-->
                 <tbody>
                     <tr>
                         <td translate="x_TxHash" class="ng-scope">TX Hash</td>
@@ -114,6 +110,15 @@
                             </a>
                         </td>
                     </tr>
+                    <tr>
+                        <td translate="x_TxHash" class="ng-scope">TxReceipt Status</td>
+                        <td>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="status">
+
+                            </a>
+                        </td>
+                    </tr>
+                    
                     <tr>
                         <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
                         <td>
@@ -233,6 +238,8 @@
             console.log(o);
             $("#info").removeClass("active");
             $(".tx_hash").append(o.data.hash);
+
+            $(".status").append(o.msg);
             $(".from_address").append(o.data.from.hash);
             $(".to_address").append(o.data.to.hash);
             $(".nonce").append(o.data.nonce);
