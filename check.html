@@ -41,8 +41,8 @@
         .errmsg {
             color: red;
         }
-        
-        .table tr>td:first-child{
+
+        .table tr>td:first-child {
             text-align: left;
         }
     </style>
@@ -118,7 +118,7 @@
                             </a>
                         </td>
                     </tr>
-                    
+
                     <tr>
                         <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
                         <td>
@@ -233,6 +233,16 @@
             });
         });
 
+        function toWei(n) {
+            var arr = ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
+                i, len = arr.length - 1;
+
+            for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
+
+            n = n.toFixed();
+            return (i == len ? numberAddComma(n) : n) + " " + arr[i];
+        }
+
         function done(o) {
             // alert('请求成功');
             console.log(o);
@@ -240,13 +250,21 @@
             $(".tx_hash").append(o.data.hash);
 
             $(".status").append(o.msg);
+
             $(".from_address").append(o.data.from.hash);
+            
             $(".to_address").append(o.data.to.hash);
+            
             $(".nonce").append(o.data.nonce);
+            
             $(".gasLimit").append(o.data.gasLimit);
-            $(".gasPrice").append(o.data.gasPrice);
+
+            var num = toWei(o.data.gasPrice);
+            $(".gasPrice").append(num);
+            
             $(".data").append(o.data.data);
-            $(".value").append(o.data.value);
+
+            $(".value").append(o.data.value + 'NAS');
         }
 
         function fail() {
