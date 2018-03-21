@@ -60,6 +60,11 @@
     ============================================================
     */
 
+.logo-main .btn {
+    font-size: smaller;
+    font-weight: lighter;
+}
+
 .logo-main .col:first-child {
     background: url(../img/logo-b.png) left center no-repeat content-box;
     height: 70px;
@@ -123,4 +128,14 @@
 
 .select-wallet-file .comment {
     font-size: .8rem;
+}
+
+/*
+    override - bootstrap
+    ============================================================
+    */
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: black;
 }

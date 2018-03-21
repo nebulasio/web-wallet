@@ -72,30 +72,56 @@ function uiBlock(opt) {
     }
 
     function logoMain(selector) {
-        $(selector).replaceWith(
+        var i, len, $els,
+            list = [
+                { name: "testnet.nebulas.io", url: "https://testnet.nebulas.io/" },
+                { name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" }
+            ],
+            apiPrefix = (localStorage.apiPrefix || "").toLowerCase(),
+            sApiButtons = "", sApiText;
+
+        for (i = 0, len = list.length; i < len && list[i].url != apiPrefix; ++i);
+
+        i == len && (i = 0);
+        localStorage.apiPrefix = apiPrefix = list[i].url;
+        sApiText = list[i].name;
+
+        for (i = 0, len = list.length; i < len; ++i)
+            sApiButtons += '<button class="' +
+                (apiPrefix == list[i].url ? "active " : "") + 'dropdown-item" data-i=' + i + ">" +
+                list[i].name + "</button>";
+
+        $els = $(
             '<div class="container logo-main">' +
             "    <div class=row>" +
             "        <div class=col></div>" +
             "        <div class=col>" +
             "            <div class=dropdown>" +
-            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>switch api</button>' +
-            "                <div class=dropdown-menu aria-labelledby=logo-main-dropdown-1>" +
-            "                    <button class=dropdown-item type=button>Action</button>" +
-            "                    <button class=dropdown-item type=button>Another action</button>" +
-            "                    <button class=dropdown-item type=button>Something else here</button>" +
+            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
+            '                <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
             "                </div>" +
             "            </div>" +
             "            <div class=dropdown>" +
             '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false>switch lang</button>' +
-            "                <div class=dropdown-menu aria-labelledby=logo-main-dropdown-2>" +
-            "                    <button class=dropdown-item type=button>Action</button>" +
-            "                    <button class=dropdown-item type=button>Another action</button>" +
-            "                    <button class=dropdown-item type=button>Something else here</button>" +
+            '                <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' +
+            "                    <button class=dropdown-item type=button>English</button>" +
+            "                    <button class=dropdown-item type=button>简体中文</button>" +
             "                </div>" +
             "            </div>" +
             "        </div>" +
             "    </div>" +
-            "</div>");
+            "</div>").replaceAll(selector);
+
+        $els.on("click", ".api > button", onClickMenuApi);
+
+        function onClickMenuApi() {
+            var $this = $(this);
+
+            if (!$this.hasClass("active")) {
+                localStorage.apiPrefix = list[$this.data("i")].url;
+                location.reload();
+            }
+        }
     }
 
     function selectWalletFile(selector, callback) {

@@ -1,5 +1,8 @@
 //
 // requires jquery
+//
+// http://34.205.26.12:8685/
+// https://testnet.nebulas.io/
 
 "use strict";
 
