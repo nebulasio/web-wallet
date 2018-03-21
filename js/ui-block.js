@@ -30,7 +30,7 @@ function uiBlock(opt) {
         $(selector).replaceWith(
             '<div class="container footer">' +
             "    <div class=logo></div>" +
-            "    <nav class=text-xs-center>" +
+            "    <nav class=text-center>" +
             "        <a href=https://nebulas.io/>Home</a>" +
             "        <a href=https://nebulas.io/technology.html>Technology</a>" +
             "        <a href=https://nebulas.io/community.html>Community</a>" +
@@ -38,7 +38,7 @@ function uiBlock(opt) {
             "        <a href=https://nebulas.io/resources.html>Resources</a>" +
             "        <a href=https://medium.com/nebulasio target=_blank>Blog</a>" +
             "    </nav>" +
-            '    <div class="copyright text-xs-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
+            '    <div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
             "</div>");
     }
 
