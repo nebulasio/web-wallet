@@ -4,8 +4,7 @@
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
-    <link rel=stylesheet href=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css>
-    <link rel=stylesheet href=https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css>
+    <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/home.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -31,14 +30,14 @@
     <div class=header></div>
 
     <div class="container wallet">
-        <form id="newWallet" class="col-md-12">
+        <form id="newWallet" class="col-12">
             <div class="form-group">
                 <label for="password">Enter a password:</label>
                 <input type="password" class="form-control" id="password" placeholder="Do NOT forget to save this!">
             </div>
-            <button id="genNewWallet" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Create New Wallet</button>
+            <button id=genNewWallet class="btn btn-block">Create New Wallet</button>
         </form>
-        <div class="col-xs-12">
+        <div class="col-12">
             <p class="wallet_help">This password encrypts your private key.
                 <br>This does not act as a seed to generate your keys.
                 <br>You will need this password + your private key to unlock your wallet.</p>
@@ -63,9 +62,8 @@
         </div>
     </div>
 
-    <script src=https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js></script>
-    <script src=https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js></script>
-    <script src=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js data-depends="jquery tether"></script>
+    <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+    <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=js/Blob.js></script>
     <script src=js/FileSaver.min.js></script>
     <script src=js/home.v1.js></script>
