@@ -49,7 +49,7 @@ function uiBlock(opt) {
                 "sendNas.html",
                 "sendOffline.html",
                 "viewWalletInfo.html",
-                "query.html",
+                "check.html",
                 "contract.html"
             ];
 

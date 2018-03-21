@@ -41,6 +41,10 @@
         .errmsg {
             color: red;
         }
+        
+        .table tr>td:first-child{
+            text-align: left;
+        }
     </style>
 
 </head>
@@ -195,6 +199,7 @@
     <script src=https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends=jquery></script>
     <script src=https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js data-depends="jquery tether"></script>
+    <script src=js/api.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
     <script src=js/wallet.js></script>
@@ -211,34 +216,34 @@
             $("#btn").click(function () {
                 if ($("#input").val().length < 46) {
                     $(".errmsg").removeClass("active");
+                    setTimeout(function () {
+                        $(".errmsg").addClass("active");
+                    }, 2000);
+                } else {
+
+                    api.getTx($("#input").val())
+                        .then(done, fail);
+
                 }
-                else {
-                    $.ajax({
-
-                        type: 'get',
-
-                        url: 'https://explorer.nebulas.io/test/api/tx/' + $("#input").val(),
-
-                        success: function (o) {
-                            // alert('请求成功');
-                            console.log(o);
-                            $("#info").removeClass("active");
-                            $(".tx_hash").append(o.data.hash);
-                            $(".from_address").append(o.data.from.hash);
-                            $(".to_address").append(o.data.to.hash);
-                            $(".nonce").append(o.data.nonce);
-                            $(".gasLimit").append(o.data.gasLimit);
-                            $(".gasPrice").append(o.data.gasPrice);
-                            $(".data").append(o.data.data);
-                            $(".value").append(o.data.value);
-                        }
-                    });
-                }
-
             });
-
         });
 
+        function done(o) {
+            // alert('请求成功');
+            console.log(o);
+            $("#info").removeClass("active");
+            $(".tx_hash").append(o.data.hash);
+            $(".from_address").append(o.data.from.hash);
+            $(".to_address").append(o.data.to.hash);
+            $(".nonce").append(o.data.nonce);
+            $(".gasLimit").append(o.data.gasLimit);
+            $(".gasPrice").append(o.data.gasPrice);
+            $(".data").append(o.data.data);
+            $(".value").append(o.data.value);
+        }
+
+        function fail() {
+        }
     </script>
 
 </body>
