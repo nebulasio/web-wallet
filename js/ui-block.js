@@ -1,5 +1,5 @@
 //
-// requires - jquery, bootbox, wallet.js
+// requires - jquery bootbox i18n.js wallet.js
 // because this project already uses them
 
 // uiBlock({ header: ".header-1, .abc" })
@@ -27,19 +27,19 @@ function uiBlock(opt) {
     }
 
     function footer(selector) {
-        $(selector).replaceWith(
+        i18n.run(localStorage.lang, $(
             '<div class="container footer">' +
             "    <div class=logo></div>" +
             "    <nav class=text-center>" +
-            "        <a href=https://nebulas.io/>Home</a>" +
-            "        <a href=https://nebulas.io/technology.html>Technology</a>" +
-            "        <a href=https://nebulas.io/community.html>Community</a>" +
-            "        <a href=https://nebulas.io/team.html>Team</a>" +
-            "        <a href=https://nebulas.io/resources.html>Resources</a>" +
-            "        <a href=https://medium.com/nebulasio target=_blank>Blog</a>" +
+            "        <a href=https://nebulas.io/ data-i18n=home>Home</a>" +
+            "        <a href=https://nebulas.io/technology.html data-i18n=technology>Technology</a>" +
+            "        <a href=https://nebulas.io/community.html data-i18n=community>Community</a>" +
+            "        <a href=https://nebulas.io/team.html data-i18n=team>Team</a>" +
+            "        <a href=https://nebulas.io/resources.html data-i18n=resources>Resources</a>" +
+            "        <a href=https://medium.com/nebulasio data-i18n=blog target=_blank>Blog</a>" +
             "    </nav>" +
             '    <div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
-            "</div>");
+            "</div>").replaceAll(selector));
     }
 
     function header(selector) {
@@ -57,18 +57,18 @@ function uiBlock(opt) {
             if (location.pathname.indexOf(arr[i]) != -1)
                 arr[i] += " class=checked";
 
-        $(selector).replaceWith(
+        i18n.run(localStorage.lang, $(
             '<div class="container header">' +
             "    <div>" +
-            "        <a href=" + arr[0] + ">Create New Wallet</a>" +
-            "        <a href=" + arr[1] + ">Send NAS</a>" +
-            "        <a href=" + arr[2] + ">Send Offline</a>" +
-            "        <a href=" + arr[3] + ">View Wallet Info</a>" +
-            "        <a href=" + arr[4] + ">Check TX Status</a>" +
-            "        <a href=" + arr[5] + ">Contract</a>" +
+            "        <a href=" + arr[0] + " data-i18n=header/new-wallet>Create New Wallet</a>" +
+            "        <a href=" + arr[1] + " data-i18n=header/send>Send NAS</a>" +
+            "        <a href=" + arr[2] + " data-i18n=header/send-offline>Send Offline</a>" +
+            "        <a href=" + arr[3] + " data-i18n=header/view>View Wallet Info</a>" +
+            "        <a href=" + arr[4] + " data-i18n=header/check>Check TX Status</a>" +
+            "        <a href=" + arr[5] + " data-i18n=header/contract>Contract</a>" +
             "    </div>" +
             "    <hr>" +
-            "</div>");
+            "</div>").replaceAll(selector));
     }
 
     function logoMain(selector) {
@@ -77,8 +77,14 @@ function uiBlock(opt) {
                 { name: "testnet.nebulas.io", url: "https://testnet.nebulas.io/" },
                 { name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" }
             ],
-            apiPrefix = (localStorage.apiPrefix || "").toLowerCase(),
-            sApiButtons = "", sApiText;
+            apiPrefix, sApiButtons, sApiText,
+            lang, sLangButtons;
+
+        //
+        // apiPrefix
+
+        apiPrefix = (localStorage.apiPrefix || "").toLowerCase();
+        sApiButtons = "";
 
         for (i = 0, len = list.length; i < len && list[i].url != apiPrefix; ++i);
 
@@ -91,6 +97,22 @@ function uiBlock(opt) {
                 (apiPrefix == list[i].url ? "active " : "") + 'dropdown-item" data-i=' + i + ">" +
                 list[i].name + "</button>";
 
+        //
+        // lang
+
+        lang = (localStorage.lang || "").toLowerCase();
+        sLangButtons = "";
+
+        // if lang not in table, use 1st item in table
+        if (!(lang in i18n.table)) for (lang in i18n.table) break;
+
+        for (i in i18n.table)
+            sLangButtons += '<button class="' +
+                (i == lang ? "active " : "") + 'dropdown-item" data-lang=' + i + ">" + i18n.table[i].name + "</button>"
+
+        //
+        // $.replaceAll
+
         $els = $(
             '<div class="container logo-main">' +
             "    <div class=row>" +
@@ -102,10 +124,8 @@ function uiBlock(opt) {
             "                </div>" +
             "            </div>" +
             "            <div class=dropdown>" +
-            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false>switch lang</button>' +
-            '                <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' +
-            "                    <button class=dropdown-item type=button>English</button>" +
-            "                    <button class=dropdown-item type=button>简体中文</button>" +
+            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name>' + i18n.table[i].name + "</button>" +
+            '                <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
             "                </div>" +
             "            </div>" +
             "        </div>" +
@@ -113,6 +133,7 @@ function uiBlock(opt) {
             "</div>").replaceAll(selector);
 
         $els.on("click", ".api > button", onClickMenuApi);
+        $els.on("click", ".lang > button", onClickMenuLang);
 
         function onClickMenuApi() {
             var $this = $(this);
@@ -120,6 +141,17 @@ function uiBlock(opt) {
             if (!$this.hasClass("active")) {
                 localStorage.apiPrefix = list[$this.data("i")].url;
                 location.reload();
+            }
+        }
+
+        function onClickMenuLang() {
+            var $this = $(this);
+
+            if (!$this.hasClass("active")) {
+                localStorage.lang = $this.data("lang");
+                i18n.run(localStorage.lang);
+                $this.parent().children().removeClass("active");
+                $this.addClass("active");
             }
         }
     }

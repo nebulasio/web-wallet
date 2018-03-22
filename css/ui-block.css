@@ -47,6 +47,7 @@
 .header > div > a {
     margin: 0 10px;
     overflow: hidden;
+    text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
 }

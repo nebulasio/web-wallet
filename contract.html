@@ -34,7 +34,6 @@
         .code {
             height: 300px;
         }
-
         .active1 {
             display: none;
         }
@@ -79,10 +78,10 @@
 
             <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
             <!-- <button onclick="submit()">RUN</button> -->
-            <button id="run">RUN</button>
+            <button id="run" onclick="apiCall()">RUN</button>
             <div class="next  active1">
                 <div class="select-wallet-file"></div>
-                <button onclick="exampleContract1()">Deploy Contract</button>
+                <button onclick="generateTransaction()">Deploy Contract</button>
             </div>
         </div>
 
@@ -145,7 +144,8 @@
             })
 
         })
-    </script>
+    })
+</script>
 </body>
 
 </html>
