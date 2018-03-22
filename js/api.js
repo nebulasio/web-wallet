@@ -27,4 +27,14 @@ var api = {
         });
     },
     
+    getAccountstate: function (addr) {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            tdata: JSON.stringify({ address: addr }),
+            type: 'post',
+            url: apiPrefix + "v1/user/accountstate"
+        });
+    },
+    
 };

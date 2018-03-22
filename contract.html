@@ -82,25 +82,25 @@
                 <div class="title">
                     <span>Submit Contract</span>
                 </div>
-                <span>parameter</span>
+                <span>parameter : </span>
                 <input type="text" id="code">
                 <div class=select-wallet-file></div>
 
-                <span>From</span>
-                <input type="text" id="gas">
+                <span>From : </span>
+                <input type="text" id="from_addr">
 
-                <span>To</span>
+                <span>To : </span>
                 <input type="text" id="gas">
-
-                <span>Value</span>
-                <input type="text" id="gas">
-
-                <span>Gas Limit</span>
-                <input type="text" id="gas">
-
+                <br>
+                <span>Value : </span>
+                <span id="value"></span>
+                <br>
+                <span>Gas Limit : </span>
+                <span id="gas_limit"></span>
+                <br>
                 <span>Gas Price : </span>
                 <span id="gas_price"></span>
-
+                <br>
                 <span class="errmsg_code active1">Please enter a valid code</span>
 
 
@@ -127,10 +127,33 @@
     <script src=js/wallet.js></script>
     <script src=js/nebApi.js></script>
     <script src=js/codeEditor.js></script>
+    <script src=js/home.v1.js></script>
+
     <script src=js/i18n.js data-depends=jquery.slim></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
     <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
     <script>
         "use strict";
+
+        var wallet = require("wallet"),
+            Neb = wallet.Neb,
+            Transaction = wallet.Transaction,
+            Utils = wallet.Utils,
+            neb = new Neb(),
+            testnetchainID = 1001,
+            unitMap = {
+                none: '0',
+                nis: '1',
+                knis: '1000',
+                mnis: '1000000',
+                nanonas: '1000000000',
+                micronas: '1000000000000',
+                millinas: '1000000000000000',
+                nas: '1000000000000000000'
+            },
+            gAccount, gTx;
+
+
 
         uiBlock({
             footer: ".footer",
@@ -143,21 +166,28 @@
             $('#myTab li:last-child a').tab('show')
         })
 
+        function unitValue(unit) {
+            var unitValue = unitMap[(unit || "nas").toLowerCase()];
+
+            if (unitValue === undefined)
+                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
+
+            return new Utils.toBigNumber(unitValue, 10);
+        }
 
         function onUnlockFile(fileJson, account, password) {
             var state, balance_nas;
 
             try {
                 account.fromKey(fileJson, password);
-                $("#fromaddress").val(account.getAddressString());
+                $("#from_addr").val(account.getAddressString());
                 $("#unlock").hide();
                 $("#send").show();
 
-                state = neb.api.getAccountState(account.getAddressString());
-                balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+                api.getAccountstate($("#from_addr").val())
+                    .then(done, fail);
 
-                $("#balance").val(balance_nas);
-                $("#nonce").val(parseInt(state.nonce) + 1);
+
             } catch (e) {
                 bootbox.dialog({
                     message: e,
@@ -166,6 +196,12 @@
                 });
             }
         }
+
+        function done(y){
+            console.log(y);
+        }
+        function fail(){}
+
         $(function () {
 
             $(".search").click(function () {
