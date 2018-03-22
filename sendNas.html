@@ -208,7 +208,7 @@
                 if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) {
                     amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
                 }
-
+                gAccount = Account.NewAccount();
                 gTx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 gTx.signTransaction();
                 $("#raw").val(gTx.toString());
