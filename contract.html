@@ -94,6 +94,7 @@
     <script src=codeMirror/codemirror.js></script>
     <script src=codeMirror/javascript.js></script>
     <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
     <script src=js/wallet.js></script>
     <script src=js/nebApi.js></script>
     <script src=js/codeEditor.js></script>
@@ -127,9 +128,9 @@
                 $("#nonce").val(parseInt(state.nonce) + 1);
             } catch (e) {
                 bootbox.dialog({
-                    title: "Error",
                     message: e,
-                    size: "large"
+                    size: "large",
+                    title: "Error"
                 });
             }
         }
