@@ -18,4 +18,13 @@ var api = {
         });
     },
     
+    getGasPrice: function () {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            type: 'get',
+            url: apiPrefix + "v1/user/getGasPrice"
+        });
+    },
+    
 };
