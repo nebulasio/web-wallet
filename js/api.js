@@ -8,23 +8,33 @@
 
 var api = {
 
-    getTx: function (tx) {
+    getUserGetGasPrice: function () {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            type: "get",
+            url: apiPrefix + "v1/user/getGasPrice"
+        });
+    },
+
+    postUserAccountState: function (addr, block) {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            data: JSON.stringify({ address: addr, block: block }),
+            type: "post",
+            url: apiPrefix + "v1/user/accountstate"
+        });
+    },
+
+    postUserGetTransactionReceipt: function (tx) {
         var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
 
         return $.ajax({
             data: JSON.stringify({ hash: tx }),
-            type: 'post',
+            type: "post",
             url: apiPrefix + "v1/user/getTransactionReceipt"
         });
-    },
-    
-    getGasPrice: function () {
-        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+    }
 
-        return $.ajax({
-            type: 'get',
-            url: apiPrefix + "v1/user/getGasPrice"
-        });
-    },
-    
 };

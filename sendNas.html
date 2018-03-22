@@ -99,9 +99,10 @@
 
     <div class=footer></div>
 
-    <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+    <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
+    <script src=js/api.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
@@ -140,23 +141,18 @@
         });
 
         function onUnlockFile(fileJson, account, password) {
-            var address, balanceNas, state;
+            var address;
 
             try {
                 account.fromKey(fileJson, password);
                 address = account.getAddressString();
-
                 gAccount = account;
 
                 $("#fromaddress").val(address);
                 $("#unlock").hide();
                 $("#send").show();
 
-                state = neb.api.getAccountState(address);
-                balanceNas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
-
-                $("#balance").val(balanceNas);
-                $("#nonce").val(parseInt(state.nonce) + 1);
+                api.postUserAccountState(address).then(donePostUserAccountState);
             } catch (e) {
                 bootbox.dialog({
                     message: e,
@@ -164,6 +160,13 @@
                     title: "Error"
                 });
             }
+        }
+
+        function donePostUserAccountState(o) {
+            var nas = Utils.toBigNumber(o.balance).dividedBy(unitValue("nas")).toNumber();
+
+            $("#balance").val(nas);
+            $("#nonce").val((o.nonce || 0) + 1);
         }
 
         function unitValue(unit) {
