@@ -16,103 +16,88 @@
     <div class=header></div>
     <div class=select-wallet-file></div>
 
-    <div id="send" class="container send">
-        <div id="sendNas" class="col-md-12">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="fromaddress">From Address</label>
-                        <input type="text" class="form-control" id="fromaddress" placeholder="" disabled>
+    <div id=send class="container send">
+        <div id=sendNas class=col-md-12>
+            <div class=form-group>
+                <div class=row>
+                    <div class=col-md-6>
+                        <label for=fromaddress data-i18n=send-nas/from-address>From Address</label>
+                        <input type=text class=form-control id=fromaddress disabled>
                     </div>
-                    <div class="col-md-6">
-                        <label for="balance">Balance</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="balance" placeholder="">
-                            <div class="input-group-addon">NAS</div>
+                    <div class=col-md-6>
+                        <label for=balance data-i18n=send-nas/balance>Balance</label>
+                        <div class=input-group>
+                            <input type=text class=form-control id=balance>
+                            <div class=input-group-addon>NAS</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="toaddress">To Address</label>
-                <input type="text" class="form-control" id="toaddress" placeholder="">
+            <div class=form-group>
+                <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
+                <input type=text class=form-control id=toaddress>
             </div>
-            <div class="form-group">
-                <label for="amount">Value / Amount to Send</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="amount" placeholder="Amount">
-                    <div class="input-group-addon">NAS</div>
+            <div class=form-group>
+                <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
+                <div class=input-group>
+                    <input type=text class=form-control id=amount data-i18n=send-nas/placeholder/amount>
+                    <div class=input-group-addon>NAS</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="limit">Gas Limit</label>
-                <input type="text" class="form-control" id="limit" value="20000" placeholder="">
+            <div class=form-group>
+                <label for=limit data-i18n=send-nas/limit>Gas Limit</label>
+                <input type=text class=form-control id=limit value=20000>
             </div>
-            <div class="form-group">
-                <label for="price">Gas Price</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="price" value="1000000" placeholder="">
-                    <div class="input-group-addon">NIS</div>
+            <div class=form-group>
+                <label for=price data-i18n=send-nas/price>Gas Price</label>
+                <div class=input-group>
+                    <input type=text class=form-control id=price value=1000000>
+                    <div class=input-group-addon>NIS</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="nonce">Nonce</label>
-                <input type="text" class="form-control" id="nonce" placeholder="">
+            <div class=form-group>
+                <label for=nonce>Nonce</label>
+                <input type=text class=form-control id=nonce>
             </div>
-            <button id="generate" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Generate Transaction</button>
+            <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
     </div>
     <!-- send -->
-    <div id="transaction" class="container transaction">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="raw">Raw Transaction</label>
-                <textarea class="form-control" rows="8" id="raw"></textarea>
+    <div id=transaction class="container transaction">
+        <div class=col-md-6>
+            <div class=form-group>
+                <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
+                <textarea class=form-control rows=8 id=raw></textarea>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="signed">Signed Transaction</label>
-                <textarea class="form-control" rows="8" id="signed"></textarea>
+        <div class=col-md-6>
+            <div class=form-group>
+                <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
+                <textarea class=form-control rows=8 id=signed></textarea>
             </div>
         </div>
-        <div class="col-md-12">
-            <button id="sendtransaction" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Send Transaction</button>
+        <div class=col-md-12>
+            <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/send>Send Transaction</button>
         </div>
     </div>
+
     <!-- Transaction -->
-    <div class="container transaction" id="receipt_div" style="display:none;">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="raw">txhash</label>
-                <textarea readonly id="receipt" rows="6" class="form-control"></textarea>
+    <div class="container transaction" id=receipt_div style=display:none;>
+        <div class=col-md-6>
+            <div class=form-group>
+                <label for=raw>txhash</label>
+                <textarea readonly id=receipt rows=6 class=form-control></textarea>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="signed">receipt</label>
-                <textarea readonly id="receipt_state" rows="6" class="form-control"></textarea>
+        <div class=col-md-6>
+            <div class=form-group>
+                <label for=signed data-i18n=send-nas/receipt>receipt</label>
+                <textarea readonly id=receipt_state rows=6 class=form-control></textarea>
             </div>
         </div>
     </div>
 
     <div class=footer></div>
-
-    <div class="modal fade" tabindex="-1" id="info" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">info</h4>
-                </div>
-                <div class="modal-body">
-                    <p>unlocking&hellip;</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
@@ -125,7 +110,6 @@
         "use strict";
 
         var wallet = require("wallet"),
-            Account = wallet.Account,
             Neb = wallet.Neb,
             Transaction = wallet.Transaction,
             Utils = wallet.Utils,
@@ -156,24 +140,28 @@
         });
 
         function onUnlockFile(fileJson, account, password) {
-            var state, balance_nas;
+            var address, balanceNas, state;
 
             try {
                 account.fromKey(fileJson, password);
-                $("#fromaddress").val(account.getAddressString());
+                address = account.getAddressString();
+
+                gAccount = account;
+
+                $("#fromaddress").val(address);
                 $("#unlock").hide();
                 $("#send").show();
 
-                state = neb.api.getAccountState(account.getAddressString());
-                balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+                state = neb.api.getAccountState(address);
+                balanceNas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
 
-                $("#balance").val(balance_nas);
+                $("#balance").val(balanceNas);
                 $("#nonce").val(parseInt(state.nonce) + 1);
             } catch (e) {
                 bootbox.dialog({
-                    title: "Error",
                     message: e,
-                    size: "large"
+                    size: "large",
+                    title: "Error"
                 });
             }
         }
@@ -190,35 +178,34 @@
         function onClickGenerate() {
             var amount = $("#amount").val(),
                 balance = $("#balance").val(),
+                fromAddress = $("#fromaddress").val(),
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
-                tmp,
-                fromaddress = $("#fromaddress").val(),
-                toaccount,
-                toaddress = $("#toaddress").val();
+                toAddress = $("#toaddress").val(),
+                tmp;
 
             try {
-                toaccount = Account.fromAddress(toaddress);
-
                 tmp = Utils.toBigNumber(gaslimit)
                     .times(Utils.toBigNumber(gasprice))
                     .dividedBy(unitValue("nas"));
 
-                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) {
-                    amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
-                }
-                gAccount = Account.NewAccount();
-                gTx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
+                    amount = Utils.toBigNumber(balance)
+                        .minus(Utils.toBigNumber(tmp))
+                        .toNumber();
+
+                gTx = new Transaction(testnetchainID, gAccount, toAddress, neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 gTx.signTransaction();
+
                 $("#raw").val(gTx.toString());
                 $("#signed").val(gTx.toProtoString());
                 $("#transaction").show();
             } catch (e) {
                 bootbox.dialog({
-                    title: 'Error',
                     message: e,
-                    size: 'large'
+                    size: "large",
+                    title: "Error"
                 });
             }
 
@@ -240,10 +227,10 @@
                 $("#receipt_div").show();
 
                 setTimeout(function () {
-                    var state = neb.api.getAccountState(gAccount.getAddressString()),
-                        balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas"));
+                    var state = neb.api.getAccountState($("#fromaddress").val()),
+                        balanceNas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas"));
 
-                    $("#balance").val(balance_nas);
+                    $("#balance").val(balanceNas);
                     $("#nonce").val(state.nonce);
                 }, 60000);
             }

@@ -13,6 +13,9 @@
 </head>
 <body>
     <!--
+
+        replace \="([^ -]+)" with =$1
+
         2018.3.19 ~ 2018.3.24
         - 主网测试网络切换
         - 多语言
@@ -30,7 +33,7 @@
     <div class=header></div>
 
     <div class="container wallet">
-        <form id="newWallet" class="col-12">
+        <form id=newWallet class="col-12">
             <div class="form-group">
                 <label for=password data-i18n=index/enter-password>Enter a password:</label>
                 <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!">
@@ -59,11 +62,7 @@
         "use strict";
 
         var wallet = require("wallet"),
-            Neb = wallet.Neb,
-            account = wallet.Account.NewAccount(),
-            neb = new Neb();
-
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+            account = wallet.Account.NewAccount();
 
         uiBlock({
             footer: ".footer",

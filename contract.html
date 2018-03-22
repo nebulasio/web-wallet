@@ -48,41 +48,41 @@
 
     <!-- Code Editor window -->
 
-    <div class="wrapperExample1">
+    <div class=wrapperExample1>
 
-        <!-------- search contract ---------->
-        <div class="search_contract">
-            <div class="title">
+        <!-- search contract -->
+        <div class=search_contract>
+            <div class=title>
                 <span>Search contract</span>
             </div>
-            <input id="addr_input" type="text" placeholder="Please enter your address">
+            <input id=addr_input type=text placeholder="Please enter your address">
             <span class="errmsg active1">Please enter a valid TX hash</span>
-            <button class="search">search</button>
-            <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
+            <button class=search>search</button>
+            <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
         </div>
 
-        <!-- <div id="js"></div> -->
+        <!-- <div id=js></div> -->
 
-        <!-------- run contract   and deploy contract ---------->
-        <div class="run_contract">
-            <div class="title">
+        <!-- run contract   and deploy contract -->
+        <div class=run_contract>
+            <div class=title>
                 <span>Run/Deploy Contract</span>
             </div>
             <span>Byte Code</span>
-            <textarea name="code" id="code" cols="30" rows="10"></textarea>
+            <textarea name=code id=code cols=30 rows=10></textarea>
 
             <span>Gas Limit</span>
-            <input type="text" id="gas">
+            <input type=text id=gas>
 
             <span class="errmsg_code active1">Please enter a valid code</span>
 
 
-            <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
-            <!-- <button onclick="submit()">RUN</button> -->
-            <button id="run" onclick="apiCall()">RUN</button>
+            <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
+            <!-- <button onclick=submit()>RUN</button> -->
+            <button id=run onclick=apiCall()>RUN</button>
             <div class="next  active1">
                 <div class="select-wallet-file"></div>
-                <button onclick="generateTransaction()">Deploy Contract</button>
+                <button onclick=generateTransaction()>Deploy Contract</button>
             </div>
         </div>
 
