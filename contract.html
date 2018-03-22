@@ -17,7 +17,6 @@
         .code {
             height: 300px;
         }
-
         .active1 {
             display: none;
         }
@@ -25,80 +24,73 @@
 </head>
 
 <body>
-    <div class=logo-main></div>
-    <div class=header></div>
+<div class=logo-main></div>
+<div class=header></div>
 
-    <!-- Code Editor window -->
-    <div class="wrapperExample1">
-        <!-- <div id="js"></div> -->
-        <span>Byte Code</span>
-        <textarea name="code" id="code" cols="30" rows="10"></textarea>
+<!-- Code Editor window -->
+<div class="wrapperExample1">
+    <!-- <div id="js"></div> -->
+    <span>Byte Code</span>
+    <textarea name="code" id="code" cols="30" rows="10"></textarea>
 
-        <span>Gas Limit</span>
-        <input type="text" id="gas">
+    <span>Gas Limit</span>
+    <input type="text" id="gas">
 
 
-        <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
-        <!-- <button onclick="submit()">RUN</button> -->
-        <button id="run">RUN</button>
-        <div class="next  active1" >
-            <div class="select-wallet-file"></div>
-            <button onclick="exampleContract1()">Deploy Contract</button>
-        </div>
-
+    <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
+    <!-- <button onclick="submit()">RUN</button> -->
+    <button id="run" onclick="apiCall()">RUN</button>
+    <div class="next  active1" >
+        <div class="select-wallet-file"></div>
+        <button onclick="generateTransaction()">Deploy Contract</button>
     </div>
 
-    <div class=footer></div>
+</div>
 
-    <script src=codeMirror/codemirror.js></script>
-    <script src=codeMirror/javascript.js></script>
-    <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
-    <script src=js/codeEditor.js></script>
-    <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/nebApi.js></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
-    <script src=js/wallet.js></script>
-    <script>
-        "use strict";
+<div class=footer></div>
 
-        uiBlock({
-            footer: ".footer",
-            header: ".header",
-            logoMain: ".logo-main",
-            selectWalletFile: [".select-wallet-file", onUnlockFile]
-        });
-        function onUnlockFile(fileJson, account, password) {
-            var state, balance_nas;
-
-            try {
-                account.fromKey(fileJson, password);
-                $("#fromaddress").val(account.getAddressString());
-                $("#unlock").hide();
-                $("#send").show();
-
-                state = neb.api.getAccountState(account.getAddressString());
-                balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
-
-                $("#balance").val(balance_nas);
-                $("#nonce").val(parseInt(state.nonce) + 1);
-            } catch (e) {
-                bootbox.dialog({
-                    title: "Error",
-                    message: e,
-                    size: "large"
-                });
-            }
+<script src=codeMirror/codemirror.js></script>
+<script src=codeMirror/javascript.js></script>
+<script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+<script src=js/wallet.js></script>
+<script src=js/nebApi.js></script>
+<script src=js/codeEditor.js></script>
+<script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
+<script>
+    "use strict";
+    uiBlock({
+        footer: ".footer",
+        header: ".header",
+        logoMain: ".logo-main",
+        selectWalletFile: [".select-wallet-file", onUnlockFile]
+    });
+    function onUnlockFile(fileJson, account, password) {
+        var state, balance_nas;
+        try {
+            account.fromKey(fileJson, password);
+            $("#fromaddress").val(account.getAddressString());
+            $("#unlock").hide();
+            $("#send").show();
+            state = neb.api.getAccountState(account.getAddressString());
+            balance_nas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+            $("#balance").val(balance_nas);
+            $("#nonce").val(parseInt(state.nonce) + 1);
+        } catch (e) {
+            bootbox.dialog({
+                title: "Error",
+                message: e,
+                size: "large"
+            });
         }
-        $(function () {
-
-            $("#run").click(function () {
-                $(".result").removeClass("active1");
-                $(".next").removeClass("active1");
-                
-            })
+    }
+    $(function () {
+        $("#run").click(function () {
+            $(".result").removeClass("active1");
+            $(".next").removeClass("active1");
 
         })
-    </script>
+    })
+</script>
 </body>
 
 </html>
