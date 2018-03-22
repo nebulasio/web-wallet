@@ -6,6 +6,7 @@
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
+    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -14,6 +15,7 @@
     <meta name=viewport content="width=device-width">
     <title>Blockchain playground</title>
     <style>
+
         .wrapperExample1 .search_contract {
             background-color: #f5f5f5;
             border: none;
@@ -23,6 +25,10 @@
             background-color: #f5f5f5;
             border: none;
             margin-top: 20px;
+        }
+
+        .run_contract span {
+            color: gray;
         }
 
         .title {
@@ -50,39 +56,64 @@
 
     <div class="wrapperExample1">
 
-        <!-------- search contract ---------->
-        <div class="search_contract">
-            <div class="title">
-                <span>Search contract</span>
+        <ul class="nav nav-tabs"  id="myTab" role="tablist" >
+            <li class="nav-item">
+                <a class="nav-link active" href="#search_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="true">Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#run_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="true">Submit</a>
+            </li>
+
+        </ul>
+        <div class="tab-content">
+            <!-------- search contract ---------->
+            <div class="search_contract" id="search_contract" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                <div class="title">
+                    <span>Search contract</span>
+                </div>
+                <input id="addr_input" type="text" placeholder="Please enter your TXhash">
+                <span class="errmsg active1">Please enter a valid TX hash</span>
+                <button class="search">search</button>
+                <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
             </div>
-            <input id="addr_input" type="text" placeholder="Please enter your address">
-            <span class="errmsg active1">Please enter a valid TX hash</span>
-            <button class="search">search</button>
-            <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
-        </div>
 
-        <!-- <div id="js"></div> -->
+            <!-------- run contract   and deploy contract ---------->
+            <div class="run_contract " id="run_contract" class="tab-pane" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="title">
+                    <span>Submit Contract</span>
+                </div>
+                <span>Byte Code</span>
+                <textarea name="code" id="code" cols="30" rows="10"></textarea>
 
-        <!-------- run contract   and deploy contract ---------->
-        <div class="run_contract">
-            <div class="title">
-                <span>Run/Deploy Contract</span>
-            </div>
-            <span>Byte Code</span>
-            <textarea name="code" id="code" cols="30" rows="10"></textarea>
+                <span>From</span>
+                <input type="text" id="gas">
 
-            <span>Gas Limit</span>
-            <input type="text" id="gas">
+                <span>To</span>
+                <input type="text" id="gas">
 
-            <span class="errmsg_code active1">Please enter a valid code</span>
+                <span>Value</span>
+                <input type="text" id="gas">
+
+                <span>Nonce</span>
+                <input type="text" id="gas">
 
 
-            <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
-            <!-- <button onclick="submit()">RUN</button> -->
-            <button id="run" onclick="apiCall()">RUN</button>
-            <div class="next  active1">
-                <div class="select-wallet-file"></div>
-                <button onclick="generateTransaction()">Deploy Contract</button>
+                <span>Gas Limit</span>
+                <input type="text" id="gas">
+
+                <span>Gas Price</span>
+                <input type="text" id="gas">
+
+                <span class="errmsg_code active1">Please enter a valid code</span>
+
+
+                <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
+                <!-- <button onclick="submit()">RUN</button> -->
+                <button id="run" onclick="apiCall()">Submit</button>
+                <div class="next  active1">
+                    <div class="select-wallet-file"></div>
+                    <button onclick="generateTransaction()">Deploy Contract</button>
+                </div>
             </div>
         </div>
 
@@ -93,7 +124,9 @@
 
     <script src=codeMirror/codemirror.js></script>
     <script src=codeMirror/javascript.js></script>
-    <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
+    <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
+    <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
+    <script src=js/api.js data-depends=jquery></script>
     <script src=js/wallet.js></script>
     <script src=js/nebApi.js></script>
     <script src=js/codeEditor.js></script>
@@ -109,6 +142,9 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
+        $(function () {
+            $('#myTab li:last-child a').tab('show')
+        })
 
 
         function onUnlockFile(fileJson, account, password) {
@@ -138,16 +174,33 @@
             $(".search").click(function () {
 
                 if ($("#addr_input").val().length < 48) {
-                
+
                     $(".errmsg").removeClass("active1");
-                
+
+                    setTimeout(function () {
+                        $(".errmsg").addClass("active1");
+                    }, 2000);
+
                 } else {
-                
+
+                    api.getTx($("#addr_input").val())
+                        .then(done, fail);
+
                     $(".search_result").removeClass("active1");
-                
+
                 }
-            
-            })
+
+            });
+
+            function done(o) {
+                console.log(o);
+
+                $(".search_result").append(o.datd);
+
+            }
+
+            function fail() {
+            }
 
             $("#run").click(function () {
 
@@ -162,7 +215,7 @@
                     $(".next").removeClass("active1");
 
                 }
-            })
+            });
 
         })
 

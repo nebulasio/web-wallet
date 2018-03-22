@@ -17,13 +17,5 @@ var api = {
             url: apiPrefix + "v1/user/getTransactionReceipt"
         });
     },
-    getContract: function (address) {
-        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
-
-        return $.ajax({
-            data: JSON.stringify({ hash: address }),
-            type: 'post',
-            url: apiPrefix + "v1/user/getTransactionReceipt"
-        });
-    }
+    
 };
