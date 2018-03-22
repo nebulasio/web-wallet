@@ -156,21 +156,19 @@ function uiBlock(opt) {
     function selectWalletFile(selector, callback) {
         var $els = $(
             '<div class="container select-wallet-file">' +
-            '    <p>Select Your Wallet File:</p>' +
-            '    <label class=file>SELECT WALLET FILE...<input type=file></label>' +
-            '    <label class="hide pass">Your wallet is encrypted. Good! Please enter the password.<input type=password></label>' +
-            '    <button class="btn btn-block">Unlock</button>' +
-            '    <p class=comment>' +
-            '        <br>This is not a recommended way to access your wallet.' +
-            '        <br>Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.' +
-            '    </p>' +
-            '</div>').replaceAll(selector), mAccount, mFileJson;
+            "    <p data-i18n=swf/name></p>" +
+            "    <label class=file><span data-i18n=swf/button></span><input type=file></label>" +
+            '    <label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
+            '    <button class="btn btn-block" data-i18n=swf/unlock></button>' +
+            "    <p class=comment data-i18n=swf/comment></p>" +
+            "</div>").replaceAll(selector), mAccount, mFileJson;
 
         $els.find("button").on("click", onClickUnlock);
         $els.find("input[type=file]").on({
             change: onChangeFile,
             click: onClickFile
         });
+        i18n.run(localStorage.lang, $els);
 
         function onClickFile() {
             // clear file input
@@ -209,12 +207,15 @@ function uiBlock(opt) {
                     callback(mFileJson, mAccount, $(this).closest(".select-wallet-file").find("input[type=password]").val());
                 else
                     console.log("uiBlock/selectWalletFile - 'callback' parameter not specified, cannot pass result");
-            else
+            else {
                 bootbox.dialog({
-                    message: "please upload your wallet file, thanks",
+                    message: "<span data-i18n=swf/modal/select/message></span>",
                     size: "large",
-                    title: "please select your wallet"
+                    title: "<span data-i18n=swf/modal/select/title></span>"
                 });
+
+                i18n.run(localStorage.lang, $(".bootbox.modal"));
+            }
         }
     }
 }

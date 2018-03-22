@@ -13,6 +13,9 @@
 </head>
 <body>
     <!--
+
+        replace \="([^ -]+)" with =$1
+
         2018.3.19 ~ 2018.3.24
         - 主网测试网络切换
         - 多语言
@@ -30,7 +33,7 @@
     <div class=header></div>
 
     <div class="container wallet">
-        <form id="newWallet" class="col-12">
+        <form id=newWallet class="col-12">
             <div class="form-group">
                 <label for=password data-i18n=index/enter-password>Enter a password:</label>
                 <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!">
@@ -46,24 +49,9 @@
 
     <div class=footer></div>
 
-    <div class="modal fade" tabindex="-1" id="info" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">info</h4>
-                </div>
-                <div class="modal-body">
-                    <p>waiting&hellip;</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
     <script src=js/Blob.js></script>
     <script src=js/FileSaver.min.js></script>
     <script src=js/home.v1.js></script>
@@ -74,11 +62,7 @@
         "use strict";
 
         var wallet = require("wallet"),
-            Neb = wallet.Neb,
-            account = wallet.Account.NewAccount(),
-            neb = new Neb();
-
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+            account = wallet.Account.NewAccount();
 
         uiBlock({
             footer: ".footer",
@@ -93,16 +77,24 @@
             if (password.length < 1)
                 alert("must input a password");
             else {
-                $('#info').modal('show');
+                bootbox.alert({
+                    title: "info",
+                    message: "waiting..."
+                });
 
                 // window.open('tokey.html?password=' + password, '_blank');
 
                 address = account.getAddressString();
                 keyStr = account.toKeyString(password);
                 blob = new Blob([keyStr], { type: "application/json; charset=utf-8" });
-
-                $('#info').modal('hide');
                 saveAs(blob, address);
+
+                // i can't close bootstrap modal when it's animating, tried below to no avail
+                // https://stackoverflow.com/questions/16493280/close-bootstrap-modal
+                setTimeout(() => {
+                    bootbox.hideAll();
+                    // $(".bootbox.modal .close").click();
+                }, 500);
             }
 
             return false;

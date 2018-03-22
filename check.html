@@ -54,94 +54,94 @@
 
 <body>
     <div class="logo-main"></div>
-    <div class="header"></div>
+    <div class=header></div>
 
-    <section class="hash">
-        <article class="row"></article>
-        <section class="col">
-            <h1 translate="NAV_CheckTxStatus" class="ng-scope">Check TX Status</h1>
-            <p translate="tx_Summary" class="ng-scope">During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool
+    <section class=hash>
+        <article class=row></article>
+        <section class=col>
+            <h1 translate=NAV_CheckTxStatus class="ng-scope">Check TX Status</h1>
+            <p translate=tx_Summary class="ng-scope">During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool
                 aims to give you the ability to find and "cancel" / replace these TXs.
                 <strong> This is not typically something you can do. It should not be relied upon &amp; will only work when the TX
                     Pools are full.
-                    <a target="_blank" rel="noopener noreferrer" href="https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html">Please, read about this tool here.</a>
+                    <a target=_blank rel="noopener noreferrer" href="https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html">Please, read about this tool here.</a>
                 </strong>
             </p>
         </section>
         <section class="col text-center">
-            <input id="input" class="form-control" type="text" placeholder="344da3d68386..................a6bb2817d4c1">
-            <button id="btn" tabindex="0" role="button" class="btn btn-primary ng-scope">Check TX Status</button>
+            <input id=input class="form-control" type=text placeholder=344da3d68386..................a6bb2817d4c1>
+            <button id=btn tabindex=0 role=button class="btn btn-primary ng-scope">Check TX Status</button>
             <br>
             <span class="errmsg active1">Please enter a valid TX hash</span>
         </section>
         </article>
     </section>
 
-    <section class="information active1" id="info">
+    <section class="information active1" id=info>
 
         <div ng-show="txInfo.status == txStatus.found || txInfo.status == txStatus.mined" class="">
-            <h4 translate="tx_Details" class="cont-md ng-scope">Transaction Details</h4>
+            <h4 translate=tx_Details class="cont-md ng-scope">Transaction Details</h4>
             <br>
             <table class="table table-striped txstatus__2 cont-md">
                 <tbody>
                     <tr>
-                        <td translate="x_TxHash" class="ng-scope">TX Hash</td>
+                        <td translate=x_TxHash class="ng-scope">TX Hash</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="tx_hash"></a>
+                            <a href=# target=_blank rel="noopener noreferrer" class=tx_hash></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate="x_TxHash" class="ng-scope">TxReceipt Status</td>
+                        <td translate=x_TxHash class="ng-scope">TxReceipt Status</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="status"></a>
+                            <a href=# target=_blank rel="noopener noreferrer" class=status></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate="OFFLINE_Step1_Label_1" class="ng-scope">From Address</td>
+                        <td translate=OFFLINE_Step1_Label_1 class="ng-scope">From Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="from_address"></a>
+                            <a href=# target=_blank rel="noopener noreferrer" class=from_address></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate="OFFLINE_Step2_Label_1" class="ng-scope">To Address</td>
+                        <td translate=OFFLINE_Step2_Label_1 class="ng-scope">To Address</td>
                         <td>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="to_address"></a>
+                            <a href=# target=_blank rel="noopener noreferrer" class=to_address></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate="SEND_amount_short" class="ng-scope">Amount</td>
-                        <td class="value"></td>
+                        <td translate=SEND_amount_short class="ng-scope">Amount</td>
+                        <td class=value></td>
                     </tr>
 
                     <tr>
                         <td>
-                            <span translate="OFFLINE_Step2_Label_5" class="ng-scope">Nonce</span>
+                            <span translate=OFFLINE_Step2_Label_5 class="ng-scope">Nonce</span>
                         </td>
-                        <td class="nonce"></td>
+                        <td class=nonce></td>
                     </tr>
 
                     <tr>
                         <td>
-                            <span translate="OFFLINE_Step2_Label_4" class="ng-scope">Gas Limit</span>
+                            <span translate=OFFLINE_Step2_Label_4 class="ng-scope">Gas Limit</span>
                         </td>
-                        <td class="gasLimit"></td>
+                        <td class=gasLimit></td>
                     </tr>
 
                     <tr>
                         <td>
-                            <span translate="OFFLINE_Step2_Label_3" class="ng-scope">Gas Price</span>
+                            <span translate=OFFLINE_Step2_Label_3 class="ng-scope">Gas Price</span>
                         </td>
-                        <td class="gasPrice"></td>
+                        <td class=gasPrice></td>
                     </tr>
 
                     <tr>
-                        <td translate="OFFLINE_Step2_Label_6" class="ng-scope">Data</td>
-                        <td class="data">
-                            <textarea name="code" id="code" cols="50" rows="2"></textarea>
+                        <td translate=OFFLINE_Step2_Label_6 class="ng-scope">Data</td>
+                        <td class=data>
+                            <textarea name=code id=code cols=50 rows=2></textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -149,14 +149,14 @@
         </div>
     </section>
 
-    <div class="footer"></div>
+    <div class=footer></div>
 
-    <div class="modal fade" tabindex="-1" id="info" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" tabindex="-1" id=info role=dialog>
+        <div class="modal-dialog" role=document>
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type=button class=close data-dismiss=modal aria-label=Close>
+                        <span aria-hidden=true>&times;</span>
                     </button>
                     <h4 class="modal-title">info</h4>
                 </div>

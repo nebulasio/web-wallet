@@ -54,7 +54,7 @@
 
     <!-- Code Editor window -->
 
-    <div class="wrapperExample1">
+    <div class=wrapperExample1>
 
         <ul class="nav nav-tabs"  id="myTab" role="tablist" >
             <li class="nav-item">
@@ -163,9 +163,9 @@
                 $("#nonce").val(parseInt(state.nonce) + 1);
             } catch (e) {
                 bootbox.dialog({
-                    title: "Error",
                     message: e,
-                    size: "large"
+                    size: "large",
+                    title: "Error"
                 });
             }
         }
