@@ -5,13 +5,13 @@
 // uiBlock({ header: ".header-1, .abc" })
 // - will replace all elements found by document.querySelectorAll(".header-1, .abc") with header
 function uiBlock(opt) {
-    var i,
+    var Account = require("wallet").Account,
         bag = {
             footer: footer,
             header: header,
             logoMain: logoMain,
             selectWalletFile: selectWalletFile
-        };
+        }, i;
 
     for (i in opt) {
         switch (i) {

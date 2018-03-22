@@ -192,10 +192,7 @@
                         $(".errmsg").addClass("active1");
                     }, 2000);
                 } else {
-
-                    api.getTx($("#input").val())
-                        .then(done, fail);
-
+                    api.postUserGetTransactionReceipt($("#input").val()).then(done, fail);
                 }
             });
         });

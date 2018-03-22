@@ -216,13 +216,9 @@
 
                 } else {
 
-                    api.getTx($("#addr_input").val())
-                        .then(done, fail);
-
+                    api.postUserGetTransactionReceipt($("#addr_input").val()).then(done, fail);
                     $(".search_result").removeClass("active1");
-
                 }
-
             });
 
             function done(o) {
@@ -235,7 +231,7 @@
             function fail() {
             }
 
-            api.getGasPrice().then(done, fail);
+            api.getUserGetGasPrice().then(done, fail);
 
             function done(x) {
                 $("#gas_price").append(x.gas_price);
