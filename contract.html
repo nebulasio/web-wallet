@@ -34,6 +34,7 @@
         .code {
             height: 300px;
         }
+
         .active1 {
             display: none;
         }
@@ -47,9 +48,6 @@
 
     <!-- Code Editor window -->
 
-
-
-
     <div class="wrapperExample1">
 
         <!-------- search contract ---------->
@@ -58,6 +56,7 @@
                 <span>Search contract</span>
             </div>
             <input id="addr_input" type="text" placeholder="Please enter your address">
+            <span class="errmsg active1">Please enter a valid TX hash</span>
             <button class="search">search</button>
             <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
         </div>
@@ -74,6 +73,8 @@
 
             <span>Gas Limit</span>
             <input type="text" id="gas">
+
+            <span class="errmsg_code active1">Please enter a valid code</span>
 
 
             <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
@@ -96,6 +97,7 @@
     <script src=js/wallet.js></script>
     <script src=js/nebApi.js></script>
     <script src=js/codeEditor.js></script>
+    <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
     <script>
         "use strict";
@@ -134,18 +136,37 @@
         $(function () {
 
             $(".search").click(function () {
-                $(".search_result").removeClass("active1")
+
+                if ($("#addr_input").val().length < 48) {
+                
+                    $(".errmsg").removeClass("active1");
+                
+                } else {
+                
+                    $(".search_result").removeClass("active1");
+                
+                }
+            
             })
 
             $("#run").click(function () {
-                $(".result").removeClass("active1");
-                $(".next").removeClass("active1");
 
+                if ($("#code").val().length < 10) {
+
+                    $(".errmsg_code").removeClass("active1");
+
+                } else {
+
+                    $(".result").removeClass("active1");
+
+                    $(".next").removeClass("active1");
+
+                }
             })
 
         })
-    })
-</script>
+
+    </script>
 </body>
 
 </html>
