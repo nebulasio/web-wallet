@@ -78,7 +78,7 @@ function uiBlock(opt) {
                 { name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" }
             ],
             apiPrefix, sApiButtons, sApiText,
-            lang, sLangButtons;
+            lang, langs, sLangButtons;
 
         //
         // apiPrefix
@@ -103,12 +103,8 @@ function uiBlock(opt) {
         lang = (localStorage.lang || "").toLowerCase();
         sLangButtons = "";
 
-        // if lang not in table, use 1st item in table
-        if (!(lang in i18n.table)) for (lang in i18n.table) break;
-
-        for (i in i18n.table)
-            sLangButtons += '<button class="' +
-                (i == lang ? "active " : "") + 'dropdown-item" data-lang=' + i + ">" + i18n.table[i].name + "</button>"
+        for (langs = i18n.supports(), i = 0, len = langs.length; i < len; ++i)
+            sLangButtons += '<button class="' + (i == lang ? "active " : "") + 'dropdown-item" data-lang=' + langs[i] + ">" + i18n.name(langs[i]) + "</button>"
 
         //
         // $.replaceAll
@@ -124,7 +120,7 @@ function uiBlock(opt) {
             "                </div>" +
             "            </div>" +
             "            <div class=dropdown>" +
-            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name>' + i18n.table[i].name + "</button>" +
+            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
             '                <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
             "                </div>" +
             "            </div>" +
@@ -134,6 +130,7 @@ function uiBlock(opt) {
 
         $els.on("click", ".api > button", onClickMenuApi);
         $els.on("click", ".lang > button", onClickMenuLang);
+        i18n.run(lang, $els);
 
         function onClickMenuApi() {
             var $this = $(this);
