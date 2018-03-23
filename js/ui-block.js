@@ -168,13 +168,8 @@ function uiBlock(opt) {
             change: onChangeFile,
             click: onClickFile
         });
+        $els.find("input[type=password]").on("keyup", onKeyUpPassword);
         i18n.run(localStorage.lang, $els);
-
-        function onClickFile() {
-            // clear file input
-            // https://stackoverflow.com/questions/12030686/html-input-file-selection-event-not-firing-upon-selecting-the-same-file
-            this.value = null;
-        }
 
         function onChangeFile(e) {
             // read address from json file content, not it's file name
@@ -199,6 +194,16 @@ function uiBlock(opt) {
                     });
                 }
             }
+        }
+
+        function onClickFile() {
+            // clear file input
+            // https://stackoverflow.com/questions/12030686/html-input-file-selection-event-not-firing-upon-selecting-the-same-file
+            this.value = null;
+        }
+
+        function onKeyUpPassword(e) {
+            e.key == "Enter" && $(this).closest(".select-wallet-file").find("button").click();
         }
 
         function onClickUnlock() {
