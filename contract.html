@@ -157,6 +157,7 @@
     <script src=codeMirror/codemirror.js></script>
     <script src=codeMirror/javascript.js></script>
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
+    <script src="js/base64.js"></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=js/api.js data-depends=jquery></script>
     <script src=js/wallet.js></script>
@@ -272,16 +273,16 @@
 
                 } else {
 
-                    api.postUserGetTransactionReceipt($("#addr_input").val()).then(done, fail);
+                    api.postUserGetTransactionReceipt($("#addr_input").val()).then(donePostUserGetTransactionReceipt);
                     $(".search_result").removeClass("active1");
                 }
             });
 
-            function done(o) {
+            function donePostUserGetTransactionReceipt(o) {
                 console.log(o);
-                console.log(o.contract_address);
 
-                $(".search_result").append(o.datd);
+                let decodedData = window.atob(o.data);
+                $(".search_result").append(decodedData);
                 $("#to_addr").append(o.contract_address);
             };
         })
