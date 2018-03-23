@@ -73,7 +73,7 @@ var i18n = function () {
             blog: "博客",
             "check/anchor": "有关此工具请阅读这里。",
             "check/blah1": "大容量交易（像 ICO）可能持续数小时甚至数天，此工具致力找出并取消 / 替换这类交易。",
-            "check/blah2": "这往往不是你能做的。不要依赖它，它只在交易池满的时候有效。",
+            "check/blah2": "正常情况下这是做不到的，不要依赖它，它只在交易池满的时候有效。",
             "check/comment1": "请输入有效的交易散列",
             "check/tx-details": "交易详情",
             community: "社区",
