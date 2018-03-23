@@ -1,17 +1,10 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
-<<<<<<< HEAD
-    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-=======
-    <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css integrity=sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm crossorigin=anonymous>
->>>>>>> 7c92f6c8be4487d3fcd77bc2db2a5b4a4c3dcfb7
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -93,16 +86,12 @@
         }
     </style>
 </head>
-
 <body>
     <div class=logo-main></div>
     <div class=header></div>
 
-
     <!-- Code Editor window -->
-
     <div class=wrapperExample1>
-
         <ul id="tabs" id="myTab" role="tablist">
             <li class="current">
                 <a href="#" title="tab1">Search</a>
@@ -110,10 +99,9 @@
             <li>
                 <a href="#" title="tab2">Submit</a>
             </li>
-
         </ul>
         <div id="content">
-            <!-------- search contract ---------->
+            <!-- search contract -->
             <div class="search_contract item show" id="tab1">
                 <div class="title">
                     <span>Search contract</span>
@@ -124,7 +112,7 @@
                 <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
             </div>
 
-            <!-- run contract   and deploy contract -->
+            <!-- run contract and deploy contract -->
             <div class="run_contract item " id="tab2">
                 <div class="title">
                     <span>Submit Contract</span>
@@ -165,8 +153,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <div class=footer></div>
@@ -272,14 +258,13 @@
             $("#gas_limit").append(x.gas_price);
         };
 
-        function donePostUserAccountState(o){
+        function donePostUserAccountState(o) {
             $("#nonce").append(parseInt(o.nonce) + 1);
         };
 
         $(function () {
 
             $(".search").click(function () {
-
                 if ($("#addr_input").val().length < 48) {
 
                     $(".errmsg").removeClass("active1");
@@ -299,11 +284,8 @@
                 console.log(o);
                 console.log(o.contract_address);
 
-
                 $(".search_result").append(o.datd);
                 $("#to_addr").append(o.contract_address);
-
-
             }
 
             $("#run").click(function () {
@@ -334,12 +316,10 @@
                 JSON.parse($("#code").val())
             ).then(doneCall);
         });
+
         function doneCall(o) {
             console.log(o);
         }
-
-
     </script>
 </body>
-
 </html>
