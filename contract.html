@@ -6,7 +6,7 @@
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
-    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css integrity=sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm crossorigin=anonymous>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -55,62 +55,61 @@
 
     <div class=wrapperExample1>
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="home-tab" href="#search_contract" data-toggle="tab" role="tab" aria-controls="search_contract"
-                    aria-selected="true">Search</a>
+        <ul class="nav nav-tabs" id=myTab role=tablist>
+            <li class=nav-item>
+                <a class="nav-link active" id=home-tab href=#search_contract data-toggle=tab role=tab aria-controls=search_contract aria-selected=true>Search</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="profile-tab" href="#run_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="false">Submit</a>
+            <li class=nav-item>
+                <a class=nav-link id=profile-tab href=#run_contract data-toggle=tab role=tab aria-controls=search_contract aria-selected=false>Submit</a>
             </li>
 
         </ul>
-        <div class="tab-content">
-            <!-------- search contract ---------->
-            <div class="search_contract tab-pane active" id="search_contract" class="tab-pane show " role="tabpanel" aria-labelledby="home-tab">
-                <div class="title">
+        <div class=tab-content>
+            <!-- search contract  -->
+            <div class="search_contract tab-pane active" id=search_contract class=tab-pane show role=tabpanel aria-labelledby=home-tab>
+                <div class=title>
                     <span>Search contract</span>
                 </div>
-                <input id="addr_input" type="text" placeholder="Please enter your TXhash">
+                <input id=addr_input type=text placeholder="Please enter your TXhash">
                 <span class="errmsg active1">Please enter a valid TX hash</span>
-                <button class="search">search</button>
-                <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
+                <button class=search>search</button>
+                <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
             </div>
 
-            <!-- run contract   and deploy contract -->
-            <div class="run_contract " id="run_contract" class="tab-pane" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="title">
+            <!-- run contract and deploy contract -->
+            <div class=run_contract id=run_contract class=tab-pane role=tabpanel aria-labelledby=profile-tab>
+                <div class=title>
                     <span>Submit Contract</span>
                 </div>
 
                 <span>function,args : </span>
-                <input type="text" id="code">
+                <input type=text id=code>
 
                 <div class=select-wallet-file></div>
 
                 <span>From : </span>
-                <input type="text" id="from_addr">
+                <input type=text id=from_addr>
 
                 <span>To : </span>
-                <input type="text" id="to_addr">
+                <input type=text id=to_addr>
                 <br>
                 <span>Value : </span>
-                <input type="text" id="value">
+                <input type=text id=value>
                 <br>
                 <span>Gas Limit : </span>
-                <span id="gas_limit"></span>
+                <span id=gas_limit></span>
                 <br>
                 <span>Gas Price : </span>
-                <span id="gas_price"></span>
+                <span id=gas_price></span>
                 <br>
                 <span class="errmsg_code active1">Please enter a valid code</span>
 
-                <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
-                <!-- <button onclick="submit()">RUN</button> -->
-                <button id="call">call</button>
+                <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
+                <!-- <button onclick=submit()>RUN</button> -->
+                <button id=call>call</button>
                 <div class="next  active1">
-                    <div class="select-wallet-file"></div>
-                    <button onclick="generateTransaction()">Deploy Contract</button>
+                    <div class=select-wallet-file></div>
+                    <button onclick=generateTransaction()>Deploy Contract</button>
                 </div>
             </div>
         </div>
@@ -255,17 +254,17 @@
 
         })
 
-            $("#call").click(function () {
-                api.postUserCall(
-                    $("#from_addr").val(), 
-                    $("#to_addr").val(), 
-                    $("#value").val(), nonce, 
-                    $("#gas_limit").val(), 
-                    $("#gas_price").val(), 
-                    $("#code").val()
-                ).then(done, fail);
-            })
-            
+        $("#call").click(function () {
+            api.postUserCall(
+                $("#from_addr").val(),
+                $("#to_addr").val(),
+                $("#value").val(), nonce,
+                $("#gas_limit").val(),
+                $("#gas_price").val(),
+                $("#code").val()
+            ).then(done, fail);
+        })
+
 
     </script>
 </body>
