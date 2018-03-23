@@ -90,10 +90,10 @@
                 <input type="text" id="from_addr">
 
                 <span>To : </span>
-                <input type="text" id="gas">
+                <input type="text" id="to_addr">
                 <br>
                 <span>Value : </span>
-                <span id="value"></span>
+                <input type="text" id="value">
                 <br>
                 <span>Gas Limit : </span>
                 <span id="gas_limit"></span>
@@ -184,7 +184,7 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                api.getAccountstate($("#from_addr").val())
+                api.postUserAccountState($("#from_addr").val())
                     .then(done, fail);
 
 
@@ -223,8 +223,12 @@
 
             function done(o) {
                 console.log(o);
+                console.log(o.contract_address+1);
+
 
                 $(".search_result").append(o.datd);
+                $("#to_addr").append(o.contract_address);
+
 
             }
 
@@ -235,6 +239,7 @@
 
             function done(x) {
                 $("#gas_price").append(x.gas_price);
+                $("#gas_limit").append(x.gas_price);
             }
 
             function fail() {
