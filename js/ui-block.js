@@ -31,12 +31,12 @@ function uiBlock(opt) {
             '<div class="container footer">' +
             "    <div class=logo></div>" +
             "    <nav class=text-center>" +
-            "        <a href=https://nebulas.io/ data-i18n=home>Home</a>" +
-            "        <a href=https://nebulas.io/technology.html data-i18n=technology>Technology</a>" +
-            "        <a href=https://nebulas.io/community.html data-i18n=community>Community</a>" +
-            "        <a href=https://nebulas.io/team.html data-i18n=team>Team</a>" +
-            "        <a href=https://nebulas.io/resources.html data-i18n=resources>Resources</a>" +
-            "        <a href=https://medium.com/nebulasio data-i18n=blog target=_blank>Blog</a>" +
+            "        <a href=https://nebulas.io/ data-i18n=home></a>" +
+            "        <a href=https://nebulas.io/technology.html data-i18n=technology></a>" +
+            "        <a href=https://nebulas.io/community.html data-i18n=community></a>" +
+            "        <a href=https://nebulas.io/team.html data-i18n=team></a>" +
+            "        <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
+            "        <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
             "    </nav>" +
             '    <div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
             "</div>").replaceAll(selector));
@@ -60,12 +60,12 @@ function uiBlock(opt) {
         i18n.run(localStorage.lang, $(
             '<div class="container header">' +
             "    <div>" +
-            "        <a href=" + arr[0] + " data-i18n=header/new-wallet>Create New Wallet</a>" +
-            "        <a href=" + arr[1] + " data-i18n=header/send>Send NAS</a>" +
-            "        <a href=" + arr[2] + " data-i18n=header/send-offline>Send Offline</a>" +
-            "        <a href=" + arr[3] + " data-i18n=header/view>View Wallet Info</a>" +
-            "        <a href=" + arr[4] + " data-i18n=header/check>Check TX Status</a>" +
-            "        <a href=" + arr[5] + " data-i18n=header/contract>Contract</a>" +
+            "        <a href=" + arr[0] + " data-i18n=header/new-wallet></a>" +
+            "        <a href=" + arr[1] + " data-i18n=header/send></a>" +
+            "        <a href=" + arr[2] + " data-i18n=header/send-offline></a>" +
+            "        <a href=" + arr[3] + " data-i18n=header/view></a>" +
+            "        <a href=" + arr[4] + " data-i18n=header/check></a>" +
+            "        <a href=" + arr[5] + " data-i18n=header/contract></a>" +
             "    </div>" +
             "    <hr>" +
             "</div>").replaceAll(selector));
