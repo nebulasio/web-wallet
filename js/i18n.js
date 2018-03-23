@@ -1,7 +1,7 @@
 //
 // i18n.run(lang)
 // - $("[data-i18n]").each((el.type == input, textarea ? el.placeholder : el.innerHTML) = table[lang][el.attr(data-i18n)])
-// 
+//
 // requires jquery
 //
 // this file is mainly a big table
@@ -12,8 +12,18 @@
 var i18n = function () {
     var table = {
         en: {
+            amount: "Amount",
             blog: "Blog",
+            "check/anchor": "Please, read about this tool here.",
+            "check/blah1": "During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and \"cancel\" / replace these TXs.",
+            "check/blah2": "This is not typically something you can do. It should not be relied upon &amp; will only work when the TX Pools are full.",
+            "check/comment1": "Please enter a valid TX hash",
+            "check/tx-details": "Transaction Details",
             community: "Community",
+            data: "Data",
+            download: "Download",
+            "gas-limit": "Gas Limit",
+            "gas-price": "Gas Price",
             "header/new-wallet": "Create New Wallet",
             "header/send": "Send NAS",
             "header/send-offline": "Send Offline",
@@ -33,14 +43,15 @@ var i18n = function () {
             "send-nas/balance": "Balance",
             "send-nas/button/generate": "Generate Transaction",
             "send-nas/from-address": "From Address",
-            "send-nas/limit": "Gas Limit",
-            "send-nas/placeholder/amount": "Amount",
-            "send-nas/price": "Gas Price",
             "send-nas/raw": "Raw Transaction",
             "send-nas/receipt": "receipt",
             "send-nas/send": "Send Transaction",
             "send-nas/signed": "Signed Transaction",
             "send-nas/to-address": "To Address",
+            "send-offline/gen-info": "Generate Information",
+            "send-offline/step1": "Step 1: Generate Information (Online Computer)",
+            "send-offline/step2": "Step 2: Generate Transaction (Offline Computer)",
+            "send-offline/step3": "Step 3: Send / Publish Transaction (Online Computer)",
             "swf/button": "SELECT WALLET FILE...",
             "swf/comment": "<br>This is not a recommended way to access your wallet." +
                 "<br>Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.",
@@ -50,11 +61,26 @@ var i18n = function () {
             "swf/name": "Select Your Wallet File:",
             "swf/unlock": "Unlock",
             team: "Team",
-            technology: "Technology"
+            technology: "Technology",
+            "wallet-info/acc-addr": "Account Address",
+            "wallet-info/acc-balance": "Account Balance",
+            "wallet-info/keystore": "Keystore File (UTC / JSON · Recommended · Encrypted)",
+            "wallet-info/private-key": "Private Key (unencrypted)",
+            "wallet-info/your-addr": "Your Address"
         },
         zh: {
+            amount: "数量",
             blog: "博客",
+            "check/anchor": "有关此工具请阅读这里。",
+            "check/blah1": "大容量交易（像 ICO）可能持续数小时甚至数天，此工具致力找出并取消 / 替换这类交易。",
+            "check/blah2": "这往往不是你能做的。不要依赖它，它只在交易池满的时候有效。",
+            "check/comment1": "请输入有效的交易散列",
+            "check/tx-details": "交易详情",
             community: "社区",
+            data: "数据",
+            download: "下载",
+            "gas-limit": "Gas 限制",
+            "gas-price": "Gas 价格",
             "header/new-wallet": "新建钱包",
             "header/send": "发送星云币",
             "header/send-offline": "离线发送",
@@ -72,14 +98,15 @@ var i18n = function () {
             "send-nas/balance": "余额",
             "send-nas/button/generate": "生成交易",
             "send-nas/from-address": "来自地址",
-            "send-nas/limit": "Gas 限制",
-            "send-nas/placeholder/amount": "数量",
-            "send-nas/price": "Gas 价格",
             "send-nas/raw": "原始交易",
             "send-nas/receipt": "收据",
             "send-nas/send": "发送交易",
             "send-nas/signed": "签名的交易",
             "send-nas/to-address": "目的地址",
+            "send-offline/gen-info": "生成信息",
+            "send-offline/step1": "第 1 步：生成信息（联网）",
+            "send-offline/step2": "第 2 步：生成信息（单机）",
+            "send-offline/step3": "第 3 步：发送 / 发布交易（联网）",
             "swf/button": "选择钱包文件...",
             "swf/comment": "<br>不推荐用此方法访问钱包。" +
                 "<br>在网站输入你的私钥很危险，如果网站不安全或访问了不同的网站，你的资金会失窃。",
@@ -89,7 +116,12 @@ var i18n = function () {
             "swf/name": "选择你的钱包文件：",
             "swf/unlock": "解锁",
             team: "团队",
-            technology: "技术"
+            technology: "技术",
+            "wallet-info/acc-addr": "钱包地址",
+            "wallet-info/acc-balance": "钱包余额",
+            "wallet-info/keystore": "密码库文件（UTC / JSON · Recommended · Encrypted）",
+            "wallet-info/private-key": "私钥（未加密）",
+            "wallet-info/your-addr": "你的地址"
         }
     };
 

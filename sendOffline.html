@@ -18,21 +18,21 @@
     <div id=step1 class="container wallet">
         <div id=generate_infomation class=col-md-12>
             <h1>
-                <label>Step 1: Generate Information (Online Computer)</label>
+                <label data-i18n=send-offline/step1>Step 1: Generate Information (Online Computer)</label>
             </h1>
             <div class=form-group>
-                <label for=fromaddress>From Address:</label>
+                <label for=fromaddress data-i18n=send-nas/from-address>From Address:</label>
                 <input type=text id=fromaddress class=form-control placeholder=c66d758fbf64ef62a371801570cde8fe1e7f08bce3daf8e4>
             </div>
-            <button id=Generate_info type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Generate Information</button>
+            <button id=Generate_info type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-offline/gen-info>Generate Information</button>
             <div class=row id=information style=display:none;>
                 <div class="form-group col-md-6">
-                    <label for=fa_gasprice>Gas Price:</label>
-                    <input type=text id=fa_gasprice class=form-control placeholder="">
+                    <label for=fa_gasprice data-i18n=gas-price>Gas Price:</label>
+                    <input type=text id=fa_gasprice class=form-control>
                 </div>
                 <div class="form-group col-md-6">
                     <label for=fa_nonce>Nonce:</label>
-                    <input type=text id=fa_nonce class=form-control placeholder="">
+                    <input type=text id=fa_nonce class=form-control>
                 </div>
             </div>
         </div>
@@ -42,33 +42,33 @@
     <div id=step2 class="container wallet">
         <div id=generate_transaction class=col-md-12>
             <h1>
-                <label>Step 2: Generate Transaction (Offline Computer)</label>
+                <label data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</label>
             </h1>
             <div class=form-group>
-                <label for=toaddress>To Address</label>
-                <input type=text class=form-control id=toaddress placeholder="">
+                <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
+                <input type=text class=form-control id=toaddress>
             </div>
             <div class=form-group>
-                <label for=amount>Value / Amount to Send</label>
+                <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=amount placeholder=Amount>
+                    <input type=text class=form-control id=amount data-i18n=amount>
                     <div class=input-group-addon>NAS</div>
                 </div>
             </div>
             <div class=form-group>
-                <label for=limit>Gas Limit</label>
-                <input type=text class=form-control id=limit value=20000 placeholder="">
+                <label for=limit data-i18n=gas-limit>Gas Limit</label>
+                <input type=text class=form-control id=limit value=20000>
             </div>
             <div class=form-group>
-                <label for=price>Gas Price</label>
+                <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=price value=1000000 placeholder="">
+                    <input type=text class=form-control id=price value=1000000>
                     <div class=input-group-addon>NIS</div>
                 </div>
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce placeholder="">
+                <input type=text class=form-control id=nonce>
             </div>
         </div>
     </div>
@@ -77,17 +77,17 @@
 
     <div id=transaction class="container transaction">
         <div class=col-md-12>
-            <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=generate()>Generate Transaction</button>
+            <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
         <div class=col-md-6>
             <div class=form-group>
-                <label for=raw>Raw Transaction</label>
+                <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
                 <textarea class=form-control rows=8 id=raw></textarea>
             </div>
         </div>
         <div class=col-md-6>
             <div class=form-group>
-                <label for=signed>Signed Transaction</label>
+                <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
                 <textarea class=form-control rows=8 id=signed></textarea>
             </div>
         </div>
@@ -99,11 +99,11 @@
     <div id=step3 class="container wallet">
         <div id=send class=col-md-12>
             <h1>
-                <label>Step 3: Send / Publish Transaction (Online Computer)</label>
+                <label data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</label>
             </h1>
         </div>
         <div class="form-group col-md-6">
-            <label for=signedoffline>Signed Transaction</label>
+            <label for=signedoffline data-i18n=send-nas/signed>Signed Transaction</label>
             <textarea class=form-control rows=8 id=signedoffline></textarea>
         </div>
         <div class="form-group col-md-6">
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div class=col-md-12>
-            <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=sendtransaction()>Send Transaction</button>
+            <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=sendtransaction() data-i18n=send-nas/send>Send Transaction</button>
         </div>
 
     </div>
@@ -128,7 +128,7 @@
         </div>
         <div class=col-md-6>
             <div class=form-group>
-                <label for=signed>receipt</label>
+                <label for=signed data-i18n=send-nas/receipt>receipt</label>
                 <textarea readonly id=receipt_state rows=6 class=form-control></textarea>
             </div>
         </div>
