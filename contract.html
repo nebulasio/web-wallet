@@ -6,7 +6,8 @@
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
-    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -43,6 +44,49 @@
         .active1 {
             display: none;
         }
+
+        #tabs {
+            overflow: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #tabs li {
+            float: left;
+            margin: 0;
+        }
+
+        #tabs li a {
+            position: relative;
+            background: #ddd;
+            padding: 10px 50px;
+            float: left;
+            text-decoration: none;
+            color: #444;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
+        }
+
+        .current a {
+            outline: 0;
+            background: #fff;
+            z-index: 4;
+        }
+
+        .hoverItem a {
+            background: #AAC8B9;
+        }
+
+        .item {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
     </style>
 </head>
 
@@ -55,19 +99,18 @@
 
     <div class=wrapperExample1>
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="home-tab" href="#search_contract" data-toggle="tab" role="tab" aria-controls="search_contract"
-                    aria-selected="true">Search</a>
+        <ul id="tabs" id="myTab" role="tablist">
+            <li class="current">
+                <a href="#" title="tab1">Search</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="profile-tab" href="#run_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="false">Submit</a>
+            <li>
+                <a href="#" title="tab2">Submit</a>
             </li>
 
         </ul>
-        <div class="tab-content">
+        <div id="content">
             <!-------- search contract ---------->
-            <div class="search_contract tab-pane active" id="search_contract" class="tab-pane show " role="tabpanel" aria-labelledby="home-tab">
+            <div class="search_contract item show" id="tab1">
                 <div class="title">
                     <span>Search contract</span>
                 </div>
@@ -78,7 +121,7 @@
             </div>
 
             <!-- run contract   and deploy contract -->
-            <div class="run_contract " id="run_contract" class="tab-pane" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="run_contract item " id="tab2">
                 <div class="title">
                     <span>Submit Contract</span>
                 </div>
@@ -97,6 +140,10 @@
                 <span>Value : </span>
                 <input type="text" id="value">
                 <br>
+                <span>Nonce :</span>
+                <span id="nonce"></span>
+                <br>
+
                 <span>Gas Limit : </span>
                 <span id="gas_limit"></span>
                 <br>
@@ -135,6 +182,24 @@
     <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
     <script>
         "use strict";
+
+        $(function () {
+            $('#tabs a').click(function (e) {
+                e.preventDefault();
+                $('#tabs li').removeClass("current").removeClass("hoverItem");
+                $(this).parent().addClass("current");
+                $("#content div").removeClass("show");
+                $('#' + $(this).attr('title')).addClass('show');
+            });
+
+            $('#tabs a').hover(function () {
+                if (!$(this).parent().hasClass("current")) {
+                    $(this).parent().addClass("hoverItem");
+                }
+            }, function () {
+                $(this).parent().removeClass("hoverItem");
+            });
+        });
 
         var wallet = require("wallet"),
             Neb = wallet.Neb,
@@ -182,7 +247,8 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                api.getUserGetGasPrice().then(done, fail);
+                api.getUserGetGasPrice().then(doneGetUserGetGasPrice);
+                api.postUserAccountState($("#from_addr").val()).then(donePostUserAccountState);
 
                 // api.postUserAccountState($("#from_addr").val())
                 //     .then(done, fail);
@@ -197,12 +263,13 @@
             }
         }
 
-        function done(x) {
+        function doneGetUserGetGasPrice(x) {
             $("#gas_price").append(x.gas_price);
             $("#gas_limit").append(x.gas_price);
         };
 
-        function fail() {
+        function donePostUserAccountState(o){
+            $("#nonce").append(parseInt(o.nonce) + 1);
         };
 
         $(function () {
@@ -235,9 +302,6 @@
 
             }
 
-            function fail() {
-            }
-
             $("#run").click(function () {
 
                 if ($("#code").val().length < 10) {
@@ -255,17 +319,21 @@
 
         })
 
-            $("#call").click(function () {
-                api.postUserCall(
-                    $("#from_addr").val(), 
-                    $("#to_addr").val(), 
-                    $("#value").val(), nonce, 
-                    $("#gas_limit").val(), 
-                    $("#gas_price").val(), 
-                    $("#code").val()
-                ).then(done, fail);
-            })
-            
+        $("#call").click(function () {
+            api.postUserCall(
+                $("#from_addr").val(),
+                $("#to_addr").val(),
+                $("#value").val(),
+                $("#nonce").text(),
+                $("#gas_limit").text(),
+                $("#gas_price").text(),
+                JSON.parse($("#code").val())
+            ).then(doneCall);
+        });
+        function doneCall(o) {
+            console.log(o);
+        }
+
 
     </script>
 </body>
