@@ -35,6 +35,25 @@ var api = {
             type: "post",
             url: apiPrefix + "v1/user/getTransactionReceipt"
         });
+    },
+
+    postUserCall: function (from, to, value, nonce, gaslimit, gasprice, contract) {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+console.log(from, to, value, nonce, gaslimit, gasprice, contract);
+
+        return $.ajax({
+            data: JSON.stringify({
+                from: from,
+                to: to,
+                nonce: nonce,
+                gasLimit: gaslimit,
+                gasPrice: gasprice,
+                contract: contract
+            }),
+            type: "post",
+            url: apiPrefix + "v1/user/call"
+        });
     }
 
 };

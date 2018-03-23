@@ -58,16 +58,17 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" href="#search_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="true">Search</a>
+                <a class="nav-link active" id="home-tab" href="#search_contract" data-toggle="tab" role="tab" aria-controls="search_contract"
+                    aria-selected="true">Search</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#run_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="true">Submit</a>
+                <a class="nav-link" id="profile-tab" href="#run_contract" data-toggle="tab" role="tab" aria-controls="search_contract" aria-selected="false">Submit</a>
             </li>
 
         </ul>
         <div class="tab-content">
             <!-------- search contract ---------->
-            <div class="search_contract" id="search_contract" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+            <div class="search_contract tab-pane active" id="search_contract" class="tab-pane show " role="tabpanel" aria-labelledby="home-tab">
                 <div class="title">
                     <span>Search contract</span>
                 </div>
@@ -82,8 +83,10 @@
                 <div class="title">
                     <span>Submit Contract</span>
                 </div>
-                <span>parameter : </span>
+
+                <span>function,args : </span>
                 <input type="text" id="code">
+
                 <div class=select-wallet-file></div>
 
                 <span>From : </span>
@@ -103,10 +106,9 @@
                 <br>
                 <span class="errmsg_code active1">Please enter a valid code</span>
 
-
                 <div class="result active1" id="result">Results:success,you can deploy this contract.</div>
                 <!-- <button onclick="submit()">RUN</button> -->
-                <button id="run" onclick="apiCall()">Submit</button>
+                <button id="call">call</button>
                 <div class="next  active1">
                     <div class="select-wallet-file"></div>
                     <button onclick="generateTransaction()">Deploy Contract</button>
@@ -162,8 +164,9 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
-        $(function () {
-            $('#myTab li:last-child a').tab('show')
+        $('#myTab a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show')
         })
 
         function unitValue(unit) {
@@ -184,8 +187,10 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                api.postUserAccountState($("#from_addr").val())
-                    .then(done, fail);
+                api.getUserGetGasPrice().then(done, fail);
+
+                // api.postUserAccountState($("#from_addr").val())
+                //     .then(done, fail);
 
 
             } catch (e) {
@@ -197,10 +202,13 @@
             }
         }
 
-        function done(y){
-            console.log(y);
-        }
-        function fail(){}
+        function done(x) {
+            $("#gas_price").append(x.gas_price);
+            $("#gas_limit").append(x.gas_price);
+        };
+
+        function fail() {
+        };
 
         $(function () {
 
@@ -223,7 +231,7 @@
 
             function done(o) {
                 console.log(o);
-                console.log(o.contract_address+1);
+                console.log(o.contract_address);
 
 
                 $(".search_result").append(o.datd);
@@ -234,17 +242,6 @@
 
             function fail() {
             }
-
-            api.getUserGetGasPrice().then(done, fail);
-
-            function done(x) {
-                $("#gas_price").append(x.gas_price);
-                $("#gas_limit").append(x.gas_price);
-            }
-
-            function fail() {
-            }
-
 
             $("#run").click(function () {
 
@@ -262,6 +259,18 @@
             });
 
         })
+
+            $("#call").click(function () {
+                api.postUserCall(
+                    $("#from_addr").val(), 
+                    $("#to_addr").val(), 
+                    $("#value").val(), nonce, 
+                    $("#gas_limit").val(), 
+                    $("#gas_price").val(), 
+                    $("#code").val()
+                ).then(done, fail);
+            })
+            
 
     </script>
 </body>
