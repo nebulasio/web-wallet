@@ -39,7 +39,7 @@ var api = {
                 from: from,
                 to: to,
                 nonce: nonce,
-                value : value，
+                value : value,
                 gasLimit: gaslimit,
                 gasPrice: gasprice,
                 contract: contract
