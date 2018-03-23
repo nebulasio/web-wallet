@@ -156,11 +156,11 @@
 
     <script src=https://code.jquery.com/jquery-3.3.1.slim.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
-    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
     <script src=js/jquery.qrcode.min.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
     <script src=js/wallet.js></script>
     <script>
         var Neb = require("wallet").Neb;
@@ -170,16 +170,6 @@
         var neb = new Neb();
         var gAccount = new Account(), toaccount, state, gas_price, tx, txhash;
         var testnetchainID = 1001;
-        var unitMap = {
-            'none': '0',
-            'nis': '1',
-            'knis': '1000',
-            'mnis': '1000000',
-            'nanonas': '1000000000',
-            'micronas': '1000000000000',
-            'millinas': '1000000000000000',
-            'nas': '1000000000000000000'
-        };
 
         neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
 
@@ -196,8 +186,18 @@
         }
 
         function unitValue(unit) {
-            unit = unit ? unit.toLowerCase() : 'nas';
-            var unitValue = unitMap[unit];
+            unit = unit ? unit.toLowerCase() : "nas";
+
+            var unitMap = {
+                "none": "0",
+                "nis": "1",
+                "knis": "1000",
+                "mnis": "1000000",
+                "nanonas": "1000000000",
+                "micronas": "1000000000000",
+                "millinas": "1000000000000000",
+                "nas": "1000000000000000000"
+            }, unitValue = unitMap[unit];
 
             if (unitValue === undefined)
                 throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
@@ -230,6 +230,7 @@
         function generate() {
             fromaddress = $("#fromaddress").val();
             toaddress = $("#toaddress").val();
+
             try {
                 toaccount = Account.fromAddress(toaddress);
                 amount = $("#amount").val();
@@ -239,23 +240,24 @@
                 nonce = $("#nonce").val();
                 tmp = utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)).dividedBy(unitValue("nas"));
                 console.log(tmp);
-                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp))) {
+
+                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
                     amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
-                }
+
                 tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 tx.signTransaction();
+
                 $("#raw").val(tx.toString());
                 $("#signed").val(tx.toProtoString());
                 $("#signedoffline").val(tx.toProtoString());
                 $("#qrcode").qrcode(tx.toProtoString());
                 $("#transaction").show();
             } catch (e) {
-                bootbox.dialog(
-                    {
-                        title: 'Error',
-                        message: e, size: 'large'
-                    }
-                );
+                bootbox.dialog({
+                    message: e,
+                    size: 'large',
+                    title: 'Error'
+                });
             }
 
             return false;
@@ -263,29 +265,29 @@
 
         function sendtransaction() {
             try {
-                txProtoString = $("#signedoffline").val();
-                var resp = neb.api.sendRawTransaction(txProtoString);
+                var resp = neb.api.sendRawTransaction($("#signedoffline").val());
                 txhash = resp.txhash;
+
                 if (txhash === undefined) {
                     $("#receipt_state").val('');
                     $("#receipt").val('');
                     throw resp.error;
                 }
+
                 neb.api.getTransactionReceipt(txhash, function (err, resps) {
                     $("#receipt_state").val(JSON.stringify(resps));
                 });
+
                 $("#receipt").val(txhash);
                 $("#receipt_div").show();
             } catch (e) {
-                bootbox.dialog(
-                    {
-                        title: 'Error',
-                        message: e, size: 'large'
-                    }
-                );
+                bootbox.dialog({
+                    message: e,
+                    size: 'large',
+                    title: 'Error'
+                });
             }
         }
-
     </script>
 </body>
 </html>

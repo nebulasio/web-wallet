@@ -101,34 +101,21 @@
 
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
-    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
     <script src=js/api.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
     <script src=js/wallet.js></script>
     <script>
         "use strict";
 
         var wallet = require("wallet"),
-            Neb = wallet.Neb,
             Transaction = wallet.Transaction,
             Utils = wallet.Utils,
-            neb = new Neb(),
+            neb = new wallet.Neb(),
             testnetchainID = 1001,
-            unitMap = {
-                none: '0',
-                nis: '1',
-                knis: '1000',
-                mnis: '1000000',
-                nanonas: '1000000000',
-                micronas: '1000000000000',
-                millinas: '1000000000000000',
-                nas: '1000000000000000000'
-            },
             gAccount, gTx;
-
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
@@ -170,7 +157,16 @@
         }
 
         function unitValue(unit) {
-            var unitValue = unitMap[(unit || "nas").toLowerCase()];
+            var unitMap = {
+                none: "0",
+                nis: "1",
+                knis: "1000",
+                mnis: "1000000",
+                nanonas: "1000000000",
+                micronas: "1000000000000",
+                millinas: "1000000000000000",
+                nas: "1000000000000000000"
+            }, unitValue = unitMap[(unit || "nas").toLowerCase()];
 
             if (unitValue === undefined)
                 throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
@@ -216,27 +212,28 @@
         }
 
         function onClickSendTransaction() {
-            var resp, txhash;
+            var mTxHash;
 
-            if (gTx) {
-                resp = neb.api.sendRawTransaction(gTx.toProtoString());
-                txhash = resp.txhash;
+            gTx && api.postUserRawTransaction(gTx.toProtoString())
+                .then(function (o) {
+                    mTxHash = o.txhash;
+                    return api.postUserGetTransactionReceipt(mTxHash);
+                })
+                .then(function (o) {
+                    $("#receipt_state").val(JSON.stringify(o));
+                    $("#receipt").val(mTxHash);
+                    $("#receipt_div").show();
 
-                neb.api.getTransactionReceipt(txhash, function (err, resps) {
-                    $("#receipt_state").val(JSON.stringify(resps));
+                    setTimeout(function () {
+                        api.postUserAccountState($("#fromaddress").val())
+                            .then(function (t) {
+                                var balanceNas = Utils.toBigNumber(t.balance).dividedBy(unitValue("nas"));
+
+                                $("#balance").val(balanceNas);
+                                $("#nonce").val(t.nonce);
+                            });
+                    }, 60 * 1000);
                 });
-
-                $("#receipt").val(txhash);
-                $("#receipt_div").show();
-
-                setTimeout(function () {
-                    var state = neb.api.getAccountState($("#fromaddress").val()),
-                        balanceNas = Utils.toBigNumber(state.balance).dividedBy(unitValue("nas"));
-
-                    $("#balance").val(balanceNas);
-                    $("#nonce").val(state.nonce);
-                }, 60000);
-            }
         }
     </script>
 </body>

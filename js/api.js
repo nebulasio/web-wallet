@@ -3,6 +3,8 @@
 //
 // http://34.205.26.12:8685/
 // https://testnet.nebulas.io/
+//
+// https://github.com/nebulasio/wiki/blob/master/rpc.md
 
 "use strict";
 
@@ -27,20 +29,10 @@ var api = {
         });
     },
 
-    postUserGetTransactionReceipt: function (tx) {
-        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
-
-        return $.ajax({
-            data: JSON.stringify({ hash: tx }),
-            type: "post",
-            url: apiPrefix + "v1/user/getTransactionReceipt"
-        });
-    },
-
     postUserCall: function (from, to, value, nonce, gaslimit, gasprice, contract) {
         var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
 
-console.log(from, to, value, nonce, gaslimit, gasprice, contract);
+        console.log(from, to, value, nonce, gaslimit, gasprice, contract);
 
         return $.ajax({
             data: JSON.stringify({
@@ -53,6 +45,27 @@ console.log(from, to, value, nonce, gaslimit, gasprice, contract);
             }),
             type: "post",
             url: apiPrefix + "v1/user/call"
+        });
+    },
+
+    postUserGetTransactionReceipt: function (tx) {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            data: JSON.stringify({ hash: tx }),
+            type: "post",
+            url: apiPrefix + "v1/user/getTransactionReceipt"
+        });
+    },
+
+
+    postUserRawTransaction: function (txProtoString) {
+        var apiPrefix = localStorage.apiPrefix || "https://testnet.nebulas.io/";
+
+        return $.ajax({
+            data: JSON.stringify({ data: txProtoString }),
+            type: "post",
+            url: apiPrefix + "v1/user/rawtransaction"
         });
     }
 

@@ -6,8 +6,7 @@
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
-    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
@@ -78,7 +77,7 @@
                 <textarea class="search_result active1" name="search_result" id="search_result" cols="30" rows="10"></textarea>
             </div>
 
-            <!-------- run contract   and deploy contract ---------->
+            <!-- run contract   and deploy contract -->
             <div class="run_contract " id="run_contract" class="tab-pane" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="title">
                     <span>Submit Contract</span>
@@ -132,8 +131,8 @@
     <script src=js/home.v1.js></script>
 
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery"></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery wallet.js"></script>
+    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
     <script>
         "use strict";
 
@@ -142,20 +141,7 @@
             Transaction = wallet.Transaction,
             Utils = wallet.Utils,
             neb = new Neb(),
-            testnetchainID = 1001,
-            unitMap = {
-                none: '0',
-                nis: '1',
-                knis: '1000',
-                mnis: '1000000',
-                nanonas: '1000000000',
-                micronas: '1000000000000',
-                millinas: '1000000000000000',
-                nas: '1000000000000000000'
-            },
-            gAccount, gTx;
-
-
+            testnetchainID = 1001;
 
         uiBlock({
             footer: ".footer",
@@ -170,7 +156,16 @@
         })
 
         function unitValue(unit) {
-            var unitValue = unitMap[(unit || "nas").toLowerCase()];
+            var unitMap = {
+                none: "0",
+                nis: "1",
+                knis: "1000",
+                mnis: "1000000",
+                nanonas: "1000000000",
+                micronas: "1000000000000",
+                millinas: "1000000000000000",
+                nas: "1000000000000000000"
+            }, unitValue = unitMap[(unit || "nas").toLowerCase()];
 
             if (unitValue === undefined)
                 throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
