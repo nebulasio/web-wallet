@@ -80,6 +80,14 @@
             box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
         }
 
+        #tabs li a:focus {
+            background-color: #ccc;
+        }
+
+        .current {
+            background-color: #fff;
+        }
+
         .current a {
             outline: 0;
             background: #fff;
@@ -125,6 +133,18 @@
 
         .form-check {
             display: inline-block;
+        }
+
+        .deploy_contract .deploy_errmsg{
+            color: red;
+        }
+        
+        #tab3 .run_errmsg{
+            color: red;
+        }
+
+        .err{
+            border-color:red;
         }
     </style>
 </head>
@@ -177,14 +197,15 @@
                     <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
                     <label class="form-check-label" for="exampleRadios2">ts</label>
                 </div>
-                
                 <br>
 
                 <!-- function args -->
 
                 <span>function,args : </span>
                 <input type=text id=code>
+
                 <!-- select wallet -->
+
                 <div class=select-wallet-file></div>
 
                 <div class="row">
@@ -200,12 +221,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="fromaddress">Value : </label>
-                        <input type="text" id="value">
+                        <label>Value : </label>
+                        <input type=text id=value value=0>
                     </div>
                     <div class="col-md-6 lh">
                         <span>Balance : </span>
-                        <span id="balance"></span>
+                        <span id=balance></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
                             <span>Nonce : </span>
@@ -217,16 +238,16 @@
                     <div class="col-md-6">
                         <span>Gas Limit : </span>
                         <!-- <span id=gas_limit></span> -->
-                        <input type="text" id="gas_limit">
+                        <input type=text id=gas_limit value=200000>
                     </div>
                     <div class="col-md-6">
                         <span>Gas Price : </span>
                         <!-- <span id=gas_price></span> -->
-                        <input type="text" id="gas_price">
+                        <input type=text id=gas_price>
                     </div>
                 </div>
 
-                <span class="errmsg_code active1">Please enter a valid code</span>
+                <span class="deploy_errmsg active1">Please enter a valid msg</span>
 
                 <div class="result active1" id=result></div>
 
@@ -259,22 +280,22 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="fromaddress">From Address :</label>
-                        <input type="text" class="form-control" id="from_addr">
+                        <input type="text" class="form-control" id=run_from_addr>
                     </div>
                     <div class="col-md-6">
                         <label for="toaddress">To Address :</label>
-                        <input type="text" class="form-control" id="to_addr">
+                        <input type=text class=form-control id=run_to_addr>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="fromaddress">Value : </label>
-                        <input type="text" id="value">
+                        <label>Value : </label>
+                        <input type=text id=value value=0>
                     </div>
                     <div class="col-md-6 lh">
                         <span>Balance : </span>
-                        <span id="balance"></span>
+                        <span id=balance></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
                         <span>Nonce : </span>
@@ -286,21 +307,21 @@
                     <div class="col-md-6">
                         <span>Gas Limit : </span>
                         <!-- <span id=gas_limit></span> -->
-                        <input type="text" id="gas_limit">
+                        <input type=text id=run_gas_limit value=200000>
                     </div>
                     <div class="col-md-6">
                         <span>Gas Price : </span>
                         <!-- <span id=gas_price></span> -->
-                        <input type="text" id="gas_price">
+                        <input type="text" id=run_gas_price>
                     </div>
                 </div>
 
-                <span class="errmsg_code active1">Please enter a valid code</span>
+                <span class="run_errmsg active1">Please enter a valid code</span>
 
                 <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button id=run>run</button>
+                        <button id=run_run>run</button>
                     </div>
                     <div class="col-md-6">
                         <button id=call disabled=disabled class=stop>call</button>
@@ -348,6 +369,7 @@
                 try {
                     account.fromKey(fileJson, password);
                     $("#from_addr").val(account.getAddressString());
+                    $("#run_from_addr").val(account.getAddressString());
                     $("#unlock").hide();
                     $("#send").show();
 
@@ -358,6 +380,8 @@
                         } else {
                             $("#gas_price").append(resp.gas_price);
                             $("#gas_limit").append(resp.gas_price);
+                            $("#run_gas_price").append(resp.gas_price);
+                            $("#run_gas_limit").append(resp.gas_price);
                         }
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
@@ -399,6 +423,7 @@
                 $(this).parent().addClass("current");
                 $("#content div").removeClass("show");
                 $('#' + $(this).attr('title')).addClass('show');
+                $('this').addClass('current');
             });
 
             $('#tabs a').hover(function () {
@@ -410,13 +435,42 @@
             });
 
 
-            // deploy
+            // deploy-------------------------------------------
             $("#deploy_run").click(function () {
+                //local verification
+                if($("#from_addr").val().length < 46){
+                    $("#from_addr").addClass("err");
+                    $(".deploy_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#from_addr").removeClass("err");
+                    }, 5000);
+                }else if($("#to_addr").val().length < 46){
+                    $("#to_addr").addClass("err");
+                    $(".deploy_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#to_addr").removeClass("err");
+                    }, 5000);
+                }else if($("#gas_limit").val().length < 1){
+                    $("#gas_limit").addClass("err");
+                    $(".deploy_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#gas_limit").removeClass("err");
+                    }, 5000);
+                }
+                else if($("#gas_price").val().length < 1){
+                    $("#gas_price").addClass("err");
+                    $(".deploy_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#gas_price").removeClass("err");
+                    }, 5000);
+                }
+
                 // if deploy success show txhash
                 $(".tx_result").removeClass("active1");
+
             });
 
-            //call
+            //call------------------------------------------
             $(".search").click(function () {
                 if ($("#addr_input").val().length != 64) {
                     $(".errmsg").removeClass("active1");
@@ -444,7 +498,34 @@
             });
 
             // run function
-            $("#run").click(function () {
+            $("#run_run").click(function () {
+            //local verification
+                if($("#run_from_addr").val().length < 46){
+                    $("#run_from_addr").addClass("err");
+                    $(".run_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#run_from_addr").removeClass("err");
+                    }, 5000);
+                }else if($("#run_to_addr").val().length < 46){
+                    $("#run_to_addr").addClass("err");
+                    $(".run_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#run_to_addr").removeClass("err");
+                    }, 5000);
+                }else if($("#run_gas_limit").val().length < 1){
+                    $("#run_gas_limit").addClass("err");
+                    $(".run_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#run_gas_limit").removeClass("err");
+                    }, 5000);
+                }
+                else if($("#run_gas_price").val().length < 1){
+                    $("#run_gas_price").addClass("err");
+                    $(".run_errmsg").removeClass("active1");
+                    setTimeout(function () {
+                        $("#run_gas_price").removeClass("err");
+                    }, 5000);
+                }
                 //run result show
                 $(".next").removeClass("active1");
             })
