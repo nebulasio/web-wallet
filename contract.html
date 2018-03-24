@@ -15,19 +15,31 @@
     <title>Blockchain playground</title>
     <style>
         .wrapperExample1 .search_contract {
-            background-color: #f5f5f5;
             border: none;
         }
 
         .wrapperExample1 .run_contract {
-            background-color: #f5f5f5;
             border: none;
             margin-top: 20px;
         }
 
-        .run_contract span {
+        .wrapperExample1 .run_contract span {
             color: gray;
         }
+
+        .wrapperExample1 .deploy_contract {
+            border: none;
+            margin-top: 20px;
+        }
+
+        .wrapperExample1 input {
+            background-color: #f5f5f5;
+        }
+
+        .deploy_contract span {
+            color: gray;
+        }
+
 
         .title {
             text-align: center;
@@ -58,7 +70,7 @@
 
         #tabs li a {
             position: relative;
-            background: #ddd;
+            background: #f5f5f5;
             padding: 10px 50px;
             float: left;
             text-decoration: none;
@@ -94,10 +106,6 @@
             color: black;
         }
 
-        .row input {
-            background-color: #fff;
-        }
-
         .lh {
             line-height: 100px;
         }
@@ -113,6 +121,10 @@
             border: 1px solid #f5f5f5;
             border-radius: 20px;
             margin: 0 auto;
+        }
+
+        .form-check {
+            display: inline-block;
         }
     </style>
 </head>
@@ -146,14 +158,33 @@
                 <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
             </div>
 
-            <div class="run_contract item " id="tab2">
+            <div class="deploy_contract item " id="tab2">
                 <div class="title">
                     <span>Deploy Contract</span>
                 </div>
+                <!-- contract code -->
 
                 <span>code : </span>
                 <textarea name="" id="" cols="30" rows="10"></textarea>
 
+                <!-- select codetype -->
+                <span>codetype : </span>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">js</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                    <label class="form-check-label" for="exampleRadios2">ts</label>
+                </div>
+                
+                <br>
+
+                <!-- function args -->
+
+                <span>function,args : </span>
+                <input type=text id=code>
+                <!-- select wallet -->
                 <div class=select-wallet-file></div>
 
                 <div class="row">
