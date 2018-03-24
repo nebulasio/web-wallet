@@ -31,9 +31,9 @@ var i18n = function () {
             "header/check": "Check TX Status",
             "header/contract": "Contract",
             home: "Home",
-            "index/comment": "This password encrypts your private key." +
-                "<br>This does not act as a seed to generate your keys." +
-                "<br>You will need this password + your private key to unlock your wallet.",
+            "index/comment": "This password encrypts your private key.\n" +
+                "This does not act as a seed to generate your keys.\n" +
+                "You will need this password + your private key to unlock your wallet.",
             "index/enter-password": "Enter a password:",
             "index/new": "Create New Wallet",
             "index/placeholder/do-not-forget": "Do NOT forget to save this!",
@@ -53,8 +53,8 @@ var i18n = function () {
             "send-offline/step2": "Step 2: Generate Transaction (Offline Computer)",
             "send-offline/step3": "Step 3: Send / Publish Transaction (Online Computer)",
             "swf/button": "SELECT WALLET FILE...",
-            "swf/comment": "<br>This is not a recommended way to access your wallet." +
-                "<br>Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.",
+            "swf/comment": "This is not a recommended way to access your wallet.\n" +
+                "Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.",
             "swf/good": "Your wallet is encrypted. Good! Please enter the password.",
             "swf/modal/select/message": "please upload your wallet file, thanks",
             "swf/modal/select/title": "please select your wallet",
@@ -88,7 +88,7 @@ var i18n = function () {
             "header/check": "交易状态",
             "header/contract": "合约",
             home: "主页",
-            "index/comment": "该密码用于加密您的私钥。<br>他不做为产生私钥的种子。<br>您需要该密码 + 您的私钥以解锁您的钱包。",
+            "index/comment": "该密码用于加密您的私钥。\n他不做为产生私钥的种子。\n您需要该密码 + 您的私钥以解锁您的钱包。",
             "index/enter-password": "输入密码:",
             "index/new": "新建钱包",
             "index/placeholder/do-not-forget": "别忘了这个！",
@@ -108,8 +108,8 @@ var i18n = function () {
             "send-offline/step2": "第 2 步：生成信息（单机）",
             "send-offline/step3": "第 3 步：发送 / 发布交易（联网）",
             "swf/button": "选择钱包文件...",
-            "swf/comment": "<br>不推荐用此方法访问钱包。" +
-                "<br>在网站输入你的私钥很危险，如果网站不安全或访问了不同的网站，你的资金会失窃。",
+            "swf/comment": "不推荐用此方法访问钱包。\n" +
+                "在网站输入你的私钥很危险，如果网站不安全或访问了不同的网站，你的资金会失窃。",
             "swf/good": "你的钱包加密了，好！请输入密码。",
             "swf/modal/select/message": "请上传您的钱包文件，谢谢",
             "swf/modal/select/title": "请选择您的钱包",
@@ -149,7 +149,7 @@ var i18n = function () {
 
         function f(i, o) {
             var key = (o.dataset.i18n || "").toLowerCase();
-            o[o.tagName == "INPUT" || o.tagName == "TEXTAREA" ? "placeholder" : "innerHTML"] = table[lang][key] || table.en[key];
+            o[o.tagName == "INPUT" || o.tagName == "TEXTAREA" ? "placeholder" : "textContent"] = table[lang][key] || table.en[key];
         }
     }
 

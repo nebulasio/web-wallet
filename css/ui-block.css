@@ -130,35 +130,3 @@
 .select-wallet-file .comment {
     font-size: .8rem;
 }
-
-/*
-    overrides
-    these overrides do not belong here but i neither want another css file nor want place them into already messy home.css & base.css
-    ============================================================
-
-    overrides bootstrap
-    ============================================================
-    */
-
-.btn-primary {
-    border: 0;
-}
-
-.dropdown-item.active,
-.dropdown-item:active {
-    background-color: black;
-}
-
-/* https://github.com/makeusabrew/bootbox/issues/566 */
-.bootbox .modal-header h4 { order: 0; }
-.bootbox .modal-header button { order: 1; }
-
-/*
-    overrides home.css & base.css
-    ============================================================
-    */
-
-.bootbox .btn {
-    line-height: 1;
-    margin: 0;
-}

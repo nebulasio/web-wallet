@@ -1606,3 +1606,47 @@ h3.nebulas-description {
     font-size: 1.2rem;
     line-height: 2rem
 }
+
+/*
+    added since moved to https://github.com/nebulasio/web-wallet.git
+    ============================================================
+    ============================================================
+    */
+
+
+[data-i18n] {
+    white-space: pre-line;
+}
+
+/*
+    overrides bootstrap
+    ============================================================
+    */
+
+.btn-primary {
+    border: 0;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: black;
+}
+
+/*
+    overrides bootbox
+    https://github.com/makeusabrew/bootbox/issues/566
+    ============================================================
+    */
+
+.bootbox .modal-header h4 { order: 0; }
+.bootbox .modal-header button { order: 1; }
+
+/*
+    overrides home.css & base.css
+    ============================================================
+    */
+
+.bootbox .btn {
+    line-height: 1;
+    margin: 0;
+}
