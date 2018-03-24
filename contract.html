@@ -278,9 +278,8 @@
     <script src=codeMirror/javascript.js></script>
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
-    <script src=js/api.js data-depends=jquery></script>
+    <!-- <script src=js/nebulas.js></script> -->
     <script src=js/wallet.js></script>
-    <script src=js/nebApi.js></script>
     <script src=js/codeEditor.js></script>
     <script src=js/home.v1.js></script>
 
@@ -299,23 +298,10 @@
                 selectWalletFile: [".select-wallet-file", onUnlockFile]
             });
 
-            function unitValue(unit) {
-                var unitMap = {
-                    none: "0",
-                    nis: "1",
-                    knis: "1000",
-                    mnis: "1000000",
-                    nanonas: "1000000000",
-                    micronas: "1000000000000",
-                    millinas: "1000000000000000",
-                    nas: "1000000000000000000"
-                }, unitValue = unitMap[(unit || "nas").toLowerCase()];
-
-                if (unitValue === undefined)
-                    throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
-
-                return new Utils.toBigNumber(unitValue, 10);
-            }
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show')
+            })
 
             function onUnlockFile(fileJson, account, password) {
                 var state, balance_nas;
@@ -325,8 +311,25 @@
                     $("#from_addr").val(account.getAddressString());
                     $("#unlock").hide();
                     $("#send").show();
-                    api.getUserGetGasPrice().then(doneGetUserGetGasPrice);
-                    api.postUserAccountState($("#from_addr").val()).then(donePostUserAccountState);
+
+                    neb.api.gasPrice().then(function (resp) {
+                        if (o.error) {
+                            // TODO handler error, e.g.
+                            //      {"error":"xxx","code":2}
+                        } else {
+                            $("#gas_price").append(resp.gas_price);
+                            $("#gas_limit").append(resp.gas_price);
+                        }
+                        return neb.api.getAccountState($("#from_addr").val());
+                    }).then(function (resp) {
+                        if (o.error) {
+                            // TODO handler error, e.g.
+                            //      {"error":"xxx","code":2}
+                        } else {
+                            $("#nonce").append(parseInt(resp.nonce) + 1);
+                        }
+                    });
+
                 } catch (e) {
                     bootbox.dialog({
                         message: e,
@@ -368,50 +371,64 @@
             });
 
             $(".search").click(function () {
-                if ($("#addr_input").val().length < 48) {
-
+                if ($("#addr_input").val().length != 64) {
                     $(".errmsg").removeClass("active1");
 
                     setTimeout(function () {
                         $(".errmsg").addClass("active1");
-                    }, 2000)
+                    }, 2000);
+
                 } else {
-                    api.postUserGetTransactionReceipt($("#addr_input").val()).then(donePostUserGetTransactionReceipt);
+                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
+                        if (o.error) {
+                            // TODO handler error, e.g.
+                            //      {"error":"xxx","code":2}
+                        } else {
+                            var jsonString = atob(o.data);
+
+                            $(".search_result").text(jsonString);
+                            $("#to_addr").val(o.contract_address);
+                        }
+                    }).catch(function (err) {
+                        // TODO handle error
+                    });
                     $(".search_result").removeClass("active1");
                 }
             });
 
-            function donePostUserGetTransactionReceipt(o) {
-                var jsonString = atob(o.data);
-
-                $(".search_result").text(jsonString);
-                $("#to_addr").append(o.contract_address);
-            };
-
-            //run  call  button onclick
-
-            $("#run").click(function () {
-                $(".next").removeClass("active1");
-            })
-
             $("#call").click(function () {
-                api.postUserCall(
-                    $("#from_addr").val(),
-                    $("#to_addr").val(),
-                    $("#value").val(),
-                    $("#nonce").text(),
-                    $("#gas_limit").text(),
-                    $("#gas_price").text(),
-                    JSON.parse($("#code").val())
-                ).then(doneCall);
-                $(".result").removeClass("active1");
-                $(".next").removeClass("active1");
-            })
+                var params;
+                try {
+                    params = {
+                        from: $("#from_addr").val(),
+                        to: $("#to_addr").val(),
+                        value: $("#value").val(),
+                        nonce: parseInt($("#nonce").text()),
+                        gasPrice: $("#gas_price").text(),
+                        gasLimit: $("#gas_limit").text(),
+                        contract: JSON.parse($("#code").val())
+                    }
+                } catch (err) {
+                    // TODO handle err: param check
+                    return;
+                }
+                neb.api.call(params).then(function (resp) {
+                    console.log(JSON.stringify(resp));
+                    if (resp.error) {
+                        // TODO handler error, e.g.
+                        //      {"error":"execution failed","code":2}
+                    } else {
+                        // success, need a place to display result
+                        // $("??") = JSON.stringify(resp)
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
+                    }
+                }).catch(function (err) {
+                    // TODO handle error, e.g. connection error
+                });
+            });
+        });
 
-            function doneCall(o) {
-                console.log(o);
-            }
-        })
     </script>
 </body>
 
