@@ -3,7 +3,7 @@
 // because this project already uses them
 
 // uiBlock({ header: ".header-1, .abc" })
-// - will replace all elements found by document.querySelectorAll(".header-1, .abc") with header
+// - will insert header html string into all elements found by document.querySelectorAll(".header-1, .abc")
 function uiBlock(opt) {
     var Account = require("wallet").Account,
         bag = {
@@ -27,19 +27,19 @@ function uiBlock(opt) {
     }
 
     function footer(selector) {
-        i18n.run(localStorage.lang, $(
-            '<div class="container footer">' +
-            "    <div class=logo></div>" +
-            "    <nav class=text-center>" +
-            "        <a href=https://nebulas.io/ data-i18n=home></a>" +
-            "        <a href=https://nebulas.io/technology.html data-i18n=technology></a>" +
-            "        <a href=https://nebulas.io/community.html data-i18n=community></a>" +
-            "        <a href=https://nebulas.io/team.html data-i18n=team></a>" +
-            "        <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
-            "        <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
-            "    </nav>" +
-            '    <div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>' +
-            "</div>").replaceAll(selector));
+        i18n.run(localStorage.lang, $(selector)
+            .addClass("container footer")
+            .html(
+                "<div class=logo></div>" +
+                "<nav class=text-center>" +
+                "    <a href=https://nebulas.io/ data-i18n=home></a>" +
+                "    <a href=https://nebulas.io/technology.html data-i18n=technology></a>" +
+                "    <a href=https://nebulas.io/community.html data-i18n=community></a>" +
+                "    <a href=https://nebulas.io/team.html data-i18n=team></a>" +
+                "    <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
+                "    <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
+                "</nav>" +
+                '<div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>'));
     }
 
     function header(selector) {
@@ -57,22 +57,22 @@ function uiBlock(opt) {
             if (location.pathname.indexOf(arr[i]) != -1)
                 arr[i] += " class=checked";
 
-        i18n.run(localStorage.lang, $(
-            '<div class="container header">' +
-            "    <div>" +
-            "        <a href=" + arr[0] + " data-i18n=header/new-wallet></a>" +
-            "        <a href=" + arr[1] + " data-i18n=header/send></a>" +
-            "        <a href=" + arr[2] + " data-i18n=header/send-offline></a>" +
-            "        <a href=" + arr[3] + " data-i18n=header/view></a>" +
-            "        <a href=" + arr[4] + " data-i18n=header/check></a>" +
-            "        <a href=" + arr[5] + " data-i18n=header/contract></a>" +
-            "    </div>" +
-            "    <hr>" +
-            "</div>").replaceAll(selector));
+        i18n.run(localStorage.lang, $(selector)
+            .addClass("container header")
+            .html(
+                "<div>" +
+                "    <a href=" + arr[0] + " data-i18n=header/new-wallet></a>" +
+                "    <a href=" + arr[1] + " data-i18n=header/send></a>" +
+                "    <a href=" + arr[2] + " data-i18n=header/send-offline></a>" +
+                "    <a href=" + arr[3] + " data-i18n=header/view></a>" +
+                "    <a href=" + arr[4] + " data-i18n=header/check></a>" +
+                "    <a href=" + arr[5] + " data-i18n=header/contract></a>" +
+                "</div>" +
+                "<hr>"));
     }
 
     function logoMain(selector) {
-        var i, len, $els,
+        var i, len,
             list = [
                 { name: "testnet.nebulas.io", url: "https://testnet.nebulas.io/" },
                 { name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" }
@@ -109,28 +109,26 @@ function uiBlock(opt) {
         //
         // $.replaceAll
 
-        $els = $(
-            '<div class="container logo-main">' +
-            "    <div class=row>" +
-            "        <div class=col></div>" +
-            "        <div class=col>" +
-            "            <div class=dropdown>" +
-            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
-            '                <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
-            "                </div>" +
-            "            </div>" +
-            "            <div class=dropdown>" +
-            '                <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
-            '                <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
-            "                </div>" +
-            "            </div>" +
-            "        </div>" +
-            "    </div>" +
-            "</div>").replaceAll(selector);
-
-        $els.on("click", ".api > button", onClickMenuApi);
-        $els.on("click", ".lang > button", onClickMenuLang);
-        i18n.run(lang, $els);
+        i18n.run(lang, $(selector)
+            .addClass("container logo-main")
+            .html(
+                "<div class=row>" +
+                "    <div class=col></div>" +
+                "    <div class=col>" +
+                "        <div class=dropdown>" +
+                '            <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
+                '            <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
+                "            </div>" +
+                "        </div>" +
+                "        <div class=dropdown>" +
+                '            <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
+                '            <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
+                "            </div>" +
+                "        </div>" +
+                "    </div>" +
+                "</div>")
+            .on("click", ".api > button", onClickMenuApi)
+            .on("click", ".lang > button", onClickMenuLang));
 
         function onClickMenuApi() {
             var $this = $(this);
@@ -154,22 +152,22 @@ function uiBlock(opt) {
     }
 
     function selectWalletFile(selector, callback) {
-        var $els = $(
-            '<div class="container select-wallet-file">' +
-            "    <p data-i18n=swf/name></p>" +
-            "    <label class=file><span data-i18n=swf/button></span><input type=file></label>" +
-            '    <label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
-            '    <button class="btn btn-block" data-i18n=swf/unlock></button>' +
-            "    <p class=comment data-i18n=swf/comment></p>" +
-            "</div>").replaceAll(selector), mAccount, mFileJson;
+        var mAccount, mFileJson;
 
-        $els.find("button").on("click", onClickUnlock);
-        $els.find("input[type=file]").on({
-            change: onChangeFile,
-            click: onClickFile
-        });
-        $els.find("input[type=password]").on("keyup", onKeyUpPassword);
-        i18n.run(localStorage.lang, $els);
+        i18n.run(localStorage.lang, $(selector)
+            .addClass("container select-wallet-file")
+            .html(
+                "<p data-i18n=swf/name></p>" +
+                "<label class=file><span data-i18n=swf/button></span><input type=file></label>" +
+                '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
+                '<button class="btn btn-block" data-i18n=swf/unlock></button>' +
+                "<p class=comment data-i18n=swf/comment></p>")
+            .on("click", "button", onClickUnlock)
+            .on("keyup", "input[type=password]", onKeyUpPassword)
+            .on({
+                change: onChangeFile,
+                click: onClickFile
+            }, "input[type=file]"));
 
         function onChangeFile(e) {
             // read address from json file content, not it's file name
@@ -207,9 +205,11 @@ function uiBlock(opt) {
         }
 
         function onClickUnlock() {
+            var $swf = $(this).closest(".select-wallet-file");
+
             if (mFileJson)
                 if (typeof callback == "function")
-                    callback(mFileJson, mAccount, $(this).closest(".select-wallet-file").find("input[type=password]").val());
+                    callback($swf[0], mFileJson, mAccount, $swf.find("input[type=password]").val());
                 else
                     console.log("uiBlock/selectWalletFile - 'callback' parameter not specified, cannot pass result");
             else {
