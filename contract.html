@@ -89,7 +89,16 @@
         .nonce {
             display: none;
         }
-        .lh{
+
+        .row{
+            color: black;
+        }
+
+        .row input{
+            background-color: #fff;
+        }
+
+        .lh {
             line-height: 100px;
         }
     </style>
@@ -133,38 +142,40 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="fromaddress">From Address</label>
+                        <label for="fromaddress">From Address :</label>
                         <input type="text" class="form-control" id="from_addr">
                     </div>
                     <div class="col-md-6">
-                        <label for="toaddress">To Address</label>
+                        <label for="toaddress">To Address :</label>
                         <input type="text" class="form-control" id="to_addr">
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="fromaddress">Value : </label>
                         <input type="text" id="value">
                     </div>
-                    <div class="col-md-4 lh" >
+                    <div class="col-md-6 lh">
                         <span>Balance : </span>
                         <span id="balance"></span>
                     </div>
-                    <div class="col-md-4 lh">
+                    <!-- <div class="col-md-4 lh">
                         <span>Nonce : </span>
                         <span id=nonce></span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <span>Gas Limit : </span>
-                        <span id=gas_limit></span>
+                        <!-- <span id=gas_limit></span> -->
+                        <input type="text" id="gas_limit">
                     </div>
                     <div class="col-md-6">
                         <span>Gas Price : </span>
-                        <span id=gas_price></span>
+                        <!-- <span id=gas_price></span> -->
+                        <input type="text" id="gas_price">
                     </div>
                 </div>
 
@@ -196,72 +207,67 @@
     <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
     <script>
         "use strict";
-
-        var wallet = require("wallet"),
-            Neb = wallet.Neb,
-            Transaction = wallet.Transaction,
-            Utils = wallet.Utils,
-            neb = new Neb(),
-            testnetchainID = 1001;
-
-        uiBlock({
-            footer: ".footer",
-            header: ".header",
-            logoMain: ".logo-main",
-            selectWalletFile: [".select-wallet-file", onUnlockFile]
-        });
-
-        function unitValue(unit) {
-            var unitMap = {
-                none: "0",
-                nis: "1",
-                knis: "1000",
-                mnis: "1000000",
-                nanonas: "1000000000",
-                micronas: "1000000000000",
-                millinas: "1000000000000000",
-                nas: "1000000000000000000"
-            }, unitValue = unitMap[(unit || "nas").toLowerCase()];
-
-            if (unitValue === undefined)
-                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
-
-            return new Utils.toBigNumber(unitValue, 10);
-        }
-
-        function onUnlockFile(fileJson, account, password) {
-            var state, balance_nas;
-
-            try {
-                account.fromKey(fileJson, password);
-                $("#from_addr").val(account.getAddressString());
-                $("#unlock").hide();
-                $("#send").show();
-                api.getUserGetGasPrice().then(doneGetUserGetGasPrice);
-                api.postUserAccountState($("#from_addr").val()).then(donePostUserAccountState);
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: "large",
-                    title: "Error"
-                });
-            }
-        }
-
-        function doneGetUserGetGasPrice(x) {
-            $("#gas_price").append(x.gas_price);
-            $("#gas_limit").append(x.gas_price);
-        };
-
-        function donePostUserAccountState(o) {
-            console.log(o);
-
-            console.log(o.balance);
-            $("#balance").append(o.balance);
-            $("#nonce").append(parseInt(o.nonce)+1);
-        };
-
+        
         $(function () {
+
+            uiBlock({
+                footer: ".footer",
+                header: ".header",
+                logoMain: ".logo-main",
+                selectWalletFile: [".select-wallet-file", onUnlockFile]
+            });
+
+            function unitValue(unit) {
+                var unitMap = {
+                    none: "0",
+                    nis: "1",
+                    knis: "1000",
+                    mnis: "1000000",
+                    nanonas: "1000000000",
+                    micronas: "1000000000000",
+                    millinas: "1000000000000000",
+                    nas: "1000000000000000000"
+                }, unitValue = unitMap[(unit || "nas").toLowerCase()];
+
+                if (unitValue === undefined)
+                    throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
+
+                return new Utils.toBigNumber(unitValue, 10);
+            }
+
+            function onUnlockFile(fileJson, account, password) {
+                var state, balance_nas;
+
+                try {
+                    account.fromKey(fileJson, password);
+                    $("#from_addr").val(account.getAddressString());
+                    $("#unlock").hide();
+                    $("#send").show();
+                    api.getUserGetGasPrice().then(doneGetUserGetGasPrice);
+                    api.postUserAccountState($("#from_addr").val()).then(donePostUserAccountState);
+                } catch (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
+                }
+            }
+
+            function doneGetUserGetGasPrice(x) {
+                $("#gas_price").append(x.gas_price);
+                $("#gas_limit").append(x.gas_price);
+            };
+
+            function donePostUserAccountState(o) {
+                console.log(o);
+
+                console.log(o.balance);
+                $("#balance").append(o.balance);
+                $("#nonce").append(parseInt(o.nonce) + 1);
+            };
+
+
 
             $('#tabs a').click(function (e) {
                 e.preventDefault();
@@ -287,7 +293,7 @@
                     setTimeout(function () {
                         $(".errmsg").addClass("active1");
                     }, 2000)
-                }else{
+                } else {
                     api.postUserGetTransactionReceipt($("#addr_input").val()).then(donePostUserGetTransactionReceipt);
                     $(".search_result").removeClass("active1");
                 }
@@ -299,25 +305,25 @@
                 $(".search_result").text(jsonString);
                 $("#to_addr").append(o.contract_address);
             };
-        })
 
-        $("#call").click(function () {
-            api.postUserCall(
-                $("#from_addr").val(),
-                $("#to_addr").val(),
-                $("#value").val(),
-                $("#nonce").text(),
-                $("#gas_limit").text(),
-                $("#gas_price").text(),
-                JSON.parse($("#code").val())
-            ).then(doneCall);
-            $(".result").removeClass("active1");
-            $(".next").removeClass("active1");
-        })
+            $("#call").click(function () {
+                api.postUserCall(
+                    $("#from_addr").val(),
+                    $("#to_addr").val(),
+                    $("#value").val(),
+                    $("#nonce").text(),
+                    $("#gas_limit").text(),
+                    $("#gas_price").text(),
+                    JSON.parse($("#code").val())
+                ).then(doneCall);
+                $(".result").removeClass("active1");
+                $(".next").removeClass("active1");
+            })
 
-        function doneCall(o) {
-            console.log(o);
-        }
+            function doneCall(o) {
+                console.log(o);
+            }
+        })
     </script>
 </body>
 
