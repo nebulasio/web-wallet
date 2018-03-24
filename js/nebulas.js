@@ -132,7 +132,7 @@ Account.isValidAddress = function (addr, type) {
     } else if (t !== NormalType && t !== ContractType) {
         return false;
     }
-    var content = addr.slice(1, 22);
+    var content = addr.slice(0, 22);
     var checksum = addr.slice(-4);
     return Buffer.compare(cryptoUtils.sha3(content).slice(0, 4), checksum) === 0;
 };

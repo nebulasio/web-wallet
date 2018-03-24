@@ -153,11 +153,10 @@
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
-    <script src=js/api.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
-    <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
+    <script src=js/nebulas.js></script>
     <script>
         $(function () {
 
@@ -167,6 +166,11 @@
                 logoMain: ".logo-main"
             });
 
+            var wallet = require("nebulas");
+            var Account = wallet.Account;
+            var neb = new wallet.Neb();
+             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
             $("#btn").click(function () {
                 if ($("#input").val().length < 46) {
@@ -175,7 +179,10 @@
                         $(".errmsg").addClass("active1");
                     }, 2000);
                 } else {
-                    api.postUserGetTransactionReceipt($("#input").val()).then(done, fail);
+                    neb.api.getTransactionReceipt($("#input").val()).then(done).catch(function(err){
+                        // TODO handle error
+                        console.log( err)
+                    });
                 }
             });
         });
@@ -201,8 +208,13 @@
         }
 
 
-        function done(o) {
-            console.log(o);
+        function done(resp) {
+            console.log(resp);
+            if (resp.error) {
+                throw new Error(resp.error);
+            }
+
+            var o = resp.result;
 
             $("#info").removeClass("active1 ");
             $(".tx_hash").append(o.hash);
@@ -224,9 +236,6 @@
 
             var nas = toNas(o.value);
             $(".value").append(nas);
-        }
-
-        function fail() {
         }
     </script>
 

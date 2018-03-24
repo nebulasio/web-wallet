@@ -59,12 +59,12 @@
     <script src=js/FileSaver.min.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
-    <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
+    <script src=js/nebulas.js></script>
     <script>
         "use strict";
 
-        var wallet = require("wallet"),
+        var wallet = require("nebulas"),
             account = wallet.Account.NewAccount();
 
         uiBlock({

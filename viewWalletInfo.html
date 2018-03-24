@@ -71,12 +71,12 @@
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/jquery.qrcode.min.js data-depends=jquery></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
-    <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
+    <script src=js/nebulas.js></script>
     <script>
         "use strict";
 
-        var wallet = require("wallet"),
+        var wallet = require("nebulas"),
             Account = wallet.Account,
             Neb = wallet.Neb,
             Transaction = wallet.Transaction,
@@ -84,7 +84,9 @@
             neb = new Neb(),
             gAccount, gFileJson;
 
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+
         $("#keystore").on("click", onClickKeystore);
 
         uiBlock({
@@ -95,8 +97,6 @@
         });
 
         function onUnlockFile(swf, fileJson, account, password) {
-            var state;
-
             try {
                 gAccount = account;
                 gFileJson = fileJson;
@@ -105,14 +105,22 @@
                 $("#address").val(account.getAddressString());
                 $("#sideaddress").text(account.getAddressString());
                 $("#Privatekey").val(account.getPrivateKeyString());
-                state = neb.api.getAccountState(account.getAddressString());
-
-                $("#amount").text(Utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber() + "  NAS");
-                $("#addressqr").text("");
-                $("#privateqr").text("");
-                $("#addressqr").qrcode(account.getAddressString());
-                $("#privateqr").qrcode(account.getPrivateKeyString());
-                $("#walletinfo").show();
+                neb.api.getAccountState(account.getAddressString()).then(function(resp){
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    } else {
+                        $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.result.balance), "nas").toNumber() + " NAS");
+                        $("#addressqr").text("");
+                        $("#privateqr").text("");
+                        $("#addressqr").qrcode(account.getAddressString());
+                        $("#privateqr").qrcode(account.getPrivateKeyString());
+                        $("#walletinfo").show();
+                    }
+                }).catch(function(err){
+                    // TODO handle error
+                    console.log(err)
+                });
+                
             } catch (e) {
                 bootbox.dialog({
                     message: e,
@@ -120,24 +128,6 @@
                     title: "Error"
                 });
             }
-        }
-
-        function unitValue(unit) {
-            var unitMap = {
-                none: "0",
-                nis: "1",
-                knis: "1000",
-                mnis: "1000000",
-                nanonas: "1000000000",
-                micronas: "1000000000000",
-                millinas: "1000000000000000",
-                nas: "1000000000000000000"
-            }, unitValue = unitMap[(unit || "nas").toLowerCase()];
-
-            if (unitValue === undefined)
-                throw new Error("The unit undefined, please use the following units:" + JSON.stringify(unitMap, null, 2));
-
-            return new Utils.toBigNumber(unitValue, 10);
         }
 
         function onClickKeystore() {

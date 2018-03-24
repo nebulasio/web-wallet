@@ -5,7 +5,7 @@
 // uiBlock({ header: ".header-1, .abc" })
 // - will insert header html string into all elements found by document.querySelectorAll(".header-1, .abc")
 function uiBlock(opt) {
-    var Account = require("wallet").Account,
+    var Account = require("nebulas").Account,
         bag = {
             footer: footer,
             header: header,
