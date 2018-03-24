@@ -147,60 +147,73 @@
             </div>
 
             <div class="run_contract item " id="tab2">
-                    <div class="title">
-                        <span>Deploy Contract</span>
+                <div class="title">
+                    <span>Deploy Contract</span>
+                </div>
+
+                <span>code : </span>
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+
+                <div class=select-wallet-file></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="fromaddress">From Address :</label>
+                        <input type="text" class="form-control" id="from_addr">
                     </div>
-    
-                    <span>code : </span>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-    
-                    <div class=select-wallet-file></div>
-    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="fromaddress">From Address :</label>
-                            <input type="text" class="form-control" id="from_addr">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="toaddress">To Address :</label>
-                            <input type="text" class="form-control" id="to_addr">
-                        </div>
+                    <div class="col-md-6">
+                        <label for="toaddress">To Address :</label>
+                        <input type="text" class="form-control" id="to_addr">
                     </div>
-    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="fromaddress">Value : </label>
-                            <input type="text" id="value">
-                        </div>
-                        <div class="col-md-6 lh">
-                            <span>Balance : </span>
-                            <span id="balance"></span>
-                        </div>
-                        <!-- <div class="col-md-4 lh">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="fromaddress">Value : </label>
+                        <input type="text" id="value">
+                    </div>
+                    <div class="col-md-6 lh">
+                        <span>Balance : </span>
+                        <span id="balance"></span>
+                    </div>
+                    <!-- <div class="col-md-4 lh">
                             <span>Nonce : </span>
                             <span id=nonce></span>
                         </div> -->
-                    </div>
-    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <span>Gas Limit : </span>
-                            <!-- <span id=gas_limit></span> -->
-                            <input type="text" id="gas_limit">
-                        </div>
-                        <div class="col-md-6">
-                            <span>Gas Price : </span>
-                            <!-- <span id=gas_price></span> -->
-                            <input type="text" id="gas_price">
-                        </div>
-                    </div>
-    
-                    <span class="errmsg_code active1">Please enter a valid code</span>
-    
-                    <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
-                    
-                            <button id=deploy >deploy</button>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <span>Gas Limit : </span>
+                        <!-- <span id=gas_limit></span> -->
+                        <input type="text" id="gas_limit">
+                    </div>
+                    <div class="col-md-6">
+                        <span>Gas Price : </span>
+                        <!-- <span id=gas_price></span> -->
+                        <input type="text" id="gas_price">
+                    </div>
+                </div>
+
+                <span class="errmsg_code active1">Please enter a valid code</span>
+
+                <div class="result active1" id=result></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button id=deploy_run>run</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button id=deploy disabled=disabled class=stop>deploy</button>
+                    </div>
+                </div>
+
+                <div class="tx_result active1">
+                    <span class="execution">execution result：</span>
+                    <div class="execution_banner">Results:success,you can deploy this contract.</div>
+                    <a href="check.html">TX hash : </a>
+                </div>
+            </div>
 
             <div class="run_contract item " id="tab3">
                 <div class="title">
@@ -290,18 +303,13 @@
         "use strict";
 
         $(function () {
-            //组件匹配
+            //ui block
             uiBlock({
                 footer: ".footer",
                 header: ".header",
                 logoMain: ".logo-main",
                 selectWalletFile: [".select-wallet-file", onUnlockFile]
             });
-
-            $('#myTab a').on('click', function (e) {
-                e.preventDefault();
-                $(this).tab('show')
-            })
 
             function onUnlockFile(fileJson, account, password) {
                 var state, balance_nas;
@@ -352,7 +360,7 @@
                 $("#nonce").append(parseInt(o.nonce) + 1);
             };
 
-            //tab 栏 切换
+            //tab change
 
             $('#tabs a').click(function (e) {
                 e.preventDefault();
@@ -370,6 +378,14 @@
                 $(this).parent().removeClass("hoverItem");
             });
 
+
+            // deploy
+            $("#deploy_run").click(function () {
+                // if deploy success show txhash
+                $(".tx_result").removeClass("active1");
+            });
+
+            //call
             $(".search").click(function () {
                 if ($("#addr_input").val().length != 64) {
                     $(".errmsg").removeClass("active1");
@@ -396,6 +412,13 @@
                 }
             });
 
+            // run function
+            $("#run").click(function () {
+                //run result show
+                $(".next").removeClass("active1");
+            })
+
+            //call function
             $("#call").click(function () {
                 var params;
                 try {
@@ -427,6 +450,7 @@
                     // TODO handle error, e.g. connection error
                 });
             });
+
         });
 
     </script>
