@@ -160,21 +160,23 @@
     <script src=js/jquery.qrcode.min.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
-    <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
+    <script src=js/nebulas.js></script>
     <script>
         "use strict";
 
-        var wallet = require("wallet"),
+        var wallet = require("nebulas"),
             Account = wallet.Account,
             Neb = wallet.Neb,
             Transaction = wallet.Transaction,
             utils = wallet.Utils,
+            unit = wallet.Unit,
             neb = new Neb(),
             gAccount = new Account(), toaccount, state, gas_price, tx, txhash,
-            testnetchainID = 1001;
+            testnetchainID = 1003;
 
-        neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
+         // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+         neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
         uiBlock({
             footer: ".footer",
@@ -188,40 +190,34 @@
             $("#transaction").show();
         }
 
-        function unitValue(unit) {
-            unit = unit ? unit.toLowerCase() : "nas";
-
-            var unitMap = {
-                "none": "0",
-                "nis": "1",
-                "knis": "1000",
-                "mnis": "1000000",
-                "nanonas": "1000000000",
-                "micronas": "1000000000000",
-                "millinas": "1000000000000000",
-                "nas": "1000000000000000000"
-            }, unitValue = unitMap[unit];
-
-            if (unitValue === undefined)
-                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
-
-            return new utils.toBigNumber(unitValue, 10);
-        }
-
         // Generate_info
         $("#Generate_info").click(function () {
-            fromaddress = $("#fromaddress").val();
+            var fromaddress = $("#fromaddress").val();
 
             try {
                 gAccount = Account.fromAddress(fromaddress);
-                state = neb.api.getAccountState(gAccount.getAddressString());
-                gasprice = neb.api.gasPrice();
-                balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
-                $("#fa_gasprice").val(gasprice.gas_price);
-                $("#fa_nonce").val(state.nonce);
-                $("#price").val(gasprice.gas_price);
-                $("#nonce").val(parseInt(state.nonce) + 1);
-                $("#information").show();
+
+                neb.api.gasPrice().then(function(resp){
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+
+                    $("#fa_gasprice").val(resp.result.gas_price);
+                    $("#price").val(resp.result.gas_price);
+
+                    return neb.api.getAccountState(gAccount.getAddressString());
+                }).then(function(resp){
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+
+                    $("#fa_nonce").val(resp.result.nonce);
+                    $("#nonce").val(parseInt(resp.result.nonce) + 1);
+                    $("#information").show();
+                });
+
+                // balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();   // 用处？
+                
             } catch (e) {
                 bootbox.dialog({
                     title: 'Error',
@@ -230,9 +226,10 @@
             }
         });
 
+        // 页面不对 请确认
         function generate() {
-            fromaddress = $("#fromaddress").val();
-            toaddress = $("#toaddress").val();
+            var fromaddress = $("#fromaddress").val();
+            var toaddress = $("#toaddress").val();
 
             try {
                 toaccount = Account.fromAddress(toaddress);
@@ -241,13 +238,18 @@
                 gaslimit = $("#limit").val();
                 gasprice = $("#price").val();
                 nonce = $("#nonce").val();
-                tmp = utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)).dividedBy(unitValue("nas"));
+                tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
                 console.log(tmp);
 
-                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
-                    amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
+                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp))) {
+                    if (utils.toBigNumber(balance).lt(tmp)) {
+                        amount = utils.toBigNumber(0).toNumber();
+                    } else {
+                        amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
+                    }
+                }
 
-                tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 tx.signTransaction();
 
                 $("#raw").val(tx.toString());
@@ -268,21 +270,22 @@
 
         function sendtransaction() {
             try {
-                var resp = neb.api.sendRawTransaction($("#signedoffline").val());
-                txhash = resp.txhash;
+                var resp = neb.api.sendRawTransaction($("#signedoffline").val()).then(function(resp){
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
 
-                if (txhash === undefined) {
-                    $("#receipt_state").val('');
-                    $("#receipt").val('');
-                    throw resp.error;
-                }
-
-                neb.api.getTransactionReceipt(txhash, function (err, resps) {
-                    $("#receipt_state").val(JSON.stringify(resps));
+                    return neb.api.getTransactionReceipt(resp.result.txhash);
+                }).then(function(resp){
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+                    
+                    $("#receipt_state").val(JSON.stringify(resp.result));
+                    $("#receipt").val(txhash);
+                    $("#receipt_div").show();
                 });
-
-                $("#receipt").val(txhash);
-                $("#receipt_div").show();
+                
             } catch (e) {
                 bootbox.dialog({
                     message: e,
