@@ -1,11 +1,11 @@
 //
-// i18n.run(lang)
+// i18n.run()
 // - $("[data-i18n]").each((el.type == input, textarea ? el.placeholder : el.innerHTML) = table[lang][el.attr(data-i18n)])
 //
 // requires jquery
 //
 // this file is mainly a big table
-// calls i18n.run(localStorage.lang) at bottom of this file
+// calls i18n.run() at bottom of this file
 
 "use strict";
 
@@ -76,6 +76,7 @@ var i18n = function () {
             "swf/unlock": "Unlock",
             team: "Team",
             technology: "Technology",
+            "validate/gt0": "invalid: must greater than 0",
             "wallet-info/acc-addr": "Account Address",
             "wallet-info/acc-balance": "Account Balance",
             "wallet-info/keystore": "Keystore File (UTC / JSON · Recommended · Encrypted)",
@@ -145,6 +146,7 @@ var i18n = function () {
             "swf/unlock": "解锁",
             team: "团队",
             technology: "技术",
+            "validate/gt0": "无效：必须大于 0",
             "wallet-info/acc-addr": "钱包地址",
             "wallet-info/acc-balance": "钱包余额",
             "wallet-info/keystore": "密码库文件（UTC / JSON · Recommended · Encrypted）",
@@ -154,18 +156,18 @@ var i18n = function () {
     };
 
     return {
-        name: name,
+        langName: langName,
         run: run,
         supports: supports
     };
 
-    function name(s) {
+    function langName(s) {
         return table[s].name;
     }
 
-    function run(lang, $parent) {
+    function run($parent, lang) {
         // make sure lang is a key of table
-        lang = (lang || "").toLowerCase();
+        lang = (lang || localStorage.lang || "").toLowerCase();
         table[lang] || (lang = "en");
 
         if ($parent)
@@ -174,6 +176,8 @@ var i18n = function () {
             $("[data-i18n]").each(f);
             document.documentElement.lang = lang;
         }
+
+        return $parent;
 
         function f(i, o) {
             var key = (o.dataset.i18n || "").toLowerCase();
@@ -186,4 +190,4 @@ var i18n = function () {
     }
 }();
 
-i18n.run(localStorage.lang);
+i18n.run();

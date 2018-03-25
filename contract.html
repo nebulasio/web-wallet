@@ -343,18 +343,24 @@
     <script src=codeMirror/javascript.js></script>
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
-    <!-- <script src=js/nebulas.js></script> -->
-    <script src=js/wallet.js></script>
+    <script src=js/nebulas.js></script>
     <script src=js/codeEditor.js></script>
     <script src=js/home.v1.js></script>
 
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
     <script>
         "use strict";
 
         $(function () {
+
+            var nebulas = require("nebulas");
+            var Account = nebulas.Account;
+            var neb = new nebulas.Neb();
+             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+
             //ui block
             uiBlock({
                 footer: ".footer",
@@ -374,23 +380,23 @@
                     $("#send").show();
 
                     neb.api.gasPrice().then(function (resp) {
-                        if (o.error) {
-                            // TODO handler error, e.g.
+                        if (resp.error) {
+                            throw new Error(resp.error);
                             //      {"error":"xxx","code":2}
-                        } else {
-                            $("#gas_price").append(resp.gas_price);
-                            $("#gas_limit").append(resp.gas_price);
-                            $("#run_gas_price").append(resp.gas_price);
-                            $("#run_gas_limit").append(resp.gas_price);
                         }
+
+                        $("#gas_price").append(resp.result.gas_price);
+                        // $("#gas_limit").append(resp.gas_price);      //返回结果没有gas limit
+                        $("#run_gas_price").append(resp.result.gas_price);
+                        // $("#run_gas_limit").append(resp.gas_price);  //返回结果没有gas limit
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
-                        if (o.error) {
-                            // TODO handler error, e.g.
+                        if (resp.error) {
+                            throw new Error(resp.error);
                             //      {"error":"xxx","code":2}
-                        } else {
-                            $("#nonce").append(parseInt(resp.nonce) + 1);
                         }
+                            
+                        $("#nonce").append(parseInt(resp.result.nonce) + 1);
                     });
 
                 } catch (e) {
@@ -482,13 +488,13 @@
                 } else {
                     neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
                         if (o.error) {
-                            // TODO handler error, e.g.
+                            throw new Error(o.error);
                             //      {"error":"xxx","code":2}
                         } else {
-                            var jsonString = atob(o.data);
+                            var jsonString = atob(o.result.data);
 
                             $(".search_result").text(jsonString);
-                            $("#to_addr").val(o.contract_address);
+                            $("#to_addr").val(o.result.contract_address);
                         }
                     }).catch(function (err) {
                         // TODO handle error
@@ -550,16 +556,15 @@
                 neb.api.call(params).then(function (resp) {
                     console.log(JSON.stringify(resp));
                     if (resp.error) {
-                        // TODO handler error, e.g.
+                        throw new Error(resp.error);
                         //      {"error":"execution failed","code":2}
-                    } else {
-                        // success, need a place to display result
-                        // $("??") = JSON.stringify(resp)
-                        $(".result").removeClass("active1");
-                        $(".next").removeClass("active1");
                     }
+                    // TODO  need a place to display result
+                    // $("??") = JSON.stringify(resp)
+                    $(".result").removeClass("active1");
+                    $(".next").removeClass("active1");
                 }).catch(function (err) {
-                    // TODO handle error, e.g. connection error
+                    // TODO handle error, e.g. connection error or inner throw
                 });
             });
 

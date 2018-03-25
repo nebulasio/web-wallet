@@ -102,20 +102,23 @@
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
-    <script src=js/api.js data-depends=jquery></script>
+    <!-- <script src=js/api.js data-depends=jquery></script> -->
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js wallet.js"></script>
-    <script src=js/wallet.js></script>
+    <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
+    <script src=js/nebulas.js></script>
     <script>
         "use strict";
 
-        var wallet = require("wallet"),
+        var wallet = require("nebulas"),
             Transaction = wallet.Transaction,
             Utils = wallet.Utils,
+            Unit = wallet.Unit,
             neb = new wallet.Neb(),
-            testnetchainID = 1001,
+            testnetchainID = 1003,
             gAccount, gTx;
+        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
@@ -139,7 +142,17 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                api.postUserAccountState(address).then(donePostUserAccountState);
+                neb.api.getAccountState(address).then(function (resp) {
+                    console.log("resp: " + JSON.stringify(resp))
+
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+
+                    var nas = Unit.fromBasic(resp.result.balance, "nas").toNumber();
+                    $("#balance").val(nas);
+                    $("#nonce").val(parseInt(resp.result.nonce || 0) + 1);
+                });
             } catch (e) {
                 bootbox.dialog({
                     message: e,
@@ -147,31 +160,6 @@
                     title: "Error"
                 });
             }
-        }
-
-        function donePostUserAccountState(o) {
-            var nas = Utils.toBigNumber(o.balance).dividedBy(unitValue("nas")).toNumber();
-
-            $("#balance").val(nas);
-            $("#nonce").val((o.nonce || 0) + 1);
-        }
-
-        function unitValue(unit) {
-            var unitMap = {
-                none: "0",
-                nis: "1",
-                knis: "1000",
-                mnis: "1000000",
-                nanonas: "1000000000",
-                micronas: "1000000000000",
-                millinas: "1000000000000000",
-                nas: "1000000000000000000"
-            }, unitValue = unitMap[(unit || "nas").toLowerCase()];
-
-            if (unitValue === undefined)
-                throw new Error('The unit undefined, please use the following units:' + JSON.stringify(unitMap, null, 2));
-
-            return new Utils.toBigNumber(unitValue, 10);
         }
 
         function onClickGenerate() {
@@ -184,17 +172,21 @@
                 toAddress = $("#toaddress").val(),
                 tmp;
 
-            try {
-                tmp = Utils.toBigNumber(gaslimit)
-                    .times(Utils.toBigNumber(gasprice))
-                    .dividedBy(unitValue("nas"));
+            if (amount <= 0)
+                uiBlock({ validationBox: ["#amount", "validate/gt0"] });
+            else try {
+                tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
+                    .times(Utils.toBigNumber(gasprice)), "nas")
 
-                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
-                    amount = Utils.toBigNumber(balance)
-                        .minus(Utils.toBigNumber(tmp))
-                        .toNumber();
+                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) {
+                    if (Utils.toBigNumber(balance).lt(tmp)) {
+                        amount = Utils.toBigNumber(0).toNumber();
+                    } else {
+                        amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
+                    }
+                }
 
-                gTx = new Transaction(testnetchainID, gAccount, toAddress, neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 gTx.signTransaction();
 
                 $("#raw").val(gTx.toString());
@@ -214,25 +206,43 @@
         function onClickSendTransaction() {
             var mTxHash;
 
-            gTx && api.postUserRawTransaction(gTx.toProtoString())
-                .then(function (o) {
-                    mTxHash = o.txhash;
-                    return api.postUserGetTransactionReceipt(mTxHash);
-                })
-                .then(function (o) {
-                    $("#receipt_state").val(JSON.stringify(o));
+            gTx && neb.api.sendRawTransaction(gTx.toProtoString())
+                .then(function (resp) {
+                    console.log("sendRawTransaction resp: " + JSON.stringify(resp));
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+
+                    mTxHash = resp.result.txhash;
+                    return neb.api.getTransactionReceipt(mTxHash);
+                }).then(function (resp) {
+                    if (resp.error) {
+                        throw new Error(resp.error);
+                    }
+
+                    // $("#receipt_state").val(JSON.stringify(resp));   // getTransactionReceipt tx提交后立即查询可能报not found，需要确认此处流程
                     $("#receipt").val(mTxHash);
                     $("#receipt_div").show();
 
+                    // TODO 重新点击需要reset页面状态，清理setTimeout
                     setTimeout(function () {
-                        api.postUserAccountState($("#fromaddress").val())
-                            .then(function (t) {
-                                var balanceNas = Utils.toBigNumber(t.balance).dividedBy(unitValue("nas"));
+                        neb.api.getAccountState($("#fromaddress").val())
+                            .then(function (resp) {
+                                console.log("getAccountState resp: " + JSON.stringify(resp));
+                                if (resp.error) {
+                                    throw new Error(resp.error);
+                                }
 
+                                var balanceNas = Unit.fromBasic(resp.result.balance, "nas");
                                 $("#balance").val(balanceNas);
-                                $("#nonce").val(t.nonce);
+                                $("#nonce").val(resp.result.nonce);
+                            }).catch(function (err) {
+                                // TODO error
                             });
                     }, 60 * 1000);
+                }).catch(function (err) {
+                    // TODO handle error, maybe from "inner throw" or "conn error"
+                    console.log(err)
                 });
         }
     </script>
