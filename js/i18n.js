@@ -188,7 +188,7 @@ var i18n = function () {
         return $parent;
 
         function f(i, o) {
-            var key = (o.dataset.i18n || "").toLowerCase();
+            var key = o.dataset.i18n || "";
             o[o.tagName == "INPUT" || o.tagName == "TEXTAREA" ? "placeholder" : "textContent"] = table[lang][key] || table.en[key];
         }
     }

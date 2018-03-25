@@ -117,12 +117,11 @@
                 $("#sideaddress").text(account.getAddressString());
                 $("#password").val(account.getPrivateKeyString());
 
-
                 neb.api.getAccountState(account.getAddressString()).then(function (resp) {
                     if (resp.error) {
                         throw new Error(resp.error);
                     } else {
-                        $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.result.balance), "nas").toNumber() + " NAS");
+                        $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
                         $("#addressqr").text("");
                         $("#privateqr").text("");
                         $("#addressqr").qrcode(account.getAddressString());
@@ -150,7 +149,7 @@
 
         $(function () {
 
-             $.fn.togglePassword = function (options) {
+            $.fn.togglePassword = function (options) {
                 var s = $.extend($.fn.togglePassword.defaults, options),
                     input = $(this);
 
