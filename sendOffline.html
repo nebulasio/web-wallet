@@ -63,7 +63,7 @@
                 <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
                     <input type=text class=form-control id=price value=1000000>
-                    <div class=input-group-addon>NIS</div>
+                    <div class=input-group-addon>Wei</div>
                 </div>
             </div>
             <div class=form-group>
@@ -172,13 +172,13 @@
             utils = wallet.Utils,
             unit = wallet.Unit,
             neb = new Neb(),
-            gAccount = new Account(), toaccount, state, gas_price, tx, txhash,
+            gAccount = new Account(),
             testnetchainID = 1003;
 
-         // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-         neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
-        uiBlock({
+        uiBlock.insert({
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main",
@@ -186,8 +186,18 @@
         });
 
         function onUnlockFile(swf, fileJson, account, password) {
-            gAccount = account;
-            $("#transaction").show();
+            try {
+                account.fromKey(fileJson, password);
+                gAccount = account;
+
+                $("#transaction").show();
+            } catch (e) {
+                bootbox.dialog({
+                    message: e,
+                    size: "large",
+                    title: "Error"
+                });
+            }
         }
 
         // Generate_info
@@ -196,51 +206,46 @@
 
             try {
                 gAccount = Account.fromAddress(fromaddress);
+                neb.api.gasPrice()
+                    .then(function (resp) {
 
-                neb.api.gasPrice().then(function(resp){
+                        $("#fa_gasprice").val(resp.gas_price);
+                        $("#price").val(resp.gas_price);
 
-                    $("#fa_gasprice").val(resp.gas_price);
-                    $("#price").val(resp.gas_price);
-
-                    return neb.api.getAccountState(gAccount.getAddressString());
-                }).then(function(resp){
-                    $("#fa_nonce").val(resp.nonce);
-                    $("#nonce").val(parseInt(resp.nonce) + 1);
-                    $("#information").show();
-                });
-
-                // balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();   // 用处？
-                
+                        return neb.api.getAccountState(gAccount.getAddressString());
+                    }).then(function (resp) {
+                        $("#fa_nonce").val(resp.nonce);
+                        $("#nonce").val(parseInt(resp.nonce) + 1);
+                        $("#information").show();
+                    }).catch(function (e) { throw e });
             } catch (e) {
                 bootbox.dialog({
-                    title: 'Error',
-                    message: e, size: 'large'
+                    message: e,
+                    size: "large",
+                    title: "Error"
                 });
             }
         });
 
-        // 页面不对 请确认
         function generate() {
-            var fromaddress = $("#fromaddress").val();
-            var toaddress = $("#toaddress").val();
+            var fromaddress = $("#fromaddress").val(),
+                toaddress = $("#toaddress").val(),
+                amount = parseFloat($("#amount").val()) || 0,
+                balance = $("#balance").val(),
+                gaslimit = $("#limit").val(),
+                gasprice = $("#price").val(),
+                nonce = $("#nonce").val(),
+                toaccount, tmp, tx;
 
             try {
                 toaccount = Account.fromAddress(toaddress);
-                amount = $("#amount").val();
-                balance = $("#balance").val();
-                gaslimit = $("#limit").val();
-                gasprice = $("#price").val();
-                nonce = $("#nonce").val();
                 tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
-                console.log(tmp);
 
-                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp))) {
-                    if (utils.toBigNumber(balance).lt(tmp)) {
+                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
+                    if (utils.toBigNumber(balance).lt(tmp))
                         amount = utils.toBigNumber(0).toNumber();
-                    } else {
+                    else
                         amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
-                    }
-                }
 
                 tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                 tx.signTransaction();
@@ -253,8 +258,8 @@
             } catch (e) {
                 bootbox.dialog({
                     message: e,
-                    size: 'large',
-                    title: 'Error'
+                    size: "large",
+                    title: "Error"
                 });
             }
 
@@ -262,22 +267,20 @@
         }
 
         function sendtransaction() {
-            try {
-                var resp = neb.api.sendRawTransaction($("#signedoffline").val()).then(function(resp){
+            neb.api.sendRawTransaction($("#signedoffline").val())
+                .then(function (resp) {
                     return neb.api.getTransactionReceipt(resp.txhash);
-                }).then(function(resp){
+                }).then(function (resp) {
                     $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt").val(txhash);
                     $("#receipt_div").show();
+                }).catch(function (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
                 });
-                
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: 'large',
-                    title: 'Error'
-                });
-            }
         }
     </script>
 </body>

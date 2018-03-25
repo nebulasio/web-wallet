@@ -15,8 +15,7 @@
     <!--
 
         replace \="([^ =]+)" with =$1
-        
-        testnetchainID 在切换 api 时要不要改? - 启元
+
         sendNas.html/onClickSendTransaction 最后那 ajax 为啥要等 1 分钟? - otto
 
         2018.3.19 ~ 2018.3.24
@@ -45,8 +44,8 @@
         </form>
         <div class=col-12>
             <p class=wallet_help data-i18n=index/comment>This password encrypts your private key.
-                This does not act as a seed to generate your keys.
-                You will need this password + your private key to unlock your wallet.</p>
+                <br>This does not act as a seed to generate your keys.
+                <br>You will need this password + your private key to unlock your wallet.</p>
         </div>
     </div>
 
@@ -67,7 +66,7 @@
         var wallet = require("nebulas"),
             account = wallet.Account.NewAccount();
 
-        uiBlock({
+        uiBlock.insert({
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main"
