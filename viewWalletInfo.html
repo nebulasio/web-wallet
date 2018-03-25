@@ -119,16 +119,12 @@
 
 
                 neb.api.getAccountState(account.getAddressString()).then(function (resp) {
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    } else {
-                        $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.result.balance), "nas").toNumber() + " NAS");
-                        $("#addressqr").text("");
-                        $("#privateqr").text("");
-                        $("#addressqr").qrcode(account.getAddressString());
-                        $("#privateqr").qrcode(account.getPrivateKeyString());
-                        $("#walletinfo").show();
-                    }
+                    $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
+                    $("#addressqr").text("");
+                    $("#privateqr").text("");
+                    $("#addressqr").qrcode(account.getAddressString());
+                    $("#privateqr").qrcode(account.getPrivateKeyString());
+                    $("#walletinfo").show();
                 }).catch(function (err) {
                     // TODO handle error
                     console.log(err)

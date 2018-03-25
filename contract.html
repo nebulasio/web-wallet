@@ -380,23 +380,15 @@
                     $("#send").show();
 
                     neb.api.gasPrice().then(function (resp) {
-                        if (resp.error) {
-                            throw new Error(resp.error);
-                            //      {"error":"xxx","code":2}
-                        }
-
-                        $("#gas_price").append(resp.result.gas_price);
+                        $("#gas_price").append(resp.gas_price);
                         // $("#gas_limit").append(resp.gas_price);      //返回结果没有gas limit
-                        $("#run_gas_price").append(resp.result.gas_price);
+                        $("#run_gas_price").append(resp.gas_price);
                         // $("#run_gas_limit").append(resp.gas_price);  //返回结果没有gas limit
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
-                        if (resp.error) {
-                            throw new Error(resp.error);
-                            //      {"error":"xxx","code":2}
-                        }
-                            
-                        $("#nonce").append(parseInt(resp.result.nonce) + 1);
+                        $("#nonce").append(parseInt(resp.nonce) + 1);
+                    }).catch(function(err){
+                        // TODO handle error
                     });
 
                 } catch (e) {
@@ -487,20 +479,15 @@
 
                 } else {
                     neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
-                        if (o.error) {
-                            throw new Error(o.error);
-                            //      {"error":"xxx","code":2}
-                        } else {
-                            var jsonString = atob(o.result.data);
+                        var jsonString = atob(o.data);
 
-                            $(".search_result").text(jsonString);
-                            $("#to_addr").val(o.result.contract_address);
-                        }
+                        $(".search_result").text(jsonString);
+                        $("#to_addr").val(o.contract_address);
+                        $(".search_result").removeClass("active1");
                     }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
                     });
-                    $(".search_result").removeClass("active1");
                 }
             });
 
@@ -556,16 +543,12 @@
                 }
                 neb.api.call(params).then(function (resp) {
                     console.log(JSON.stringify(resp));
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                        //      {"error":"execution failed","code":2}
-                    }
                     // TODO  need a place to display result
                     // $("??") = JSON.stringify(resp)
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
                 }).catch(function (err) {
-                    // TODO handle error, e.g. connection error or inner throw
+                    // TODO handle error
                 });
             });
 

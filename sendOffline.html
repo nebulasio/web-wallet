@@ -198,21 +198,14 @@
                 gAccount = Account.fromAddress(fromaddress);
 
                 neb.api.gasPrice().then(function(resp){
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
 
-                    $("#fa_gasprice").val(resp.result.gas_price);
-                    $("#price").val(resp.result.gas_price);
+                    $("#fa_gasprice").val(resp.gas_price);
+                    $("#price").val(resp.gas_price);
 
                     return neb.api.getAccountState(gAccount.getAddressString());
                 }).then(function(resp){
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-
-                    $("#fa_nonce").val(resp.result.nonce);
-                    $("#nonce").val(parseInt(resp.result.nonce) + 1);
+                    $("#fa_nonce").val(resp.nonce);
+                    $("#nonce").val(parseInt(resp.nonce) + 1);
                     $("#information").show();
                 });
 
@@ -271,17 +264,9 @@
         function sendtransaction() {
             try {
                 var resp = neb.api.sendRawTransaction($("#signedoffline").val()).then(function(resp){
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-
-                    return neb.api.getTransactionReceipt(resp.result.txhash);
+                    return neb.api.getTransactionReceipt(resp.txhash);
                 }).then(function(resp){
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-                    
-                    $("#receipt_state").val(JSON.stringify(resp.result));
+                    $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt").val(txhash);
                     $("#receipt_div").show();
                 });

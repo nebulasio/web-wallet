@@ -145,13 +145,9 @@
                 neb.api.getAccountState(address).then(function (resp) {
                     console.log("resp: " + JSON.stringify(resp))
 
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-
-                    var nas = Unit.fromBasic(resp.result.balance, "nas").toNumber();
+                    var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
                     $("#balance").val(nas);
-                    $("#nonce").val(parseInt(resp.result.nonce || 0) + 1);
+                    $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                 });
             } catch (e) {
                 bootbox.dialog({
@@ -209,18 +205,9 @@
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
                 .then(function (resp) {
                     console.log("sendRawTransaction resp: " + JSON.stringify(resp));
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-
-                    mTxHash = resp.result.txhash;
+                    mTxHash = resp.txhash;
                     return neb.api.getTransactionReceipt(mTxHash);
                 }).then(function (resp) {
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    }
-
-                    // $("#receipt_state").val(JSON.stringify(resp));   // getTransactionReceipt tx提交后立即查询可能报not found，需要确认此处流程
                     $("#receipt").val(mTxHash);
                     $("#receipt_div").show();
 
@@ -229,19 +216,15 @@
                         neb.api.getAccountState($("#fromaddress").val())
                             .then(function (resp) {
                                 console.log("getAccountState resp: " + JSON.stringify(resp));
-                                if (resp.error) {
-                                    throw new Error(resp.error);
-                                }
-
-                                var balanceNas = Unit.fromBasic(resp.result.balance, "nas");
+                                var balanceNas = Unit.fromBasic(resp.balance, "nas");
                                 $("#balance").val(balanceNas);
-                                $("#nonce").val(resp.result.nonce);
+                                $("#nonce").val(resp.nonce);
                             }).catch(function (err) {
                                 // TODO error
                             });
                     }, 60 * 1000);
                 }).catch(function (err) {
-                    // TODO handle error, maybe from "inner throw" or "conn error"
+                    // TODO handle error
                     console.log(err)
                 });
         }

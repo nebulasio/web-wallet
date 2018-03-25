@@ -1263,6 +1263,11 @@ HttpRequest.prototype.request = function (method, action, payload) {
 
                 try {
                     result = JSON.parse(result);
+                    if ('result' in result) {
+                        result = result.result;
+                    } else {
+                        error = result.error;
+                    }
                 } catch (e) {
                     var message = !!result && !!result.error && !!result.error.message ? result.error.message : "Invalid response: " + JSON.stringify(result);
                     error = new Error(message);
