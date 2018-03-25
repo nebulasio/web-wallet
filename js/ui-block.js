@@ -238,7 +238,7 @@ var uiBlock = {
         var $inputs,
             mRules = {
                 gt0: function (s) { return s > 0; },
-                lengthEq45: function (s) { return s.length == 45; },
+                lengthEq35: function (s) { return s.length == 35; },
                 lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
                     try {
