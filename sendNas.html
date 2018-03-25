@@ -117,8 +117,8 @@
             neb = new wallet.Neb(),
             testnetchainID = 1003,
             gAccount, gTx;
-            // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
@@ -142,13 +142,13 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                neb.api.getAccountState(address).then(function(resp){
+                neb.api.getAccountState(address).then(function (resp) {
                     console.log("resp: " + JSON.stringify(resp))
 
                     if (resp.error) {
                         throw new Error(resp.error);
                     }
-                    
+
                     var nas = Unit.fromBasic(resp.result.balance, "nas").toNumber();
                     $("#balance").val(nas);
                     $("#nonce").val(parseInt(resp.result.nonce || 0) + 1);
@@ -172,7 +172,9 @@
                 toAddress = $("#toaddress").val(),
                 tmp;
 
-            try {
+            if (amount <= 0)
+                uiBlock({ validationBox: ["#amount", "validate/gt0"] });
+            else try {
                 tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
                     .times(Utils.toBigNumber(gasprice)), "nas")
 
@@ -207,7 +209,7 @@
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
                 .then(function (resp) {
                     console.log("sendRawTransaction resp: " + JSON.stringify(resp));
-                    if (resp.error) { 
+                    if (resp.error) {
                         throw new Error(resp.error);
                     }
 
@@ -230,15 +232,15 @@
                                 if (resp.error) {
                                     throw new Error(resp.error);
                                 }
-                                
+
                                 var balanceNas = Unit.fromBasic(resp.result.balance, "nas");
                                 $("#balance").val(balanceNas);
                                 $("#nonce").val(resp.result.nonce);
-                            }).catch(function(err){
+                            }).catch(function (err) {
                                 // TODO error
                             });
                     }, 60 * 1000);
-                }).catch(function(err){
+                }).catch(function (err) {
                     // TODO handle error, maybe from "inner throw" or "conn error"
                     console.log(err)
                 });

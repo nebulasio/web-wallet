@@ -10,7 +10,8 @@ function uiBlock(opt) {
             footer: footer,
             header: header,
             logoMain: logoMain,
-            selectWalletFile: selectWalletFile
+            selectWalletFile: selectWalletFile,
+            validationBox: validationBox
         }, i;
 
     for (i in opt) {
@@ -19,6 +20,7 @@ function uiBlock(opt) {
             case "header":
             case "logoMain":
             case "selectWalletFile":
+            case "validationBox":
                 break;
             default: continue;
         }
@@ -27,7 +29,7 @@ function uiBlock(opt) {
     }
 
     function footer(selector) {
-        i18n.run(localStorage.lang, $(selector)
+        i18n.run($(selector)
             .addClass("container footer")
             .html(
                 "<div class=logo></div>" +
@@ -57,7 +59,7 @@ function uiBlock(opt) {
             if (location.pathname.indexOf(arr[i]) != -1)
                 arr[i] += " class=checked";
 
-        i18n.run(localStorage.lang, $(selector)
+        i18n.run($(selector)
             .addClass("container header")
             .html(
                 "<div>" +
@@ -104,12 +106,12 @@ function uiBlock(opt) {
         sLangButtons = "";
 
         for (langs = i18n.supports(), i = 0, len = langs.length; i < len; ++i)
-            sLangButtons += '<button class="' + (i == lang ? "active " : "") + 'dropdown-item" data-lang=' + langs[i] + ">" + i18n.name(langs[i]) + "</button>"
+            sLangButtons += '<button class="' + (langs[i] == lang ? "active " : "") + 'dropdown-item" data-lang=' + langs[i] + ">" + i18n.langName(langs[i]) + "</button>"
 
         //
         // $.replaceAll
 
-        i18n.run(lang, $(selector)
+        i18n.run($(selector)
             .addClass("container logo-main")
             .html(
                 "<div class=row>" +
@@ -128,7 +130,8 @@ function uiBlock(opt) {
                 "    </div>" +
                 "</div>")
             .on("click", ".api > button", onClickMenuApi)
-            .on("click", ".lang > button", onClickMenuLang));
+            .on("click", ".lang > button", onClickMenuLang),
+            lang);
 
         function onClickMenuApi() {
             var $this = $(this);
@@ -144,7 +147,7 @@ function uiBlock(opt) {
 
             if (!$this.hasClass("active")) {
                 localStorage.lang = $this.data("lang");
-                i18n.run(localStorage.lang);
+                i18n.run();
                 $this.parent().children().removeClass("active");
                 $this.addClass("active");
             }
@@ -154,7 +157,7 @@ function uiBlock(opt) {
     function selectWalletFile(selector, callback) {
         var mAccount, mFileJson;
 
-        i18n.run(localStorage.lang, $(selector)
+        i18n.run($(selector)
             .addClass("container select-wallet-file")
             .html(
                 "<p data-i18n=swf/name></p>" +
@@ -219,8 +222,21 @@ function uiBlock(opt) {
                     title: "<span data-i18n=swf/modal/select/title></span>"
                 });
 
-                i18n.run(localStorage.lang, $(".bootbox.modal"));
+                i18n.run($(".bootbox.modal"));
             }
         }
+    }
+
+    function validationBox(selector, langKey) {
+        $(selector)
+            .on("focus", function () { $(this).popover("hide"); })
+            .popover({
+                container: "body",
+                content: i18n.run($("<div><span data-i18n=" + langKey + "></span></div>")).html(),
+                html: true,
+                placement: "auto",
+                trigger: "manual"
+            })
+            .popover("show");
     }
 }
