@@ -13,7 +13,7 @@
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
 <style>
-    .active1{
+    .active1 {
         display: none;
     }
 </style>
@@ -46,19 +46,22 @@
                 </div>
                 <div class=form-group>
                     <label for=Privatekey data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
-                    <input type=text class=form-control id=Privatekey disabled value="**************************">
+                    <input type=password id=password class=form-control id=Privatekey disabled>
+                    <div>
+                        <input type="checkbox" id="togglePassword">
+                        <label for="togglePassword">visible</label>
+                    </div>
                 </div>
 
             </div>
             <div class=col-6>
-                <button id="show" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">show your QR code</button>
-                <div class="qr_code row  active1">
+                <div class="qr_code row">
                     <div class="col-6 text-center">
                         <label for=addressqr data-i18n=wallet-info/your-addr>Your Address</label>
                         <div class=form-group id=addressqr>
                         </div>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class=" key_qr col-6 text-center active1">
                         <label for=privateqr data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
                         <div class=form-group id=privateqr>
                         </div>
@@ -112,9 +115,9 @@
 
                 $("#address").val(account.getAddressString());
                 $("#sideaddress").text(account.getAddressString());
-                // $("#Privatekey").val(account.getPrivateKeyString());
+                $("#password").val(account.getPrivateKeyString());
 
-                
+
                 neb.api.getAccountState(account.getAddressString()).then(function (resp) {
                     if (resp.error) {
                         throw new Error(resp.error);
@@ -145,9 +148,31 @@
             saveAs(blob, gAccount.getAddressString());
         }
 
-        $("#show").click(function(){
-            $(".qr_code").removeClass("active1");
-        })
+        $(function () {
+
+            $.fn.togglePassword = function (options) {
+                var s = $.extend($.fn.togglePassword.defaults, options),
+                    input = $(this);
+
+                $(s.el).bind(s.ev, function () {
+                    "password" == $(input).attr("type") ?
+                        $(input).attr("type", "text") :
+                        $(input).attr("type", "password");
+                });
+            };
+
+            $.fn.togglePassword.defaults = {
+                ev: "click"
+            };
+
+            $('#password').togglePassword({
+                el: '#togglePassword'
+            });
+
+            $("#togglePassword").click(function () {
+                $(".key_qr").removeClass("active1");
+            })
+        });
     </script>
 </body>
 
