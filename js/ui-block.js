@@ -180,6 +180,7 @@ var uiBlock = {
                     file = e.target.files[0],
                     fr = new FileReader();
 
+                $("<span>" + this.value + "</span>").replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
                 fr.onload = onLoad1;
                 fr.readAsText(file);
 
@@ -235,6 +236,8 @@ var uiBlock = {
         var $inputs,
             mRules = {
                 gt0: function (s) { return s > 0; },
+                lengthEq45: function (s) { return s.length == 45; },
+                lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
                     try {
                         Utils.toBigNumber(s);

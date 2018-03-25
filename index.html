@@ -16,9 +16,16 @@
             text-align: center;
         }
 
-
         .active1 {
             display: none;
+        }
+
+        .download{
+            margin-top: 48px;
+        }
+        
+        input{
+            text-align: center;
         }
     </style>
 </head>
@@ -50,12 +57,13 @@
         <div id=newWallet class=col-12>
             <div class=form-group>
                 <label for=password data-i18n=index/enter-password>Enter a password:（Not less than 9 characters）</label>
-                <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!">
+                <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!"
+                    data-validate-order-matters="required lengthGt8">
             </div>
             <button class="btn btn-block" data-i18n=index/new id=creat>Create New Wallet</button>
         </div>
         <div class="download active1">
-            <h1 class="">Save your
+            <h1>Save your
                 <code>Keystore</code> File.</h1>
             <button id=genNewWallet class="btn btn-block">Download Keystore File (UTC / JSON · Recommended · Encrypted)</button>
         </div>
@@ -82,9 +90,9 @@
         "use strict";
 
 
-
         var wallet = require("nebulas"),
-            account = wallet.Account.NewAccount();
+            account = wallet.Account.NewAccount(),
+            validateAll = uiBlock.validate();
 
         uiBlock.insert({
             footer: ".footer",
@@ -93,16 +101,15 @@
         });
 
         $("#creat").click(function () {
-            $(".download").removeClass("active1");
+            if (validateAll())
+                $(".download").removeClass("active1");
         });
 
         $("#genNewWallet").click(function () {
             var password = $("#password").val(),
                 address, keyStr, blob;
 
-            if (password.length < 1)
-                alert("must input a password");
-            else {
+            if (validateAll()) {
                 bootbox.alert({
                     title: "info",
                     message: "waiting..."

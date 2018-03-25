@@ -22,7 +22,7 @@
             </h1>
             <div class=form-group>
                 <label for=fromaddress data-i18n=send-nas/from-address>From Address:</label>
-                <input type=text id=fromaddress class=form-control placeholder=c66d758fbf64ef62a371801570cde8fe1e7f08bce3daf8e4>
+                <input type=text id=fromaddress class=form-control placeholder=c66d758fbf64ef62a371801570cde8fe1e7f08bce3daf8e4 data-validate-order-matters="required lengthEq45">
             </div>
             <button id=Generate_info type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-offline/gen-info>Generate Information</button>
             <div class=row id=information style=display:none;>
@@ -46,29 +46,29 @@
             </h1>
             <div class=form-group>
                 <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
-                <input type=text class=form-control id=toaddress>
+                <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq45">
             </div>
             <div class=form-group>
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=amount data-i18n=amount>
+                    <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>NAS</div>
                 </div>
             </div>
             <div class=form-group>
                 <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                <input type=text class=form-control id=limit value=20000>
+                <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
             </div>
             <div class=form-group>
                 <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=price value=1000000>
+                    <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>Wei</div>
                 </div>
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce>
+                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
             </div>
         </div>
     </div>
@@ -173,6 +173,7 @@
             unit = wallet.Unit,
             neb = new Neb(),
             gAccount = new Account(),
+            validateAll = uiBlock.validate(),
             testnetchainID = 1003;
 
         // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
@@ -237,50 +238,52 @@
                 nonce = $("#nonce").val(),
                 toaccount, tmp, tx;
 
-            try {
-                toaccount = Account.fromAddress(toaddress);
-                tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
+            if (validateAll())
+                try {
+                    toaccount = Account.fromAddress(toaddress);
+                    tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
 
-                if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
-                    if (utils.toBigNumber(balance).lt(tmp))
-                        amount = utils.toBigNumber(0).toNumber();
-                    else
-                        amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
+                    if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
+                        if (utils.toBigNumber(balance).lt(tmp))
+                            amount = utils.toBigNumber(0).toNumber();
+                        else
+                            amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
 
-                tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
-                tx.signTransaction();
+                    tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    tx.signTransaction();
 
-                $("#raw").val(tx.toString());
-                $("#signed").val(tx.toProtoString());
-                $("#signedoffline").val(tx.toProtoString());
-                $("#qrcode").qrcode(tx.toProtoString());
-                $("#transaction").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: "large",
-                    title: "Error"
-                });
-            }
-
-            return false;
-        }
-
-        function sendtransaction() {
-            neb.api.sendRawTransaction($("#signedoffline").val())
-                .then(function (resp) {
-                    return neb.api.getTransactionReceipt(resp.txhash);
-                }).then(function (resp) {
-                    $("#receipt_state").val(JSON.stringify(resp));
-                    $("#receipt").val(txhash);
-                    $("#receipt_div").show();
-                }).catch(function (e) {
+                    $("#raw").val(tx.toString());
+                    $("#signed").val(tx.toProtoString());
+                    $("#signedoffline").val(tx.toProtoString());
+                    $("#qrcode").qrcode(tx.toProtoString());
+                    $("#transaction").show();
+                } catch (e) {
                     bootbox.dialog({
                         message: e,
                         size: "large",
                         title: "Error"
                     });
-                });
+                }
+
+            return false;
+        }
+
+        function sendtransaction() {
+            if (validateAll())
+                neb.api.sendRawTransaction($("#signedoffline").val())
+                    .then(function (resp) {
+                        return neb.api.getTransactionReceipt(resp.txhash);
+                    }).then(function (resp) {
+                        $("#receipt_state").val(JSON.stringify(resp));
+                        $("#receipt").val(txhash);
+                        $("#receipt_div").show();
+                    }).catch(function (e) {
+                        bootbox.dialog({
+                            message: e,
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
         }
     </script>
 </body>
