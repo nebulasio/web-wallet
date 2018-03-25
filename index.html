@@ -21,7 +21,25 @@
     </style>
 </head>
 <body>
-    
+    <!--
+
+        replace \="([^ =]+)" with =$1
+
+        sendNas.html/onClickSendTransaction 最后那 ajax 为啥要等 1 分钟? - otto
+
+        2018.3.19 ~ 2018.3.24
+        - 主网测试网络切换
+        - 多语言
+        - 查询帐号余额 - View Wallet Info 页面有
+        - 根据交易 hash 查询交易信息（如果交易执行失败，需要提示失败和错误类型）
+        - 部署和执行合约（JS）
+
+        代码段
+        - header, footer
+        - select wallet file 在 3 个文件中都使用
+        删除 js/Blob.js
+        本地创建的过程在 js/wallet.js 里, 不支持 webpack 的 require, 有时间提出来, 有时间把 js/wallet.js 删掉
+        -->
     <div class=logo-main></div>
     <div class=header></div>
 
@@ -39,8 +57,8 @@
         </div>
         <div class=col-12>
             <p class=wallet_help data-i18n=index/comment>This password encrypts your private key.
-                This does not act as a seed to generate your keys.
-                You will need this password + your private key to unlock your wallet.</p>
+                <br>This does not act as a seed to generate your keys.
+                <br>You will need this password + your private key to unlock your wallet.</p>
         </div>
     </div>
 
@@ -65,7 +83,7 @@
         var wallet = require("nebulas"),
             account = wallet.Account.NewAccount();
 
-        uiBlock({
+        uiBlock.insert({
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main"

@@ -66,7 +66,7 @@
             <div class=form-group>
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=amount data-i18n=amount>
+                    <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>NAS</div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                 <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
                     <input type=text class=form-control id=price value=1000000>
-                    <div class=input-group-addon>NIS</div>
+                    <div class=input-group-addon>Wei</div>
                 </div>
             </div>
             <div class=form-group>
@@ -178,6 +178,7 @@
             Unit = wallet.Unit,
             neb = new wallet.Neb(),
             testnetchainID = 1003,
+            validateAll = uiBlock.validate(),
             gAccount, gTx;
         // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
         neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
@@ -185,7 +186,7 @@
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
 
-        uiBlock({
+        uiBlock.insert({
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main",
@@ -221,7 +222,7 @@
         }
 
         function onClickGenerate() {
-            var amount = $("#amount").val(),
+            var amount = parseFloat($(amount).val()) || 0,
                 balance = $("#balance").val(),
                 fromAddress = $("#fromaddress").val(),
                 gaslimit = $("#limit").val(),
@@ -230,33 +231,30 @@
                 toAddress = $("#toaddress").val(),
                 tmp;
 
-            if (amount <= 0)
-                uiBlock({ validationBox: ["#amount", "validate/gt0"] });
-            else try {
-                tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
-                    .times(Utils.toBigNumber(gasprice)), "nas")
+            if (validateAll())
+                try {
+                    tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
+                        .times(Utils.toBigNumber(gasprice)), "nas")
 
-                if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) {
-                    if (Utils.toBigNumber(balance).lt(tmp)) {
-                        amount = Utils.toBigNumber(0).toNumber();
-                    } else {
-                        amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
-                    }
+                    if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
+                        if (Utils.toBigNumber(balance).lt(tmp))
+                            amount = Utils.toBigNumber(0).toNumber();
+                        else
+                            amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
+
+                    gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    gTx.signTransaction();
+
+                    $("#raw").val(gTx.toString());
+                    $("#signed").val(gTx.toProtoString());
+                    $("#transaction").show();
+                } catch (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
                 }
-
-                gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
-                gTx.signTransaction();
-
-                $("#raw").val(gTx.toString());
-                $("#signed").val(gTx.toProtoString());
-                $("#transaction").show();
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: "large",
-                    title: "Error"
-                });
-            }
 
             return false;
         }

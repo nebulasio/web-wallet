@@ -1618,6 +1618,16 @@ h3.nebulas-description {
     white-space: pre-line;
 }
 
+input.invalid {
+    border-color: red;
+}
+
+input.validation-guard {
+    border-color: #e8e8e8;
+}
+
+
+
 /*
     overrides bootstrap
     ============================================================
