@@ -61,7 +61,7 @@
             </div>
             <div class=form-group>
                 <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
-                <input type=text class=form-control id=toaddress>
+                <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq45">
             </div>
             <div class=form-group>
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
@@ -72,18 +72,18 @@
             </div>
             <div class=form-group>
                 <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                <input type=text class=form-control id=limit value=20000>
+                <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
             </div>
             <div class=form-group>
                 <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
-                    <input type=text class=form-control id=price value=1000000>
+                    <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>Wei</div>
                 </div>
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce>
+                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
             </div>
             <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
