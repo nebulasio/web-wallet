@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -10,7 +11,32 @@
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
+    <style>
+        .check_list {
+            width: 400px;
+            height: 500px;
+            background-color: #f5f5f5;
+            position: absolute;
+            margin-left: 30%;
+            margin-top: -50%;
+            border-radius: 50px;
+            padding: 20px;
+        }
+
+        .check_list .data {
+            width: 100%;
+        }
+
+        .check_list .check {
+            margin-top: 60px;
+        }
+
+        .active1 {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
     <div class=logo-main></div>
     <div class=header></div>
@@ -63,22 +89,57 @@
         </div>
     </div>
     <!-- send -->
-    <div id=transaction class="container transaction">
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
-                <textarea class=form-control rows=8 id=raw></textarea>
+    <div id=transaction class="container transaction row">
+
+        <div class=col-6>
+            <div class=col-12>
+                <div class=form-group>
+                    <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
+                    <textarea class=form-control rows=8 id=raw></textarea>
+                </div>
+            </div>
+            <div class=col-12>
+                <div class=form-group>
+                    <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
+                    <textarea class=form-control rows=8 id=signed></textarea>
+                </div>
             </div>
         </div>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
-                <textarea class=form-control rows=8 id=signed></textarea>
+        <div class=ol-md-6>
+            <div id=addressqr></div>
+        </div>
+        <div class="row">
+            <div class=col-md-12>
+                <button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/send>Send </button>
             </div>
         </div>
-        <div class=col-md-12>
-            <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/send>Send Transaction</button>
+
+        <div class="check_list active1">
+
+            <div>
+                <label data-i18n=send-nas/from-address>From Address</label>
+                <input type=text class=form-control id=for_addr disabled>
+            </div>
+            <div>
+                <label data-i18n=send-nas/to-address>To Address</label>
+                <input type=text class=form-control id=to_addr disabled>
+            </div>
+            <div>
+                <label data-i18n=send-nas/amount>Value / Amount to Send</label>
+                <div class=input-group>
+                    <input type=text class=form-control id=value>
+                    <div class=input-group-addon>NAS</div>
+                </div>
+            </div>
+            <div class="data">
+                <label>data</label>
+                <input type=text class=data id=data disabled>
+            </div>
+            <div class="check col-md-12">
+                <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Check Transaction</button>
+            </div>
         </div>
+
     </div>
 
     <!-- Transaction -->
@@ -103,6 +164,7 @@
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
     <!-- <script src=js/api.js data-depends=jquery></script> -->
+    <script src=js/jquery.qrcode.min.js data-depends=jquery></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
@@ -199,7 +261,15 @@
             return false;
         }
 
+        $("#send_transaction").click(function () {
+            $(".check_list").removeClass("active1");
+            $("#for_addr").val($("#fromaddress").val());
+            $("#to_addr").val($("#toaddress").val());
+            $("#value").val($("#amount").val());
+        });
+
         function onClickSendTransaction() {
+            $(".check_list").addClass("active1");
             var mTxHash;
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
@@ -228,6 +298,9 @@
                     console.log(err)
                 });
         }
+
+
     </script>
 </body>
+
 </html>

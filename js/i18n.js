@@ -48,7 +48,7 @@ var i18n = function () {
             "index/comment": "This password encrypts your private key.\n" +
                 "This does not act as a seed to generate your keys.\n" +
                 "You will need this password + your private key to unlock your wallet.",
-            "index/enter-password": "Enter a password:",
+            "index/enter-password": "Enter a password:（Not less than 9 characters）",
             "index/new": "Create New Wallet",
             "index/placeholder/do-not-forget": "Do NOT forget to save this!",
             name: "English",
@@ -118,7 +118,7 @@ var i18n = function () {
             "header/contract": "合约",
             home: "主页",
             "index/comment": "该密码用于加密您的私钥。\n他不做为产生私钥的种子。\n您需要该密码 + 您的私钥以解锁您的钱包。",
-            "index/enter-password": "输入密码:",
+            "index/enter-password": "输入密码:（不少于9位数）",
             "index/new": "新建钱包",
             "index/placeholder/do-not-forget": "别忘了这个！",
             name: "简体中文",

@@ -10,39 +10,33 @@
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
+    <style>
+        .download{
+            text-align: center;
+        }
+
+        .active1{
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <!--
-
-        replace \="([^ =]+)" with =$1
-        
-        testnetchainID 在切换 api 时要不要改? - 启元
-        sendNas.html/onClickSendTransaction 最后那 ajax 为啥要等 1 分钟? - otto
-
-        2018.3.19 ~ 2018.3.24
-        - 主网测试网络切换
-        - 多语言
-        - 查询帐号余额 - View Wallet Info 页面有
-        - 根据交易 hash 查询交易信息（如果交易执行失败，需要提示失败和错误类型）
-        - 部署和执行合约（JS）
-
-        代码段
-        - header, footer
-        - select wallet file 在 3 个文件中都使用
-        删除 js/Blob.js
-        本地创建的过程在 js/wallet.js 里, 不支持 webpack 的 require, 有时间提出来, 有时间把 js/wallet.js 删掉
-        -->
+    
     <div class=logo-main></div>
     <div class=header></div>
 
     <div class="container wallet">
         <form id=newWallet class=col-12>
             <div class=form-group>
-                <label for=password data-i18n=index/enter-password>Enter a password:</label>
+                <label for=password data-i18n=index/enter-password>Enter a password:（Not less than 9 characters）</label>
                 <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!">
             </div>
-            <button id=genNewWallet class="btn btn-block" data-i18n=index/new>Create New Wallet</button>
+            <button  class="btn btn-block" data-i18n=index/new id=creat >Create New Wallet</button>
         </form>
+        <div class="download active1">
+                <h1 class="">Save your <code>Keystore</code> File.</h1>
+                <button id=genNewWallet class="btn btn-block">Download Keystore File (UTC / JSON · Recommended · Encrypted)</button>
+        </div>
         <div class=col-12>
             <p class=wallet_help data-i18n=index/comment>This password encrypts your private key.
                 This does not act as a seed to generate your keys.
@@ -63,6 +57,10 @@
     <script src=js/nebulas.js></script>
     <script>
         "use strict";
+        
+        $("#creat").click(function(){
+            $(".download").removeClass("active1");
+        });
 
         var wallet = require("nebulas"),
             account = wallet.Account.NewAccount();
@@ -72,6 +70,8 @@
             header: ".header",
             logoMain: ".logo-main"
         });
+
+        
 
         $("#genNewWallet").click(function () {
             var password = $("#password").val(),
