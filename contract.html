@@ -125,7 +125,7 @@
         .execution_banner {
             width: 90%;
             height: 200px;
-            background-color: #fff;
+            background-color: #f5f5f5;
             border: 1px solid #f5f5f5;
             border-radius: 20px;
             margin: 0 auto;
@@ -157,38 +157,38 @@
     <div class=wrapperExample1>
         <ul id="tabs" id="myTab" role="tablist">
             <li class="current">
-                <a href="#" title="tab1">Search</a>
+                <a href="#" title="tab1" data-i18n=contract/search></a>
             </li>
             <li>
-                <a href="#" title="tab2">Deploy</a>
+                <a href="#" title="tab2" data-i18n=contract/deploy></a>
             </li>
             <li>
-                <a href="#" title="tab3">Run</a>
+                <a href="#" title="tab3" data-i18n=contract/call></a>
             </li>
         </ul>
         <div id="content">
             <!-- search contract -->
             <div class="search_contract item show" id="tab1">
                 <div class="title">
-                    <span>Search contract</span>
+                    <span data-i18n=contract/search_contract></span>
                 </div>
-                <input id=addr_input type=text placeholder="Please enter your TXhash">
-                <span class="errmsg active1">Please enter a valid TX hash</span>
-                <button class=search>search</button>
+                <input id=addr_input type=text data-i18n=contract/addr_input_msg>
+                <span class="errmsg active1" data-i18n=contract/err_msg_hash>Please enter a valid TX hash</span>
+                <button class=search data-i18n=contract/search></button>
                 <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
             </div>
 
             <div class="deploy_contract item " id="tab2">
                 <div class="title">
-                    <span>Deploy Contract</span>
+                    <span data-i18n=contract/deploy_contract></span>
                 </div>
                 <!-- contract code -->
 
-                <span>code : </span>
+                <span data-i18n=contract/contract_code></span>
                 <textarea name="" id="" cols="30" rows="10"></textarea>
 
                 <!-- select codetype -->
-                <span>codetype : </span>
+                <span data-i18n=contract/contract_codetype></span>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
                     <label class="form-check-label" for="exampleRadios1">js</label>
@@ -201,7 +201,7 @@
 
                 <!-- function args -->
 
-                <span>function,args : </span>
+                <span data-i18n=contract/contract_fun></span>
                 <input type=text id=code>
 
                 <!-- select wallet -->
@@ -210,22 +210,22 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="fromaddress">From Address :</label>
+                        <label for="fromaddress" data-i18n=send-nas/from-address></label>
                         <input type="text" class="form-control" id="from_addr">
                     </div>
                     <div class="col-md-6">
-                        <label for="toaddress">To Address :</label>
+                        <label for="toaddress" data-i18n=send-nas/to-address></label>
                         <input type="text" class="form-control" id="to_addr">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Value : </label>
+                        <label data-i18n=send-nas/amount></label>
                         <input type=text id=value value=0>
                     </div>
                     <div class="col-md-6 lh">
-                        <span>Balance : </span>
+                        <span data-i18n=send-nas/balance></span>
                         <span id=balance></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
@@ -236,32 +236,32 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <span>Gas Limit : </span>
+                        <span data-i18n=gas-limit></span>
                         <!-- <span id=gas_limit></span> -->
                         <input type=text id=gas_limit value=200000>
                     </div>
                     <div class="col-md-6">
-                        <span>Gas Price : </span>
+                        <span data-i18n=gas-price></span>
                         <!-- <span id=gas_price></span> -->
                         <input type=text id=gas_price>
                     </div>
                 </div>
 
-                <span class="deploy_errmsg active1">Please enter a valid msg</span>
+                <span class="deploy_errmsg active1" data-i18n=contract/err_msg></span>
 
                 <div class="result active1" id=result></div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <button id=deploy_run>run</button>
+                        <button id=deploy_run data-i18n=contract/run></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=deploy disabled=disabled class=stop>deploy</button>
+                        <button id=deploy disabled=disabled class=stop data-i18n=contract/deploy></button>
                     </div>
                 </div>
 
                 <div class="tx_result active1">
-                    <span class="execution">execution result：</span>
+                    <span class="execution" data-i18n=contract/execution_result></span>
                     <div class="execution_banner">Results:success,you can deploy this contract.</div>
                     <a href="check.html">TX hash : </a>
                 </div>
@@ -269,33 +269,33 @@
 
             <div class="run_contract item " id="tab3">
                 <div class="title">
-                    <span>Submit Contract</span>
+                    <span data-i18n=contract/run_contract></span>
                 </div>
 
-                <span>function,args : </span>
+                <span data-i18n=contract/contract_fun></span>
                 <input type=text id=code>
 
                 <div class=select-wallet-file></div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="fromaddress">From Address :</label>
+                        <label for="fromaddress" data-i18n=send-nas/from-address></label>
                         <input type="text" class="form-control" id=run_from_addr>
                     </div>
                     <div class="col-md-6">
-                        <label for="toaddress">To Address :</label>
+                        <label for="toaddress" data-i18n=send-nas/to-address></label>
                         <input type=text class=form-control id=run_to_addr>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Value : </label>
+                        <label data-i18n=send-nas/amount></label>
                         <input type=text id=value value=0>
                     </div>
                     <div class="col-md-6 lh">
-                        <span>Balance : </span>
-                        <span id=balance></span>
+                        <span data-i18n=send-nas/balance></span>
+                        <span id=balance ></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
                         <span>Nonce : </span>
@@ -305,31 +305,31 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <span>Gas Limit : </span>
+                        <span data-i18n=gas-limit></span>
                         <!-- <span id=gas_limit></span> -->
                         <input type=text id=run_gas_limit value=200000>
                     </div>
                     <div class="col-md-6">
-                        <span>Gas Price : </span>
+                        <span data-i18n=gas-price></span>
                         <!-- <span id=gas_price></span> -->
                         <input type="text" id=run_gas_price>
                     </div>
                 </div>
 
-                <span class="run_errmsg active1">Please enter a valid code</span>
+                <span class="run_errmsg active1" data-i18n=contract/err_msg></span>
 
                 <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button id=run_run>run</button>
+                        <button id=run_run data-i18n=contract/run></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=call disabled=disabled class=stop>call</button>
+                        <button id=call disabled=disabled class=stop data-i18n=contract/call></button>
                     </div>
                 </div>
 
                 <div class="next  active1">
-                    <span class="execution">execution result：</span>
+                    <span class="execution" data-i18n=contract/execution_result></span>
                     <div class="execution_banner"></div>
                     <a href="check.html">TX hash : </a>
                 </div>
