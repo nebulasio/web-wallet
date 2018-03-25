@@ -208,13 +208,8 @@
         }
 
 
-        function done(resp) {
-            console.log(resp);
-            if (resp.error) {
-                throw new Error(resp.error);
-            }
-
-            var o = resp.result;
+        function done(o) {
+            console.log(o);
 
             $("#info").removeClass("active1 ");
             $(".tx_hash").append(o.hash);
