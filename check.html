@@ -60,9 +60,11 @@
         <section class=col>
             <h1 translate=NAV_CheckTxStatus data-i18n=header/check>Check TX Status</h1>
             <p translate=tx_Summary>
-                <span data-i18n=check/blah1>During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs.</span>
+                <span data-i18n=check/blah1>During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool
+                    aims to give you the ability to find and "cancel" / replace these TXs.</span>
                 <strong>
-                    <span data-i18n=check/blah2>This is not typically something you can do. It should not be relied upon &amp; will only work when the TX Pools are full.</span>
+                    <span data-i18n=check/blah2>This is not typically something you can do. It should not be relied upon &amp; will only work when the
+                        TX Pools are full.</span>
                 </strong>
             </p>
         </section>
@@ -88,6 +90,14 @@
                             <a href=# target=_blank rel="noopener noreferrer" class=tx_hash></a>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td translate=x_TxHash>Contract address</td>
+                        <td>
+                            <a href=# target=_blank rel="noopener noreferrer" class=contract_addr></a>
+                        </td>
+                    </tr>
+
 
                     <tr>
                         <td translate=x_TxHash>TxReceipt Status</td>
@@ -168,7 +178,7 @@
             var nebulas = require("nebulas");
             var Account = nebulas.Account;
             var neb = new nebulas.Neb();
-             // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
             $("#btn").click(function () {
@@ -178,9 +188,9 @@
                         $(".errmsg").addClass("active1");
                     }, 2000);
                 } else {
-                    neb.api.getTransactionReceipt($("#input").val()).then(done).catch(function(err){
+                    neb.api.getTransactionReceipt($("#input").val()).then(done).catch(function (err) {
                         // TODO handle error
-                        console.log( err)
+                        console.log(err)
                     });
                 }
             });
@@ -211,7 +221,10 @@
             console.log(o);
 
             $("#info").removeClass("active1 ");
+
             $(".tx_hash").append(o.hash);
+
+            $(".contract_addr").append(o.contract_address);
 
             $(".status").append(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
 
