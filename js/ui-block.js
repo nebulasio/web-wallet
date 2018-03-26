@@ -264,6 +264,8 @@ var uiBlock = {
         function validateAll() {
             var ret = true;
 
+            $inputs.removeClass("invalid").popover("hide");
+
             $inputs.each(function (i, o) {
                 var $el = $(o),
                     s = $el.data("validate-order-matters"),

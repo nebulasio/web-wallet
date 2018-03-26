@@ -45,31 +45,31 @@
                 <label data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</label>
             </h1>
             <div class="row">
-            <div class="form-group col-md-6">
-                <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
-                <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35">
-            </div>
-            <div class="form-group col-md-6">
-                <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
-                <div class=input-group>
-                    <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number gt0">
-                    <div class=input-group-addon>NAS</div>
+                <div class="form-group col-md-6">
+                    <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
+                    <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
+                    <div class=input-group>
+                        <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number gt0">
+                        <div class=input-group-addon>NAS</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
-            </div>
-            <div class="form-group col-md-6">
-                <label for=price data-i18n=gas-price>Gas Price</label>
-                <div class=input-group>
-                    <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
-                    <div class=input-group-addon>Wei</div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for=limit data-i18n=gas-limit>Gas Limit</label>
+                    <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for=price data-i18n=gas-price>Gas Price</label>
+                    <div class=input-group>
+                        <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
+                        <div class=input-group-addon>Wei</div>
+                    </div>
                 </div>
             </div>
-        </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
                 <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
@@ -177,8 +177,7 @@
             unit = nebulas.Unit,
             neb = new Neb(),
             gAccount = new Account(),
-            validateAll = uiBlock.validate(),
-            testnetchainID = 1003;
+            validateAll = uiBlock.validate();
 
         // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
         neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
@@ -240,6 +239,7 @@
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
+                chainId = localStorage.chainId || 1003,
                 toaccount, tmp, tx;
 
             if (validateAll())
@@ -253,7 +253,7 @@
                         else
                             amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
 
-                    tx = new Transaction(testnetchainID, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    tx = new Transaction(chainId, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
 
                     $("#raw").val(tx.toString());

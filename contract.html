@@ -81,7 +81,8 @@
         /* #tabs li a:focus {
             background-color: #ccc;
         } */
-        .ccc{
+
+        .ccc {
             background-color: #cccccc;
         }
 
@@ -141,7 +142,7 @@
             border-color: red;
         }
 
-        .mt20{
+        .mt20 {
             margin-top: 20px;
         }
     </style>
@@ -183,23 +184,24 @@
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea name="" id="source" cols="30" rows="10"></textarea><br>
+                <textarea name="" id="source" cols="30" rows="10"></textarea>
+                <br>
                 <br>
                 <!-- select codetype -->
 
                 <div class="codetype">
-                <span data-i18n=contract/contract_codetype></span>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios1" value="js" checked>
-                    <label class="form-check-label" for="exampleRadios1">js</label>
+                    <span data-i18n=contract/contract_codetype></span>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios1" value="js" checked>
+                        <label class="form-check-label" for="exampleRadios1">js</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios2" value="ts">
+                        <label class="form-check-label" for="exampleRadios2">ts</label>
+                    </div>
+                    <span data-i18n=contract/contract_codetype_banner>(请选择代码类型！ )</span>
+
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios2" value="ts">
-                    <label class="form-check-label" for="exampleRadios2">ts</label>
-                </div>
-                <span data-i18n=contract/contract_codetype_banner>(请选择代码类型！ )</span>
-                    
-            </div>
                 <br>
 
                 <!-- function args -->
@@ -265,14 +267,14 @@
                 </div>
 
                 <div class="next  active1 row">
-                        <div class="col-md-6">
-                            <span class="execution" data-i18n=contract/execution_result></span>
-                            <div class="execution_banner"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="check.html">TX hash : </a>
-                        </div>
+                    <div class="col-md-6">
+                        <span class="execution" data-i18n=contract/execution_result></span>
+                        <div class="execution_banner"></div>
                     </div>
+                    <div class="col-md-6">
+                        <a href="check.html">TX hash : </a>
+                    </div>
+                </div>
             </div>
 
             <div class="run_contract item " id="tab3">
@@ -382,7 +384,6 @@
             var Account = nebulas.Account;
             var Utils = nebulas.Utils;
             var neb = new nebulas.Neb();
-            var testnetchainID = 1003;
             var nonce, gAccount;
             // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
@@ -512,7 +513,8 @@
                     "args": $("#deploy_args").val().trim()
                 };
 
-                let gTx = new nebulas.Transaction(testnetchainID, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
+                var chainId = localStorage.chainId || 1003;
+                let gTx = new nebulas.Transaction(chainId, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
                 gTx.signTransaction();
                 // console.log(gTx.toString());
 

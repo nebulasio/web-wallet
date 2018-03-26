@@ -121,8 +121,7 @@
         </div>
         <div class="row">
             <div class=col-md-12>
-                <button type="button" id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal" data-target="#exampleModal"
-                    data-i18n=send-nas/send>Send </button>
+                <button type="button" id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal" data-target="#exampleModal" data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 
@@ -201,7 +200,6 @@
             Utils = nebulas.Utils,
             Unit = nebulas.Unit,
             neb = new nebulas.Neb(),
-            testnetchainID = 1003,
             validateAll = uiBlock.validate(),
             gAccount, gTx;
         // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
@@ -253,6 +251,7 @@
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
                 toAddress = $("#toaddress").val(),
+                chainId = localStorage.chainId || 1003,
                 tmp;
 
             if (validateAll())
@@ -266,7 +265,7 @@
                         else
                             amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
 
-                    gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                    gTx = new Transaction(chainId, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
 
                     $("#raw").val(gTx.toString());
