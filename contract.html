@@ -475,7 +475,7 @@
             $("#deploy").click(function(){
                 innerDeploy(function(params){
 
-                    var chainId = 1003;//parseInt(localStorage.chainId) || 1003;
+                    var chainId = parseInt(localStorage.chainId) || 1003;
                     var gTx = new wallet.Transaction(chainId, globalParams.account, params.from, 
                             params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                     gTx.signTransaction();
