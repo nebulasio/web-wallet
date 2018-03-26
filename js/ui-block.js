@@ -251,6 +251,7 @@ var uiBlock = {
         var nebulas = require("nebulas"),
             Utils = nebulas.Utils,
             mRules = {
+                eqgt0: function (s) { return s > -1; },
                 gt0: function (s) { return s > 0; },
                 lengthEq35: function (s) { return s.length == 35; },
                 lengthGt8: function (s) { return s.length > 8; },
