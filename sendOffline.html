@@ -31,7 +31,7 @@
                     <input type=text id=fa_gasprice class=form-control>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for=fa_nonce>Nonce:</label>
+                    <label for=fa_nonce data-i18n=sendoffline/nonce>Nonce: (next transaction nonce)</label>
                     <input type=text id=fa_nonce class=form-control>
                 </div>
             </div>
@@ -219,7 +219,7 @@
 
                         return neb.api.getAccountState(gAccount.getAddressString());
                     }).then(function (resp) {
-                        $("#fa_nonce").val(resp.nonce);
+                        $("#fa_nonce").val(parseInt(resp.nonce) + 1);
                         $("#nonce").val(parseInt(resp.nonce) + 1);
                         $("#information").show();
                     }).catch(function (e) { throw e });

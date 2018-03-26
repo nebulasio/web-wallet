@@ -434,13 +434,13 @@
             // deploy-------------------------------------------
             $("#deploy_run").click(function () {
                 //local verification
-                if($("#from_addr").val().length < 46){
+                if($("#from_addr").val().length < 35){
                     $("#from_addr").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#from_addr").removeClass("err");
                     }, 5000);
-                }else if($("#to_addr").val().length < 46){
+                }else if($("#to_addr").val().length < 35){
                     $("#to_addr").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
