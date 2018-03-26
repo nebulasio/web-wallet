@@ -124,8 +124,6 @@
             width: 90%;
             height: 200px;
             background-color: #f5f5f5;
-            border: 1px solid #f5f5f5;
-            border-radius: 20px;
             margin: 0 auto;
         }
 
@@ -133,16 +131,16 @@
             display: inline-block;
         }
 
-        .deploy_contract .deploy_errmsg{
-            color: red;
-        }
-        
-        #tab3 .run_errmsg{
+        .deploy_contract .deploy_errmsg {
             color: red;
         }
 
-        .err{
-            border-color:red;
+        #tab3 .run_errmsg {
+            color: red;
+        }
+
+        .err {
+            border-color: red;
         }
     </style>
 </head>
@@ -212,10 +210,10 @@
                         <input type="text" class="form-control" id="from_addr">
                     </div>
                     <div class="col-md-6">
-                            <label for="toaddress" data-i18n=send-nas/to-address></label>
-                            <input type="text" class="form-control" id="to_addr">
-                        </div>
-                    
+                        <label for="toaddress" data-i18n=send-nas/to-address></label>
+                        <input type="text" class="form-control" id="to_addr">
+                    </div>
+
                 </div>
 
                 <div class="row">
@@ -259,20 +257,35 @@
                     </div>
                 </div>
 
-                <div class="tx_result active1">
-                    <span class="execution" data-i18n=contract/execution_result></span>
-                    <div class="execution_banner">Results:success,you can deploy this contract.</div>
-                    <a href="check.html" id="deploy_contract_hash">TX hash : </a>
-                </div>
+                <div class="next  active1 row">
+                        <div class="col-md-6">
+                            <span class="execution" data-i18n=contract/execution_result></span>
+                            <div class="execution_banner"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="check.html">TX hash : </a>
+                        </div>
+                    </div>
             </div>
 
             <div class="run_contract item " id="tab3">
-                <div class="title">
+                <!-- <div class="title">
                     <span data-i18n=contract/run_contract></span>
+                </div> -->
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <span data-i18n=contract/contract_funtion></span>
+                        <input type=text id=code>
+                    </div>
+                    <div class="col-md-6">
+                        <span data-i18n=contract/contract_fun></span>
+                        <input type=text id=code>
+                    </div>
                 </div>
 
-                <span data-i18n=contract/contract_fun></span>
-                <input type=text id=code>
+
+
 
                 <div class=select-wallet-file></div>
 
@@ -294,7 +307,7 @@
                     </div>
                     <div class="col-md-6 lh">
                         <span data-i18n=send-nas/balance></span>
-                        <span id=balance ></span>
+                        <span id=balance></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
                         <span>Nonce : </span>
@@ -327,10 +340,14 @@
                     </div>
                 </div>
 
-                <div class="next  active1">
-                    <span class="execution" data-i18n=contract/execution_result></span>
-                    <div class="execution_banner"></div>
-                    <a href="check.html">TX hash : </a>
+                <div class="next  active1 row">
+                    <div class="col-md-6">
+                        <span class="execution" data-i18n=contract/execution_result></span>
+                        <div class="execution_banner"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="check.html">TX hash : </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -360,7 +377,7 @@
             var neb = new wallet.Neb();
             var testnetchainID = 1003;
             var nonce, gAccount;
-             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
             uiBlock.insert({
@@ -388,7 +405,7 @@
                     }).then(function (resp) {
                         nonce = parseInt(resp.nonce) + 1;
                         $("#balance").text(resp.balance);
-                    }).catch(function(err){
+                    }).catch(function (err) {
                         // TODO handle error
                     });
 
@@ -443,7 +460,7 @@
                 }
                 //local verification
                 let from = $("#from_addr").val().trim();
-                if(!Account.isValidAddress(from)) {
+                if (!Account.isValidAddress(from)) {
                     $("#from_addr").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
@@ -454,11 +471,11 @@
 
                 let gasLimit = Utils.toBigNumber(0);
                 try {
-                     gasLimit = Utils.toBigNumber($("#gas_limit").val());
+                    gasLimit = Utils.toBigNumber($("#gas_limit").val());
                 } catch (err) {
                     console.log(err);
                 }
-                if(gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
+                if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                     $("#gas_limit").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
@@ -470,10 +487,10 @@
                 let gasPrice = Utils.toBigNumber(0);
                 try {
                     gasPrice = Utils.toBigNumber($("#gas_price").val());
-                }  catch (err) {
+                } catch (err) {
                     console.log(err);
                 }
-                if(gasPrice.cmp(Utils.toBigNumber(0)) <= 0 ) {
+                if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
                     $("#gas_price").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
@@ -491,12 +508,12 @@
                 let gTx = new wallet.Transaction(testnetchainID, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
                 gTx.signTransaction();
                 // console.log(gTx.toString());
-                
-                neb.api.sendRawTransaction(gTx.toProtoString()).then(function(resp){
+
+                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                     // if deploy success show txhash
                     $("#deploy_contract_hash").text("TX hash: " + resp.txhash); // TODO txhash放在这个位置？
                     $(".tx_result").removeClass("active1");                     // TODO 这个框作用？
-                }).catch(function(err){
+                }).catch(function (err) {
                     // TODO handle error
                     console.log(err);
                 });
@@ -527,27 +544,27 @@
 
             // run function
             $("#run_run").click(function () {
-            //local verification
-                if($("#run_from_addr").val().length < 46){
+                //local verification
+                if ($("#run_from_addr").val().length < 46) {
                     $("#run_from_addr").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_from_addr").removeClass("err");
                     }, 5000);
-                }else if($("#run_to_addr").val().length < 46){
+                } else if ($("#run_to_addr").val().length < 46) {
                     $("#run_to_addr").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_to_addr").removeClass("err");
                     }, 5000);
-                }else if($("#run_gas_limit").val().length < 1){
+                } else if ($("#run_gas_limit").val().length < 1) {
                     $("#run_gas_limit").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_gas_limit").removeClass("err");
                     }, 5000);
                 }
-                else if($("#run_gas_price").val().length < 1){
+                else if ($("#run_gas_price").val().length < 1) {
                     $("#run_gas_price").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
