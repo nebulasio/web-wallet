@@ -257,13 +257,15 @@
             if (validateAll())
                 try {
                     tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
-                        .times(Utils.toBigNumber(gasprice)), "nas")
+                        .times(Utils.toBigNumber(gasprice)), "nas");
 
                     if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
                         if (Utils.toBigNumber(balance).lt(tmp))
-                            amount = Utils.toBigNumber(0).toNumber();
+                            amount = Utils.toBigNumber(0);
                         else
-                            amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
+                            amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
+                    
+                    console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
                     gTx = new Transaction(chainId, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
@@ -300,6 +302,7 @@
                     return neb.api.getTransactionReceipt(mTxHash);
                 }).then(function (resp) {
                     $("#receipt").val(mTxHash);
+                    $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt_div").show();
 
                     // TODO 重新点击需要reset页面状态，清理setTimeout

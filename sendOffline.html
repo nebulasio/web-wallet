@@ -179,7 +179,8 @@
             unit = nebulas.Unit,
             neb = new Neb(),
             gAccount = new Account(),
-            validateAll = uiBlock.validate();
+            validateAll = uiBlock.validate(),
+            gFromState;
 
         // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
         neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
@@ -219,6 +220,10 @@
 
                         return neb.api.getAccountState(gAccount.getAddressString());
                     }).then(function (resp) {
+                        gFromState = {
+                            balance: resp.balance,
+                            nonce: resp.nonce
+                        };
                         $("#fa_nonce").val(parseInt(resp.nonce) + 1);
                         $("#nonce").val(parseInt(resp.nonce) + 1);
                         $("#information").show();
@@ -233,25 +238,28 @@
         });
 
         function generate() {
-            var toaddress = $(".icon-address.to input").val(),
-                amount = parseFloat($("#amount").val()) || 0,
-                balance = $("#balance").val(),
+            var fromaddress = $(".icon-address.from input").val(),
+                toaddress = $(".icon-address.to input").val(),
+                amount = $("#amount").val(),
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
                 chainId = +(localStorage.chainId || 1003),
-                toaccount, tmp, tx;
+                toaccount, tmp, tx, balance;
 
             if (validateAll())
                 try {
                     toaccount = Account.fromAddress(toaddress);
                     tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
 
-                    if (utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp)))
-                        if (utils.toBigNumber(balance).lt(tmp))
-                            amount = utils.toBigNumber(0).toNumber();
+                    balance = unit.fromBasic(utils.toBigNumber(gFromState.balance), "nas");
+                    console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
+
+                    if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
+                        if (balance.lt(tmp))
+                            amount = utils.toBigNumber(0);
                         else
-                            amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
+                            amount = balance.minus(tmp);
 
                     tx = new Transaction(chainId, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
@@ -279,7 +287,7 @@
                         return neb.api.getTransactionReceipt(resp.txhash);
                     }).then(function (resp) {
                         $("#receipt_state").val(JSON.stringify(resp));
-                        $("#receipt").val(txhash);
+                        $("#receipt").val(resp.hash);
                         $("#receipt_div").show();
                     }).catch(function (e) {
                         bootbox.dialog({

@@ -1287,7 +1287,7 @@ HttpRequest.prototype.request = function (method, api, payload) {
     }).then(function (resp) {
         return resp.data;
     }).catch(function (e) {
-        return e.response.data;
+        throw e.response.data;
     });
 };
 
@@ -1505,12 +1505,12 @@ Transaction.prototype = {
             chainID: this.chainID,
             from: this.from.getAddressString(),
             to: this.to.getAddressString(),
-            value: this.value.toString(),
+            value: this.value.toString(10),
             nonce: this.nonce,
             timestamp: this.timestamp,
             data: { payloadType: this.data.type, payload: payload },
-            gasPrice: this.gasPrice.toString(),
-            gasLimit: this.gasLimit.toString(),
+            gasPrice: this.gasPrice.toString(10),
+            gasLimit: this.gasLimit.toString(10),
             hash: this.hash.toString("hex"),
             alg: this.alg,
             sign: this.sign.toString("hex")
