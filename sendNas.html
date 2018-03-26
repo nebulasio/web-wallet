@@ -246,7 +246,7 @@
         }
 
         function onClickGenerate() {
-            var amount = parseFloat($(amount).val()) || 0,
+            var amount = $("#amount").val(),
                 balance = $("#balance").val(),
                 fromAddress = $("#fromaddress").val(),
                 gaslimit = $("#limit").val(),
@@ -266,7 +266,7 @@
                         else
                             amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp)).toNumber();
 
-                    gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    gTx = new Transaction(testnetchainID, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
 
                     $("#raw").val(gTx.toString());

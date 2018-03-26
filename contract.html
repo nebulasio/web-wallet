@@ -183,16 +183,16 @@
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <textarea name="" id="source" cols="30" rows="10"></textarea>
 
                 <!-- select codetype -->
                 <span data-i18n=contract/contract_codetype></span>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios1" value="js" checked>
                     <label class="form-check-label" for="exampleRadios1">js</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                    <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios2" value="ts">
                     <label class="form-check-label" for="exampleRadios2">ts</label>
                 </div>
                 <br>
@@ -200,7 +200,7 @@
                 <!-- function args -->
 
                 <span data-i18n=contract/contract_fun></span>
-                <input type=text id=code>
+                <input type=text id="deploy_args">
 
                 <!-- select wallet -->
 
@@ -262,7 +262,7 @@
                 <div class="tx_result active1">
                     <span class="execution" data-i18n=contract/execution_result></span>
                     <div class="execution_banner">Results:success,you can deploy this contract.</div>
-                    <a href="check.html">TX hash : </a>
+                    <a href="check.html" id="deploy_contract_hash">TX hash : </a>
                 </div>
             </div>
 
@@ -356,7 +356,10 @@
 
             var wallet = require("nebulas");
             var Account = wallet.Account;
+            var Utils = wallet.Utils;
             var neb = new wallet.Neb();
+            var testnetchainID = 1003;
+            var nonce, gAccount;
              // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
@@ -372,19 +375,19 @@
 
                 try {
                     account.fromKey(fileJson, password);
+                    gAccount = account;
                     $("#from_addr").val(account.getAddressString());
                     $("#run_from_addr").val(account.getAddressString());
                     $("#unlock").hide();
                     $("#send").show();
 
                     neb.api.gasPrice().then(function (resp) {
-                        $("#gas_price").append(resp.gas_price);
-                        // $("#gas_limit").append(resp.gas_price);      //返回结果没有gas limit
-                        $("#run_gas_price").append(resp.gas_price);
-                        // $("#run_gas_limit").append(resp.gas_price);  //返回结果没有gas limit
+                        $("#gas_price").val(resp.gas_price);
+                        $("#run_gas_price").val(resp.gas_price);
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
-                        $("#nonce").append(parseInt(resp.nonce) + 1);
+                        nonce = parseInt(resp.nonce) + 1;
+                        $("#balance").text(resp.balance);
                     }).catch(function(err){
                         // TODO handle error
                     });
@@ -433,37 +436,70 @@
 
             // deploy-------------------------------------------
             $("#deploy_run").click(function () {
+
+                if (nonce <= 0) {
+                    // TODO 提示未加载到有效账号信息
+                    return;
+                }
                 //local verification
-                if($("#from_addr").val().length < 35){
+                let from = $("#from_addr").val().trim();
+                if(!Account.isValidAddress(from)) {
                     $("#from_addr").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#from_addr").removeClass("err");
                     }, 5000);
-                }else if($("#to_addr").val().length < 35){
-                    $("#to_addr").addClass("err");
-                    $(".deploy_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#to_addr").removeClass("err");
-                    }, 5000);
-                }else if($("#gas_limit").val().length < 1) {
+                    return;
+                }
+
+                let gasLimit = Utils.toBigNumber(0);
+                try {
+                     gasLimit = Utils.toBigNumber($("#gas_limit").val());
+                } catch (err) {
+                    console.log(err);
+                }
+                if(gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                     $("#gas_limit").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#gas_limit").removeClass("err");
                     }, 5000);
+                    return;
                 }
-                else if($("#gas_price").val().length < 1){
+
+                let gasPrice = Utils.toBigNumber(0);
+                try {
+                    gasPrice = Utils.toBigNumber($("#gas_price").val());
+                }  catch (err) {
+                    console.log(err);
+                }
+                if(gasPrice.cmp(Utils.toBigNumber(0)) <= 0 ) {
                     $("#gas_price").addClass("err");
                     $(".deploy_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#gas_price").removeClass("err");
                     }, 5000);
+                    return;
                 }
 
-                // if deploy success show txhash
-                $(".tx_result").removeClass("active1");
+                let contract = {
+                    "source": $("#source").val(),
+                    "sourceType": $("input[name=sourceType]").val(),
+                    "args": $("#deploy_args").val().trim()
+                };
 
+                let gTx = new wallet.Transaction(testnetchainID, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
+                gTx.signTransaction();
+                // console.log(gTx.toString());
+                
+                neb.api.sendRawTransaction(gTx.toProtoString()).then(function(resp){
+                    // if deploy success show txhash
+                    $("#deploy_contract_hash").text("TX hash: " + resp.txhash); // TODO txhash放在这个位置？
+                    $(".tx_result").removeClass("active1");                     // TODO 这个框作用？
+                }).catch(function(err){
+                    // TODO handle error
+                    console.log(err);
+                });
             });
 
             //call------------------------------------------
