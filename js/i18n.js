@@ -29,7 +29,7 @@ var i18n = function () {
             "contract/call": "Call",
             "contract/contract_code": "code : ",
             "contract/contract_codetype": "codetype :",
-            "contract/contract_fun": "function,args :",
+            "contract/contract_fun": "arguments (If you have this, please enter the reference format as: {'function':'save','args':'0'}) :",
             "contract/addr_input_msg": "Please enter your TXhash",
             "contract/err_msg": "Red part information is wrong，Please enter a valid msg",
             "contract/err_msg_hash": "Please enter a valid TX hash",

@@ -22,7 +22,7 @@
             </h1>
             <div class=form-group>
                 <label for=fromaddress data-i18n=send-nas/from-address>From Address:</label>
-                <input type=text id=fromaddress class=form-control placeholder=c66d758fbf64ef62a371801570cde8fe1e7f08bce3daf8e4 data-validate-order-matters="required lengthEq35">
+                <input type=text id=fromaddress class=form-control placeholder=c66d....................af8e4 data-validate-order-matters="required lengthEq35">
             </div>
             <button id=Generate_info type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-offline/gen-info>Inquire Information</button>
             <div class=row id=information style=display:none;>
@@ -44,28 +44,32 @@
             <h1>
                 <label data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</label>
             </h1>
-            <div class=form-group>
+            <div class="row">
+            <div class="form-group col-md-6">
                 <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
                 <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35">
             </div>
-            <div class=form-group>
+            <div class="form-group col-md-6">
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                 <div class=input-group>
                     <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>NAS</div>
                 </div>
             </div>
-            <div class=form-group>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
                 <label for=limit data-i18n=gas-limit>Gas Limit</label>
                 <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
             </div>
-            <div class=form-group>
+            <div class="form-group col-md-6">
                 <label for=price data-i18n=gas-price>Gas Price</label>
                 <div class=input-group>
                     <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
                     <div class=input-group-addon>Wei</div>
                 </div>
             </div>
+        </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
                 <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
