@@ -78,17 +78,15 @@
             box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
         }
 
-        #tabs li a:focus {
+        /* #tabs li a:focus {
             background-color: #ccc;
-        }
-
-        .current {
-            background-color: #fff;
+        } */
+        .ccc{
+            background-color: #cccccc;
         }
 
         .current a {
             outline: 0;
-            background: #fff;
             z-index: 4;
         }
 
@@ -156,7 +154,7 @@
     <!-- Code Editor window -->
     <div class=wrapperExample1>
         <ul id="tabs" id="myTab" role="tablist">
-            <li class="current">
+            <li class="current ccc">
                 <a href="#" title="tab1" data-i18n=contract/search></a>
             </li>
             <li>
@@ -444,8 +442,8 @@
 
             $('#tabs a').click(function (e) {
                 e.preventDefault();
-                $('#tabs li').removeClass("current").removeClass("hoverItem");
-                $(this).parent().addClass("current");
+                $('#tabs li').removeClass("ccc");
+                $(this).parent().addClass("ccc");
                 $("#content div").removeClass("show");
                 $('#' + $(this).attr('title')).addClass('show');
                 $('this').addClass('current');
