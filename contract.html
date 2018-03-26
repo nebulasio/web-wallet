@@ -267,14 +267,14 @@
                 </div>
 
                 <div class="next  active1 row">
-                    <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/execution_result></span>
-                        <div class="execution_banner"></div>
+                        <div class="col-md-6">
+                            <span class="execution" data-i18n=contract/execution_result></span>
+                            <div class="execution_banner"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="check.html">TX hash : </a>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <a href="check.html">TX hash : </a>
-                    </div>
-                </div>
             </div>
 
             <div class="run_contract item " id="tab3">
@@ -301,7 +301,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="fromaddress" data-i18n=send-nas/from-address></label>
-                        <input type="text" class="form-control" id=run_from_addr>
+                        <input type="text" class="form-control" id=run_from_addr disabled>
                     </div>
                     <div class="col-md-6">
                         <label for="toaddress" data-i18n=send-nas/to-address></label>
@@ -386,7 +386,6 @@
             var neb = new nebulas.Neb();
             var testnetchainID = 1003;
             var nonce, gAccount;
-
             // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
