@@ -139,7 +139,7 @@
                     <tr>
                         <td translate=OFFLINE_Step2_Label_6 data-i18n=data>Data</td>
                         <td class=data>
-                            <textarea name=code id=code cols=50 rows=2></textarea>
+                            <textarea name=code id=code cols=50 rows=2 wrap=virtual></textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -226,7 +226,7 @@
             var num = toWei(o.gas_price);
             $(".gasPrice").append(num);
 
-            $(".data").append(o.data);
+            $("#code").append(o.data);
 
             var nas = toNas(o.value);
             $(".value").append(nas);
