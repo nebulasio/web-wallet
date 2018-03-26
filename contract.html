@@ -267,14 +267,14 @@
                 </div>
 
                 <div class="next  active1 row">
-                        <div class="col-md-6">
-                            <span class="execution" data-i18n=contract/execution_result></span>
-                            <div class="execution_banner"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="check.html">TX hash : </a>
-                        </div>
+                    <div class="col-md-6">
+                        <span class="execution" data-i18n=contract/execution_result></span>
+                        <div class="execution_banner"></div>
                     </div>
+                    <div class="col-md-6">
+                        <a href="check.html">TX hash : </a>
+                    </div>
+                </div>
             </div>
 
             <div class="run_contract item " id="tab3">
@@ -380,14 +380,15 @@
 
         $(function () {
 
-            var wallet = require("nebulas");
-            var Account = wallet.Account;
-            var Utils = wallet.Utils;
-            var neb = new wallet.Neb();
+            var nebulas = require("nebulas");
+            var Account = nebulas.Account;
+            var Utils = nebulas.Utils;
+            var neb = new nebulas.Neb();
             var testnetchainID = 1003;
             var nonce, gAccount;
-            // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+
+            // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
             uiBlock.insert({
                 footer: ".footer",
@@ -514,7 +515,7 @@
                     "args": $("#deploy_args").val().trim()
                 };
 
-                let gTx = new wallet.Transaction(testnetchainID, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
+                let gTx = new nebulas.Transaction(testnetchainID, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
                 gTx.signTransaction();
                 // console.log(gTx.toString());
 

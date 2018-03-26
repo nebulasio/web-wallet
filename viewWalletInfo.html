@@ -87,16 +87,16 @@
     <script>
         "use strict";
 
-        var wallet = require("nebulas"),
-            Account = wallet.Account,
-            Neb = wallet.Neb,
-            Transaction = wallet.Transaction,
-            Utils = wallet.Utils,
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            Neb = nebulas.Neb,
+            Transaction = nebulas.Transaction,
+            Utils = nebulas.Utils,
             neb = new Neb(),
             gAccount, gFileJson;
 
-        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
         $("#keystore").on("click", onClickKeystore);
 
@@ -121,7 +121,7 @@
                     if (resp.error) {
                         throw new Error(resp.error);
                     } else {
-                        $("#amount").text(wallet.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
+                        $("#amount").text(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
                         $("#addressqr").text("");
                         $("#privateqr").text("");
                         $("#addressqr").qrcode(account.getAddressString());

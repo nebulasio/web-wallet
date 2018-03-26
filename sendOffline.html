@@ -169,19 +169,19 @@
     <script>
         "use strict";
 
-        var wallet = require("nebulas"),
-            Account = wallet.Account,
-            Neb = wallet.Neb,
-            Transaction = wallet.Transaction,
-            utils = wallet.Utils,
-            unit = wallet.Unit,
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            Neb = nebulas.Neb,
+            Transaction = nebulas.Transaction,
+            utils = nebulas.Utils,
+            unit = nebulas.Unit,
             neb = new Neb(),
             gAccount = new Account(),
             validateAll = uiBlock.validate(),
             testnetchainID = 1003;
 
-        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
         uiBlock.insert({
             footer: ".footer",

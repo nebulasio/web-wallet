@@ -20,11 +20,11 @@
             display: none;
         }
 
-        .download{
+        .download {
             margin-top: 48px;
         }
-        
-        input{
+
+        input {
             text-align: center;
         }
     </style>
@@ -37,6 +37,10 @@
 
         sendNas.html/onClickSendTransaction 最后那 ajax 为啥要等 1 分钟? - otto
 
+        http://34.205.26.12:8685/
+        https://testnet.nebulas.io/
+        https://github.com/nebulasio/wiki/blob/master/rpc.md
+
         2018.3.19 ~ 2018.3.24
         - 主网测试网络切换
         - 多语言
@@ -48,7 +52,7 @@
         - header, footer
         - select wallet file 在 3 个文件中都使用
         删除 js/Blob.js
-        本地创建的过程在 js/wallet.js 里, 不支持 webpack 的 require, 有时间提出来, 有时间把 js/wallet.js 删掉
+        本地创建的过程在 js/nebulas.js 里, 不支持 webpack 的 require, 有时间提出来, 有时间把 js/nebulas.js 删掉
         -->
     <div class=logo-main></div>
     <div class=header></div>
@@ -57,8 +61,7 @@
         <div id=newWallet class=col-12>
             <div class=form-group>
                 <label for=password data-i18n=index/enter-password>Enter a password:（Not less than 9 characters）</label>
-                <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!"
-                    data-validate-order-matters="required lengthGt8">
+                <input type=password class=form-control id=password data-i18n=index/placeholder/do-not-forget placeholder="Do NOT forget to save this!" data-validate-order-matters="required lengthGt8">
             </div>
             <button class="btn btn-block" data-i18n=index/new id=creat>Create New Wallet</button>
         </div>
@@ -90,8 +93,8 @@
         "use strict";
 
 
-        var wallet = require("nebulas"),
-            account = wallet.Account.NewAccount(),
+        var nebulas = require("nebulas"),
+            account = nebulas.Account.NewAccount(),
             validateAll = uiBlock.validate();
 
         uiBlock.insert({

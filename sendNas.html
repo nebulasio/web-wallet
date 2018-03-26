@@ -196,16 +196,16 @@
     <script>
         "use strict";
 
-        var wallet = require("nebulas"),
-            Transaction = wallet.Transaction,
-            Utils = wallet.Utils,
-            Unit = wallet.Unit,
-            neb = new wallet.Neb(),
+        var nebulas = require("nebulas"),
+            Transaction = nebulas.Transaction,
+            Utils = nebulas.Utils,
+            Unit = nebulas.Unit,
+            neb = new nebulas.Neb(),
             testnetchainID = 1003,
             validateAll = uiBlock.validate(),
             gAccount, gTx;
-        // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
