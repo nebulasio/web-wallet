@@ -239,7 +239,7 @@
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
-                chainId = localStorage.chainId || 1003,
+                chainId = +(localStorage.chainId || 1003),
                 toaccount, tmp, tx;
 
             if (validateAll())

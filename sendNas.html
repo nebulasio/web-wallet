@@ -251,7 +251,7 @@
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
                 toAddress = $("#toaddress").val(),
-                chainId = localStorage.chainId || 1003,
+                chainId = +(localStorage.chainId || 1003),
                 tmp;
 
             if (validateAll())
