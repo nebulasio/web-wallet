@@ -93,7 +93,7 @@
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
+                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0" disabled>
             </div>
             <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
@@ -121,7 +121,7 @@
         </div>
         <div class="row">
             <div class=col-md-12>
-                <button type="button" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal" data-target="#exampleModal"
+                <button type="button" id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal" data-target="#exampleModal"
                     data-i18n=send-nas/send>Send </button>
             </div>
         </div>
@@ -285,7 +285,6 @@
         }
 
         $("#send_transaction").click(function () {
-            $(".check_list").removeClass("active1");
             $("#for_addr").val($("#fromaddress").val());
             $("#to_addr").val($("#toaddress").val());
             $("#value").val($("#amount").val());
