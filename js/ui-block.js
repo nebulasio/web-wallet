@@ -1,5 +1,5 @@
 //
-// requires - jquery bootbox i18n.js nebulas.js
+// requires - jquery blockies bootbox i18n.js nebulas.js
 // because this project already uses them
 
 var uiBlock = {
@@ -11,22 +11,13 @@ var uiBlock = {
             bag = {
                 footer: footer,
                 header: header,
+                iconAddress: iconAddress,
                 logoMain: logoMain,
                 selectWalletFile: selectWalletFile
             }, i;
 
-        for (i in dic) {
-            switch (i) {
-                case "footer":
-                case "header":
-                case "logoMain":
-                case "selectWalletFile":
-                    break;
-                default: continue;
-            }
-
+        for (i in dic) if (i in bag)
             Array.isArray(dic[i]) ? bag[i].apply(null, dic[i]) : bag[i](dic[i]);
-        }
 
         function footer(selector) {
             i18n.run($(selector)
@@ -71,6 +62,27 @@ var uiBlock = {
                     "    <a href=" + arr[5] + " data-i18n=header/contract></a>" +
                     "</div>" +
                     "<hr>"));
+        }
+
+        function iconAddress(selector) {
+            $(selector)
+                .addClass("icon-address")
+                .html(
+                    "<canvas class=placeholder></canvas>" +
+                    '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5>')
+                .on("input", "input", onInput);
+
+            function onInput(e) {
+                var val = e.target.value,
+                    $canvas = $(this).closest(".icon-address").find("canvas");
+
+                if (val.length == 35)
+                    $canvas.replaceWith(blockies.create({
+                        seed: val.toLowerCase()
+                    }));
+                else if (!$canvas.hasClass("placeholder"))
+                    $canvas.replaceWith("<canvas class=placeholder></canvas>");
+            }
         }
 
         function logoMain(selector) {
@@ -234,9 +246,9 @@ var uiBlock = {
     },
     validate: function (selector) {
         // these validates depend on logical order of value of data-validate-order-matters so proceed with caution
+        // queries inputs on each validateAll call so you can add <input> into selector at any time
 
-        var $inputs,
-            nebulas = require("nebulas"),
+        var nebulas = require("nebulas"),
             Utils = nebulas.Utils,
             mRules = {
                 gt0: function (s) { return s > 0; },
@@ -254,22 +266,24 @@ var uiBlock = {
             };
 
         selector || (selector = "body");
-        $inputs = $(selector).find("[data-validate-order-matters]")
-        $inputs.on({
+
+        // or use focusin/focusout, see
+        // https://stackoverflow.com/questions/9577971/focus-and-blur-jquery-events-not-bubbling
+        $(selector).on({
             blur: validateAll,
             focus: onFocus
-        });
+        }, "[data-validate-order-matters]");
+
         return validateAll;
 
         function validateAll() {
             var ret = true;
 
-            $inputs.removeClass("invalid").popover("hide");
+            $(selector).find("[data-validate-order-matters]").each(function (i, o) {
+                var $el = $(o), arr, i, len,
+                    s = $el.data("validate-order-matters");
 
-            $inputs.each(function (i, o) {
-                var $el = $(o),
-                    s = $el.data("validate-order-matters"),
-                    arr, i, len;
+                $el.removeClass("invalid").popover("hide");
 
                 if (s) for (arr = s.match(/\S+/g) || [], i = 0, len = arr.length; i < len; ++i)
                     if (mRules[arr[i]]) {
@@ -288,8 +302,12 @@ var uiBlock = {
                                     placement: "auto",
                                     trigger: "manual"
                                 })
-                                    .popover("show")[0]
-                                    .scrollIntoView({ behavior: "smooth", block: "start" });
+                                    .popover("show")[0];
+
+                                setTimeout(() => {
+                                    // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
+                                    $el[0].scrollIntoView({ behavior: "smooth" });
+                                });
                             }
                             break;
                         }

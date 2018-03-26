@@ -57,6 +57,22 @@
 }
 
 /*
+    .icon-address
+    ============================================================
+    */
+
+.icon-address {
+    align-items: center;
+    display: flex;
+}
+
+.icon-address canvas {
+    height: 50px;
+    margin-right: 10px;
+    width: 50px;
+}
+
+/*
     .logo-main
     ============================================================
     */
