@@ -269,10 +269,10 @@
                 <div class="next  active1 row">
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/execution_result></span>
-                        <div class="execution_banner"></div>
+                        <div class="execution_banner" id="deploy_run_result"></div>
                     </div>
                     <div class="col-md-6">
-                        <a href="check.html">TX hash : </a>
+                        <a href="check.html" id="deploy_txhash"></a>
                     </div>
                 </div>
             </div>
@@ -285,11 +285,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=contract/contract_funtion></span>
-                        <input type=text id=code>
+                        <input type=text id="call_function">
                     </div>
                     <div class="col-md-6">
                         <span data-i18n=contract/contract_fun></span>
-                        <input type=text id=code>
+                        <input type=text id="call_args">
                     </div>
                 </div>
 
@@ -312,11 +312,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label data-i18n=send-nas/amount></label>
-                        <input type=text id=value value=0>
+                        <input type=text id="run_value" value=0>
                     </div>
                     <div class="col-md-6 lh">
                         <span data-i18n=send-nas/balance></span>
-                        <span id=balance></span>
+                        <span id=run_balance></span>
                     </div>
                     <!-- <div class="col-md-4 lh">
                         <span>Nonce : </span>
@@ -352,10 +352,10 @@
                 <div class="next  active1 row">
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/execution_result></span>
-                        <div class="execution_banner"></div>
+                        <div class="execution_banner" id="call_run_result"></div>
                     </div>
                     <div class="col-md-6">
-                        <a href="check.html">TX hash : </a>
+                        <a href="check.html" id="call_result"></a>
                     </div>
                 </div>
             </div>
@@ -380,13 +380,17 @@
 
         $(function () {
 
-            var nebulas = require("nebulas");
-            var Account = nebulas.Account;
-            var Utils = nebulas.Utils;
-            var neb = new nebulas.Neb();
-            var nonce, gAccount;
-            // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+            var wallet = require("nebulas");
+            var Account = wallet.Account;
+            var Utils = wallet.Utils;
+            var neb = new wallet.Neb();
+            var testnetchainID = 1003;
+            var globalParams = {
+                account: null
+            };
+
+             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
             uiBlock.insert({
                 footer: ".footer",
@@ -400,7 +404,7 @@
 
                 try {
                     account.fromKey(fileJson, password);
-                    gAccount = account;
+                    globalParams.account = account;
                     $("#from_addr").val(account.getAddressString());
                     $("#run_from_addr").val(account.getAddressString());
                     $("#unlock").hide();
@@ -411,8 +415,8 @@
                         $("#run_gas_price").val(resp.gas_price);
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
-                        nonce = parseInt(resp.nonce) + 1;
                         $("#balance").text(resp.balance);
+                        $("#run_balance").text(resp.balance);
                     }).catch(function (err) {
                         // TODO handle error
                     });
@@ -425,19 +429,6 @@
                     });
                 }
             }
-
-            function doneGetUserGetGasPrice(x) {
-                $("#gas_price").append(x.gas_price);
-                $("#gas_limit").append(x.gas_price);
-            };
-
-            function donePostUserAccountState(o) {
-                console.log(o);
-
-                console.log(o.balance);
-                $("#balance").append(o.balance);
-                $("#nonce").append(parseInt(o.nonce) + 1);
-            };
 
             //tab change
 
@@ -458,25 +449,60 @@
                 $(this).parent().removeClass("hoverItem");
             });
 
+            // deploy run --------------------------------
+            $("#deploy_run").click(function(){
+                innerDeploy(function(params){
+                    neb.api.estimateGas({
+                        from: params.from,
+                        to: params.to,
+                        value: params.value,
+                        nonce:  params.nonce,
+                        gasPrice:   params.gasPrice,
+                        gasLimit:   params.gasLimit,
+                        contract:   params.contract
+                    }).then(function(resp){
+                        $("#deploy_run_result").text(JSON.stringify(resp));
+                        // 显示test结果
+                        $("#deploy_run_result").parents(".next").removeClass("active1");
+                    }).catch(function(err){
+                        // TODO handle error
+                        console.log(err);
+                    });
+                });
+            });
 
-            // deploy-------------------------------------------
-            $("#deploy_run").click(function () {
+            // deploy---------------------------------------
+            $("#deploy").click(function(){
+                innerDeploy(function(params){
 
-                if (nonce <= 0) {
-                    // TODO 提示未加载到有效账号信息
+                    var chainId = 1003;//parseInt(localStorage.chainId) || 1003;
+                    var gTx = new wallet.Transaction(chainId, globalParams.account, params.from, 
+                            params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                    gTx.signTransaction();
+                    console.log(gTx.toString());
+                    
+                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function(resp){
+                        // if deploy success show txhash
+                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify);
+                        // TODO 显示deploy结果
+                    }).catch(function(err){
+                        // TODO handle error
+                        console.log(err);
+                    });
+                });
+            });
+
+            function innerDeploy(callback) {
+                let params = {};
+
+                if (!globalParams.account) {
+                    // TODO 提示钱包信息不正确
                     return;
                 }
-                //local verification
-                let from = $("#from_addr").val().trim();
-                if (!Account.isValidAddress(from)) {
-                    $("#from_addr").addClass("err");
-                    $(".deploy_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#from_addr").removeClass("err");
-                    }, 5000);
-                    return;
-                }
+                params.from = globalParams.account.getAddressString();
+                params.to = params.from;
 
+                // prepare gasLimit
                 let gasLimit = Utils.toBigNumber(0);
                 try {
                     gasLimit = Utils.toBigNumber($("#gas_limit").val());
@@ -491,7 +517,9 @@
                     }, 5000);
                     return;
                 }
+                params.gasLimit = gasLimit.toNumber();
 
+                // prepare gasPrice
                 let gasPrice = Utils.toBigNumber(0);
                 try {
                     gasPrice = Utils.toBigNumber($("#gas_price").val());
@@ -506,27 +534,25 @@
                     }, 5000);
                     return;
                 }
-
-                let contract = {
+                params.gasPrice = gasPrice.toNumber();
+                params.value = "0";
+                params.contract =  {
                     "source": $("#source").val(),
                     "sourceType": $("input[name=sourceType]").val(),
                     "args": $("#deploy_args").val().trim()
                 };
 
-                var chainId = localStorage.chainId || 1003;
-                let gTx = new nebulas.Transaction(chainId, gAccount, from, "0", parseInt(nonce), gasPrice, gasLimit, contract);
-                gTx.signTransaction();
-                // console.log(gTx.toString());
-
-                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                    // if deploy success show txhash
-                    $("#deploy_contract_hash").text("TX hash: " + resp.txhash); // TODO txhash放在这个位置？
-                    $(".tx_result").removeClass("active1");                     // TODO 这个框作用？
-                }).catch(function (err) {
-                    // TODO handle error
-                    console.log(err);
+                // prepare nonce
+                neb.api.getAccountState(params.from).then(function(resp){
+                    params.nonce = parseInt(resp.nonce) + 1;
+                    $("#balance").text(resp.balance);
+                    $("#run_balance").text(resp.balance);
+                    console.log("prepared params: " + JSON.stringify(params));
+                    callback(params);
+                }).catch(function(err){
+                    console.log("prepare nonce error: " + err);
                 });
-            });
+            }
 
             //call------------------------------------------
             $(".search").click(function () {
@@ -553,64 +579,128 @@
 
             // run function
             $("#run_run").click(function () {
-                //local verification
-                if ($("#run_from_addr").val().length < 46) {
-                    $("#run_from_addr").addClass("err");
-                    $(".run_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#run_from_addr").removeClass("err");
-                    }, 5000);
-                } else if ($("#run_to_addr").val().length < 46) {
+                innerCall(function(params){
+                    neb.api.estimateGas({
+                        from: params.from,
+                        to: params.to,
+                        value: params.value,
+                        nonce:  params.nonce,
+                        gasPrice:   params.gasPrice,
+                        gasLimit:   params.gasLimit,
+                        contract:   params.contract
+                    }).then(function(resp){
+                        $("#call_run_result").text(JSON.stringify(resp));
+                        // TODO 显示test结果
+                        //run result show
+                        $(".next").removeClass("active1");
+                    }).catch(function(err){
+                        // TODO handle error
+                        console.log(err);
+                    });
+                });
+            })
+
+            //call function
+            $("#call").click(function () {
+                innerCall(function(params){
+                    neb.api.call(params).then(function (resp) {
+                        console.log(JSON.stringify(resp));
+                        $("#call_result").text("Call result: " + JSON.stringify(resp));
+                        // TODO 确认显示效果
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
+                    }).catch(function (err) {
+                        // TODO handle error
+                        console.log("call run error: " + err);
+                    });
+                });
+            });
+
+            function innerCall(callback) {
+                let params = {};
+
+                if (!globalParams.account) {
+                    // TODO 提示钱包信息不正确
+                    return;
+                }
+                params.from = globalParams.account.getAddressString();
+
+                // prepare to
+                let toAddr = $("#run_to_addr").val().trim();
+                if (!Account.isValidAddress(toAddr)) {
                     $("#run_to_addr").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_to_addr").removeClass("err");
                     }, 5000);
-                } else if ($("#run_gas_limit").val().length < 1) {
+                    return;
+                }
+                params.to = toAddr;
+
+                // prepare gasLimit
+                let gasLimit = Utils.toBigNumber(0);
+                try {
+                    gasLimit = Utils.toBigNumber($("#run_gas_limit").val());
+                } catch (err) {
+                    console.log(err);
+                }
+                if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                     $("#run_gas_limit").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_gas_limit").removeClass("err");
                     }, 5000);
+                    return;
                 }
-                else if ($("#run_gas_price").val().length < 1) {
+                params.gasLimit = gasLimit.toNumber();
+
+                // prepare gasPrice
+                let gasPrice = Utils.toBigNumber(0);
+                try {
+                    gasPrice = Utils.toBigNumber($("#run_gas_price").val());
+                } catch (err) {
+                    console.log(err);
+                }
+                if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
                     $("#run_gas_price").addClass("err");
                     $(".run_errmsg").removeClass("active1");
                     setTimeout(function () {
                         $("#run_gas_price").removeClass("err");
                     }, 5000);
-                }
-                //run result show
-                $(".next").removeClass("active1");
-            })
-
-            //call function
-            $("#call").click(function () {
-                var params;
-                try {
-                    params = {
-                        from: $("#from_addr").val(),
-                        to: $("#to_addr").val(),
-                        value: $("#value").val(),
-                        nonce: parseInt($("#nonce").text()),
-                        gasPrice: $("#gas_price").text(),
-                        gasLimit: $("#gas_limit").text(),
-                        contract: JSON.parse($("#code").val())
-                    }
-                } catch (err) {
-                    // TODO handle err: param check
                     return;
                 }
-                neb.api.call(params).then(function (resp) {
-                    console.log(JSON.stringify(resp));
-                    // TODO  need a place to display result
-                    // $("??") = JSON.stringify(resp)
-                    $(".result").removeClass("active1");
-                    $(".next").removeClass("active1");
-                }).catch(function (err) {
-                    // TODO handle error
+                params.gasPrice = gasPrice.toNumber();
+
+                // prepare value
+                let value = Utils.toBigNumber(0);
+                try {
+                    value = wallet.Unit.toBasic(Utils.toBigNumber($("#run_value").val()), "nas");
+                } catch (err) {
+                    console.log(err);
+                }
+                if (value.cmp(Utils.toBigNumber(0)) < 0) {
+                    // TODO 添加提示value输入不对
+                    return;
+                }
+                params.value = value;
+
+                // prepare contract
+                params.contract =  {
+                    "function": $("#call_function").val(),
+                    "args": $("#call_args").val().trim()
+                };
+
+                // prepare nonce
+                neb.api.getAccountState(params.from).then(function(resp){
+                    params.nonce = parseInt(resp.nonce) + 1;
+                    $("#balance").text(resp.balance);
+                    $("#run_balance").text(resp.balance);
+                    console.log("prepared params: " + JSON.stringify(params));
+                    callback(params);
+                }).catch(function(err){
+                    console.log("prepare nonce error: " + err);
                 });
-            });
+            }
 
         });
 
