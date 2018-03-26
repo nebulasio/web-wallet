@@ -1,5 +1,5 @@
 //
-// requires - jquery bootbox i18n.js wallet.js
+// requires - jquery bootbox i18n.js nebulas.js
 // because this project already uses them
 
 var uiBlock = {
@@ -236,6 +236,8 @@ var uiBlock = {
         // these validates depend on logical order of value of data-validate-order-matters so proceed with caution
 
         var $inputs,
+            nebulas = require("nebulas"),
+            Utils = nebulas.Utils,
             mRules = {
                 gt0: function (s) { return s > 0; },
                 lengthEq35: function (s) { return s.length == 35; },

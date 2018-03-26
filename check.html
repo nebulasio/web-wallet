@@ -166,11 +166,11 @@
                 logoMain: ".logo-main"
             });
 
-            var wallet = require("nebulas");
-            var Account = wallet.Account;
-            var neb = new wallet.Neb();
-             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+            var nebulas = require("nebulas");
+            var Account = nebulas.Account;
+            var neb = new nebulas.Neb();
+             // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
             $("#btn").click(function () {
                 if ($("#input").val().length < 46) {
