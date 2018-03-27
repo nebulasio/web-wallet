@@ -120,62 +120,55 @@
         </div>
     </div>
     <!-- step3 -->
-     <!-- Modal -->
-     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel" data-i18n=send-nas/transfer_msg>transfer message :</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" data-i18n=send-nas/transfer_msg>transfer message :</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label data-i18n=send-nas/from-address>From Address</label>
+                        <input type=text class=form-control id=for_addr disabled>
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <label data-i18n=send-nas/from-address>From Address</label>
-                            <input type=text class=form-control id=for_addr disabled>
-                        </div>
-                        <div>
-                            <label data-i18n=send-nas/to-address>To Address</label>
-                            <input type=text class=form-control id=to_addr disabled>
-                        </div>
-                        <div>
-                            <label data-i18n=send-nas/amount>Value / Amount to Send</label>
-                            <div class=input-group>
-                                <input type=text class=form-control id=value disabled>
-                                <div class=input-group-addon>NAS</div>
-                            </div>
-                        </div>
-                        <div class="data">
-                            <label>data</label>
-                            <input type=text class=data id=data disabled style="width: 100%;">
+                    <div>
+                        <label data-i18n=send-nas/to-address>To Address</label>
+                        <input type=text class=form-control id=to_addr disabled>
+                    </div>
+                    <div>
+                        <label data-i18n=send-nas/amount>Value / Amount to Send</label>
+                        <div class=input-group>
+                            <input type=text class=form-control id=value disabled>
+                            <div class=input-group-addon>NAS</div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n=send-nas/close>Close</button>
-                        <button id=sendtransaction type="button" class="btn btn-primary" data-i18n=send-nas/check  onclick=sendtransaction()></button>
+                    <div class="data">
+                        <label>data</label>
+                        <input type=text class=data id=data disabled style="width: 100%;">
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n=send-nas/close>Close</button>
+                    <button id=sendtransaction type="button" class="btn btn-primary" data-i18n=send-nas/check onclick=sendtransaction()></button>
                 </div>
             </div>
         </div>
+    </div>
 
 
-
+    <!-- Transaction -->
     <div class="container transaction" id=receipt_div style=display:none;>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=raw>txhash</label>
-                <textarea readonly id=receipt rows=6 class=form-control></textarea>
-            </div>
-        </div>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=signed data-i18n=send-nas/receipt>receipt</label>
-                <textarea readonly id=receipt_state rows=6 class=form-control></textarea>
-            </div>
+        TX hash :
+        <a href="check.html" id=receipt></a>
+        <div class=form-group>
+            <label for=signed data-i18n=send-nas/receipt>receipt :</label>
+            <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
         </div>
     </div>
-    <!-- hxhash -->
 
 
     <div class=footer></div>
@@ -306,7 +299,7 @@
                     $("#signedoffline").val(tx.toProtoString());
                     // $("#qrcode").qrcode(tx.toProtoString());
 
-                     $("<div id=qrcode style=text-align:center;></div>")
+                    $("<div id=qrcode style=text-align:center;></div>")
                         .qrcode(tx.toProtoString())
                         .replaceAll('#qrcode');
 
@@ -335,13 +328,18 @@
         });
 
         function sendtransaction() {
+
+            $(".modal-backdrop").removeClass("show");
+            $(".modal").removeClass("show");
+            $(".modal").css("display:none");
+
             if (validateAll())
                 neb.api.sendRawTransaction($("#signedoffline").val())
                     .then(function (resp) {
                         return neb.api.getTransactionReceipt(resp.txhash);
                     }).then(function (resp) {
                         $("#receipt_state").val(JSON.stringify(resp));
-                        $("#receipt").val(resp.hash);
+                        $("#receipt").text(resp.hash);
                         $("#receipt_div").show();
                     }).catch(function (e) {
                         bootbox.dialog({
