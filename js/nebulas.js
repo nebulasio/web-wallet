@@ -152,16 +152,18 @@ Account.fromAddress = function (addr) {
     var acc = new Account();
     if (addr instanceof Account) {
         acc.setPrivateKey(addr.getPrivateKey());
-    } else if (this.isValidAddress(addr)) {
-        if (utils.isString(addr)) {
-            acc.address = Base58.decode(addr);
-        } else {
-            acc.address = cryptoUtils.toBuffer(addr);
-        }
-    } else {
-        throw new Error("invalid address");
+        return acc;
     }
-    return acc;
+    if (utils.isString(addr) && this.isValidAddress(addr)) {
+        acc.address = Base58.decode(addr);
+        return acc;
+    }
+    let buf = cryptoUtils.toBuffer(addr);
+    if (this.isValidAddress(buf)) {
+        acc.address = buf;
+        return acc;
+    }
+    throw new Error("invalid address");
 };
 
 Account.getNormalType = function () {

@@ -68,12 +68,20 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
-                    <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35">
+                    <div class=outer style="position: relative">
+                        <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35"  style="display: block; width: 100%" oninput="display2()">
+                        <div class=processed id="toaddress2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                     <div class=input-group>
-                        <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number eqgt0">
+
+                        <div class=outer style="position: relative">
+                            <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number eqgt0"  style="display: block; width: 100%" oninput="display2()">
+                            <div class=processed id="amount2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
+                        </div>
+
                         <div class=input-group-addon>NAS</div>
                     </div>
                 </div>
@@ -81,19 +89,28 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                    <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
+                    <div class=outer style="position: relative">
+                        <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0"  style="display: block; width: 100%" oninput="display2()">
+                        <div class=processed id="limit2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for=price data-i18n=gas-price>Gas Price</label>
                     <div class=input-group>
-                        <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
+                        <div class=outer style="position: relative">
+                            <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0" style="display: block; width: 100%" oninput="display2()">
+                            <div class=processed id="price2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
+                        </div>
                         <div class=input-group-addon>Wei</div>
                     </div>
                 </div>
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
+                <div class=outer style="position: relative">
+                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0" style="display: block; width: 100%" oninput="display2()">
+                    <div class=processed id="nonce2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
+                </div>
             </div>
             <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
@@ -193,6 +210,7 @@
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox jquery.slim i18n.js nebulas.js"></script>
     <script src=js/nebulas.js></script>
+    <script src="js/display.js"></script>
     <script>
         "use strict";
 

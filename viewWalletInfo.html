@@ -13,7 +13,11 @@
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
 <style>
-    .active1 {
+    .qr_code>div {
+        display: inline-block;
+    }
+
+    .qr_code>.display-none {
         display: none;
     }
 </style>
@@ -25,17 +29,11 @@
 
     <div id=walletinfo class="container transaction">
         <div class=row>
-            <div class=col-6>
+            <div class=col>
                 <div class=form-group>
                     <label for=address data-i18n=wallet-info/your-addr>Your Address</label>
                     <input type=text class=form-control id=address disabled>
                 </div>
-                <!-- <div class=form-group>
-                        <label for=sideaddress data-i18n=wallet-info/acc-addr>Account Address</label>
-                        <ul>
-                            <li id=sideaddress style=list-style-type:none;word-break:break-all;></li>
-                        </ul>
-                    </div> -->
                 <div class=form-group>
                     <label for=amount data-i18n=wallet-info/acc-balance>Account Balance : </label>
                     <span id=amount style=list-style-type:none;word-break:break-all;></span>
@@ -52,22 +50,18 @@
                         <label for="togglePassword">visible</label>
                     </div>
                 </div>
-
             </div>
-            <div class=col-6>
-                <div class="qr_code row">
-                    <div class="col-6 text-center">
-                        <label for=addressqr data-i18n=wallet-info/your-addr>Your Address</label>
-                        <div class=form-group id=addressqr>
-                        </div>
-                    </div>
-                    <div class=" key_qr col-6 text-center active1">
-                        <label for=privateqr data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
-                        <div class=form-group id=privateqr>
-                        </div>
+            <div class="col qr_code">
+                <div class=text-center>
+                    <label for=addressqr data-i18n=wallet-info/your-addr>Your Address</label>
+                    <div class=form-group id=addressqr>
                     </div>
                 </div>
-
+                <div class="display-none key_qr text-center">
+                    <label for=privateqr data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
+                    <div class=form-group id=privateqr>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -99,6 +93,7 @@
         neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
         $("#keystore").on("click", onClickKeystore);
+        $("#togglePassword").on("input", onInputPassword);
 
         uiBlock.insert({
             footer: ".footer",
@@ -147,37 +142,15 @@
             saveAs(blob, gAccount.getAddressString());
         }
 
-        $(function () {
-
-            $.fn.togglePassword = function (options) {
-                var s = $.extend($.fn.togglePassword.defaults, options),
-                    input = $(this);
-
-                $(s.el).bind(s.ev, function () {
-                    "password" == $(input).attr("type") ?
-                        $(input).attr("type", "text") :
-                        $(input).attr("type", "password");
-                });
-            };
-
-            $.fn.togglePassword.defaults = {
-                ev: "click"
-            };
-
-            $('#password').togglePassword({
-                el: '#togglePassword'
-            });
-
-            $("#togglePassword").click(function () {
-                
-                if ( $("#password").type= "text" ){
-                    $(".key_qr").removeClass("active1");  
-                }else{
-                    $(".key_qr").addClass("active1");
-                }          
-            })
-        });
+        function onInputPassword(e) {
+            if (e.target.checked) {
+                $("#password").prop("type", "text");
+                $(".key_qr").removeClass("display-none");
+            } else {
+                $("#password").prop("type", "password");
+                $(".key_qr").addClass("display-none");
+            }
+        }
     </script>
 </body>
-
 </html>
