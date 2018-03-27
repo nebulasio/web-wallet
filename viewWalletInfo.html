@@ -169,7 +169,12 @@
             });
 
             $("#togglePassword").click(function () {
-                $(".key_qr").removeClass("active1");
+                
+                if ( $("#password").type= "text" ){
+                    $(".key_qr").removeClass("active1");  
+                }else{
+                    $(".key_qr").addClass("active1");
+                }          
             })
         });
     </script>
