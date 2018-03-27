@@ -272,6 +272,7 @@
                     account.fromKey(fileJson, password);
                     globalParams.account = account;
                     $("#from_addr").val(account.getAddressString());
+                    $("#to_addr").val(account.getAddressString());
                     $("#run_from_addr").val(account.getAddressString());
                     $("#unlock").hide();
                     $("#send").show();
