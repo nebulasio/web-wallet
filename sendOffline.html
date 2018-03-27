@@ -115,8 +115,7 @@
             </div>
         </div>
         <div>
-            <button id=send_transaction  data-toggle="modal" data-target="#exampleModal" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center"
-                data-i18n=send-nas/send>Send Transaction</button>
+            <button id=send_transaction data-toggle="modal" data-target="#exampleModal" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/send>Send Transaction</button>
         </div>
     </div>
     <!-- step3 -->
@@ -196,8 +195,8 @@
     <script src=js/blockies.min.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
-    <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
     <script src=js/nebulas.js></script>
+    <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
     <script>
         "use strict";
 
@@ -282,7 +281,7 @@
                     toaccount = Account.fromAddress(toaddress);
                     tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
 
-                    balance = unit.fromBasic(utils.toBigNumber(gFromState.balance), "nas");
+                    balance = unit.fromBasic(utils.toBigNumber(gFromState ? gFromState.balance : 0), "nas");
                     console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
                     if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
