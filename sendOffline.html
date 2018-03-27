@@ -318,9 +318,15 @@
         }
 
         $("#send_transaction").click(function () {
-            $("#for_addr").val($(".address").val());
-            $("#to_addr").val($(".address").val());
-            $("#value").val($("#amount").val());
+            try {
+                var tx = Transaction.prototype.fromProto($("#signedoffline").val());
+                $("#for_addr").val(tx.from.getAddressString());
+                $("#to_addr").val(tx.to.getAddressString());
+                $("#value").val(unit.fromBasic(tx.value, "nas"));
+            } catch (err) {
+                // TODO signed transaction内容解析失败
+                console.log(err);
+            }
         });
 
         function sendtransaction() {
