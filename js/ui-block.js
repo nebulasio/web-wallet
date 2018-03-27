@@ -331,7 +331,6 @@ var uiBlock = function () {
         // queries inputs on each validateAll call so you can add <input> into selector at any time
 
         var nebulas = require("nebulas"),
-            Utils = nebulas.Utils,
             mRules = {
                 eqgt0: function (s) { return s > -1; },
                 gt0: function (s) { return s > 0; },
@@ -339,7 +338,7 @@ var uiBlock = function () {
                 lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
                     try {
-                        Utils.toBigNumber(s);
+                        nebulas.Utils.toBigNumber(s);
                         return true;
                     } catch (e) {
                         return false;

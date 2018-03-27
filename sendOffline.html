@@ -19,55 +19,51 @@
 
     <div id=step1 class="container wallet">
         <div id=generate_infomation>
-            <h1>
-                <label data-i18n=send-offline/step1>Step 1: Generate Information (Online Computer)</label>
-            </h1>
+            <h1 data-i18n=send-offline/step1>Step 1: Generate Information (Online Computer)</h1>
             <div class=form-group>
                 <div data-i18n=send-nas/from-address>From Address</div>
                 <div class="from icon-address"></div>
             </div>
-            <button id=Generate_info type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-offline/gen-info>Inquire Information</button>
+            <button id=generate-infomation class="btn btn-block" data-i18n=send-offline/gen-info>Inquire Information</button>
             <div class=row id=information style=display:none;>
-                <div class="form-group col-md-6">
+                <div class="col-6 form-group">
                     <label for=fa_gasprice data-i18n=gas-price>Gas Price:</label>
                     <input type=text id=fa_gasprice class=form-control>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="col-6 form-group">
                     <label for=fa_nonce data-i18n=send-offline/nonce>Nonce: (next transaction nonce)</label>
                     <input type=text id=fa_nonce class=form-control>
                 </div>
             </div>
         </div>
     </div>
-    <!-- step1 -->
 
     <div id=step2 class="container wallet">
         <div id=generate_transaction>
-            <h1>
-                <label data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</label>
-            </h1>
+            <h1 data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</h1>
             <div class=row>
-                <div class="form-group col-8">
+                <div class="col-8 form-group">
                     <label data-i18n=send-nas/to-address>To Address</label>
                     <div class="icon-address to"></div>
                 </div>
-                <div class="form-group col-4">
+                <div class="col-4 form-group">
                     <label data-i18n=send-nas/amount>Value / Amount to Send</label>
                     <div class=number-comma data-data-i18n=amount data-id=amount data-nas data-validate="required number eqgt0"></div>
                 </div>
             </div>
             <div class=row>
-                <div class="form-group col-5">
-                    <label for=limit data-i18n=gas-limit>Gas Limit</label> <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <div class="col-5 form-group">
+                    <label data-i18n=gas-limit>Gas Limit</label>
+                    <i>( 1 NAS = 100, 000, 000 Wei )</i>
                     <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=20000></div>
-
                 </div>
-                <div class="form-group col-5">
-                    <label for=price data-i18n=gas-price>Gas Price</label> <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <div class="col-5 form-group">
+                    <label data-i18n=gas-price>Gas Price</label>
+                    <i>( 1 NAS = 100, 000, 000 Wei )</i>
                     <div class=number-comma data-data-i18n=amount data-id=price data-validate="required number gt0" data-value=1000000></div>
                 </div>
-                <div class="form-group col-2">
-                    <label for=nonce>Nonce</label>
+                <div class="col-2 form-group">
+                    <label>Nonce</label>
                     <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
                 </div>
             </div>
@@ -77,50 +73,41 @@
     <div class=select-wallet-file></div>
 
     <div id=transaction class="container transaction">
-        <div class=col-md-12>
-            <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
-        </div>
+        <button id=generate class="btn btn-block" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
         <div class=row>
-            <div class=col-md-6>
+            <div class=col-6>
                 <div class=form-group>
                     <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
                     <textarea class=form-control rows=8 id=raw disabled></textarea>
                 </div>
             </div>
-            <div class=col-md-6>
+            <div class=col-6>
                 <div class=form-group>
                     <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
                     <textarea class=form-control rows=8 id=signed disabled></textarea>
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- Transaction -->
 
 
     <div id=step3 class="container wallet">
-        <div id=send>
-            <h1>
-                <label data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</label>
-            </h1>
-        </div>
+        <h1 data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</h1>
         <div class=row>
-            <div class="form-group col-md-6">
+            <div class="col-6 form-group">
                 <label for=signedoffline data-i18n=send-nas/signed>Signed Transaction</label>
                 <textarea class=form-control rows=8 id=signedoffline></textarea>
             </div>
-            <div class="form-group col-md-6">
+            <div class="col-6 form-group">
                 <div id=qrcode style=text-align:center;>
                 </div>
             </div>
         </div>
         <div>
-            <button id=send_transaction data-toggle=modal data-target=#exampleModal class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/send>Send Transaction</button>
+            <button id=send_transaction data-toggle=modal data-target=#exampleModal class="btn btn-block" data-i18n=send-nas/send>Send Transaction</button>
         </div>
     </div>
-    <!-- step3 -->
-    <!-- Modal -->
+
     <div class="modal fade" id=exampleModal tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
         <div class=modal-dialog role=document>
             <div class=modal-content>
@@ -160,7 +147,6 @@
     </div>
 
 
-    <!-- Transaction -->
     <div class="container transaction" id=receipt_div style=display:none;>
         TX hash :
         <a href="check.html" id=receipt></a>
@@ -209,11 +195,13 @@
             unit = nebulas.Unit,
             neb = new Neb(),
             gAccount = new Account(),
-            validateAll = uiBlock.validate(),
+            validateStep1 = uiBlock.validate("#step1"),
+            validateStep2 = uiBlock.validate("#step2"),
             gFromState;
 
         // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
         neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+        $("#generate-infomation").click(onClickGenerateInfomation);
 
         uiBlock.insert({
             footer: ".footer",
@@ -238,35 +226,35 @@
             }
         }
 
-        // Generate_info
-        $("#Generate_info").click(function () {
+        function onClickGenerateInfomation() {
             var fromaddress = $(".icon-address.from input").val();
 
-            try {
-                gAccount = Account.fromAddress(fromaddress);
-                neb.api.gasPrice()
-                    .then(function (resp) {
-                        $("#fa_gasprice").val(resp.gas_price);
-                        $("#price").val(resp.gas_price);
+            if (validateStep1())
+                try {
+                    gAccount = Account.fromAddress(fromaddress);
+                    neb.api.gasPrice()
+                        .then(function (resp) {
+                            $("#fa_gasprice").val(resp.gas_price);
+                            $("#price").val(resp.gas_price);
 
-                        return neb.api.getAccountState(gAccount.getAddressString());
-                    }).then(function (resp) {
-                        gFromState = {
-                            balance: resp.balance,
-                            nonce: resp.nonce
-                        };
-                        $("#fa_nonce").val(parseInt(resp.nonce) + 1);
-                        $("#nonce").val(parseInt(resp.nonce) + 1);
-                        $("#information").show();
-                    }).catch(function (e) { throw e });
-            } catch (e) {
-                bootbox.dialog({
-                    message: e,
-                    size: "large",
-                    title: "Error"
-                });
-            }
-        });
+                            return neb.api.getAccountState(gAccount.getAddressString());
+                        }).then(function (resp) {
+                            gFromState = {
+                                balance: resp.balance,
+                                nonce: resp.nonce
+                            };
+                            $("#fa_nonce").val(parseInt(resp.nonce) + 1);
+                            $("#nonce").val(parseInt(resp.nonce) + 1);
+                            $("#information").show();
+                        }).catch(function (e) { throw e });
+                } catch (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
+                }
+        }
 
         function generate() {
             var fromaddress = $(".icon-address.from input").val(),
@@ -278,7 +266,7 @@
                 chainId = +(localStorage.chainId || 1003),
                 toaccount, tmp, tx, balance;
 
-            if (validateAll())
+            if (validateStep2())
                 try {
                     toaccount = Account.fromAddress(toaddress);
                     tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
@@ -329,26 +317,24 @@
         });
 
         function sendtransaction() {
-
             $(".modal-backdrop").removeClass("show");
             $(".modal").removeClass("show");
             $(".modal").css("display:none");
 
-            if (validateAll())
-                neb.api.sendRawTransaction($("#signedoffline").val())
-                    .then(function (resp) {
-                        return neb.api.getTransactionReceipt(resp.txhash);
-                    }).then(function (resp) {
-                        $("#receipt_state").val(JSON.stringify(resp));
-                        $("#receipt").text(resp.hash);
-                        $("#receipt_div").show();
-                    }).catch(function (e) {
-                        bootbox.dialog({
-                            message: e,
-                            size: "large",
-                            title: "Error"
-                        });
+            neb.api.sendRawTransaction($("#signedoffline").val())
+                .then(function (resp) {
+                    return neb.api.getTransactionReceipt(resp.txhash);
+                }).then(function (resp) {
+                    $("#receipt_state").val(JSON.stringify(resp));
+                    $("#receipt").text(resp.hash);
+                    $("#receipt_div").show();
+                }).catch(function (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
                     });
+                });
         }
     </script>
 </body>
