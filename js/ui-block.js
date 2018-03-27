@@ -124,7 +124,9 @@ var uiBlock = function () {
 
                 if (val.length == 35)
                     $canvas.replaceWith(blockies.create({
-                        seed: val.toLowerCase()
+                        scale: 6, // width/height of each block in pixels, default: 4
+                        seed: val.toLowerCase(),
+                        size: 7 // width/height of the icon in blocks, default: 8
                     }));
                 else if (!$canvas.hasClass("placeholder"))
                     $canvas.replaceWith("<canvas class=placeholder></canvas>");
