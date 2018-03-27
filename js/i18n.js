@@ -58,7 +58,7 @@ var i18n = function () {
             "send-nas/amount": "Value / Amount to Send",
             "send-nas/balance": "Balance",
             "send-nas/button/generate": "Generate Transaction",
-            "send-nas/check": "Check",
+            "send-nas/check": "Submit",
             "send-nas/close": "Close",
             "send-nas/from-address": "From Address",
             "send-nas/raw": "Raw Transaction",

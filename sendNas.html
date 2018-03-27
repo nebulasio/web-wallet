@@ -93,7 +93,7 @@
             </div>
             <div class=form-group>
                 <label for=nonce>Nonce</label>
-                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0" disabled>
+                <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
             </div>
             <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
@@ -159,7 +159,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n=send-nas/close>Close</button>
-                        <button id=sendtransaction type="button" class="btn btn-primary" data-i18n=send-nas/check>Check</button>
+                        <button id=sendtransaction type="button" class="btn btn-primary" data-i18n=send-nas/check></button>
                     </div>
                 </div>
             </div>
@@ -168,6 +168,7 @@
 
     <!-- Transaction -->
     <div class="container transaction" id=receipt_div style=display:none;>
+        <a  href="#" id="tx-hash">TX hash :</a>
         <div class=col-md-6>
             <div class=form-group>
                 <label for=raw>txhash</label>

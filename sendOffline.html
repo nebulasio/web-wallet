@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -11,6 +12,7 @@
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
+
 <body>
     <div class=logo-main></div>
     <div class=header></div>
@@ -77,16 +79,18 @@
         <div class=col-md-12>
             <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
         </div>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
-                <textarea class=form-control rows=8 id=raw></textarea>
+        <div class="row">
+            <div class=col-md-6>
+                <div class=form-group>
+                    <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
+                    <textarea class=form-control rows=8 id=raw></textarea>
+                </div>
             </div>
-        </div>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
-                <textarea class=form-control rows=8 id=signed></textarea>
+            <div class=col-md-6>
+                <div class=form-group>
+                    <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
+                    <textarea class=form-control rows=8 id=signed></textarea>
+                </div>
             </div>
         </div>
 
@@ -111,10 +115,49 @@
             </div>
         </div>
         <div>
-            <button id=sendtransaction type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick=sendtransaction() data-i18n=send-nas/send>Send Transaction</button>
+            <button id=send_transaction  data-toggle="modal" data-target="#exampleModal" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center"
+                data-i18n=send-nas/send>Send Transaction</button>
         </div>
     </div>
     <!-- step3 -->
+     <!-- Modal -->
+     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" data-i18n=send-nas/transfer_msg>transfer message :</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label data-i18n=send-nas/from-address>From Address</label>
+                            <input type=text class=form-control id=for_addr disabled>
+                        </div>
+                        <div>
+                            <label data-i18n=send-nas/to-address>To Address</label>
+                            <input type=text class=form-control id=to_addr disabled>
+                        </div>
+                        <div>
+                            <label data-i18n=send-nas/amount>Value / Amount to Send</label>
+                            <div class=input-group>
+                                <input type=text class=form-control id=value disabled>
+                                <div class=input-group-addon>NAS</div>
+                            </div>
+                        </div>
+                        <div class="data">
+                            <label>data</label>
+                            <input type=text class=data id=data disabled style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n=send-nas/close>Close</button>
+                        <button id=sendtransaction type="button" class="btn btn-primary" data-i18n=send-nas/check  onclick=sendtransaction()></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -274,6 +317,12 @@
             return false;
         }
 
+        $("#send_transaction").click(function () {
+            $("#for_addr").val($(".address").val());
+            $("#to_addr").val($(".address").val());
+            $("#value").val($("#amount").val());
+        });
+
         function sendtransaction() {
             if (validateAll())
                 neb.api.sendRawTransaction($("#signedoffline").val())
@@ -293,4 +342,5 @@
         }
     </script>
 </body>
+
 </html>
