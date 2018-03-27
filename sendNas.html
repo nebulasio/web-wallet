@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -42,7 +41,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class=logo-main></div>
     <div class=header></div>
@@ -89,18 +87,17 @@
     </div>
     <!-- send -->
     <div id=transaction class="container transaction">
-
         <div class=col-6>
             <div class=col-12>
                 <div class=form-group>
                     <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
-                    <textarea class=form-control rows=8 id=raw></textarea>
+                    <textarea class=form-control rows=8 id=raw disabled></textarea>
                 </div>
             </div>
             <div class=col-12>
                 <div class=form-group>
                     <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
-                    <textarea class=form-control rows=8 id=signed></textarea>
+                    <textarea class=form-control rows=8 id=signed disabled></textarea>
                 </div>
             </div>
         </div>
@@ -161,7 +158,7 @@
         <a href="check.html" id=receipt></a>
         <div class=form-group>
             <label for=signed data-i18n=send-nas/receipt>receipt :</label>
-            <textarea readonly id=receipt_state rows=6 class=form-control disabled></textarea>
+            <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
         </div>
     </div>
 
@@ -212,7 +209,7 @@
                 gAccount = account;
 
                 $(".icon-address.from input").val(address);
-                $(".icon-address.from input").trigger("input");
+                $(".icon-address.from input").trigger("input"); // gen icon from addr, needs trigger 'input' event if via set o.value
 
                 $("#unlock").hide();
                 $("#send").show();
@@ -222,6 +219,8 @@
 
                     var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
                     $("#balance").val(nas);
+                    $("#balance").trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value, 
+
                     $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                 });
             } catch (e) {
@@ -282,10 +281,11 @@
         });
 
         function onClickSendTransaction() {
+            var mTxHash;
+
             $(".modal-backdrop").removeClass("show");
             $(".modal").removeClass("show");
             $(".modal").css("display:none");
-            var mTxHash;
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
                 .then(function (resp) {
@@ -314,9 +314,6 @@
                     console.log(err)
                 });
         }
-
-
     </script>
 </body>
-
 </html>
