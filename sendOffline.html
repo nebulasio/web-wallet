@@ -59,11 +59,12 @@
             <div class=row>
                 <div class="form-group col-5">
                     <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                    <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0">
+                    <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=20000></div>
+
                 </div>
                 <div class="form-group col-5">
                     <label for=price data-i18n=gas-price>Gas Price</label>
-                    <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0">
+                    <div class=number-comma data-data-i18n=amount data-id=price data-validate="required number gt0" data-value=1000000></div>
                 </div>
                 <div class="form-group col-2">
                     <label for=nonce>Nonce</label>
