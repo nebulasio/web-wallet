@@ -69,7 +69,8 @@
                 <div class="form-group col-md-6">
                     <label for=toaddress data-i18n=send-nas/to-address>To Address</label>
                     <div class=outer style="position: relative">
-                        <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35"  style="display: block; width: 100%" oninput="display2()">
+                        <input type=text class=form-control id=toaddress data-validate-order-matters="required lengthEq35" style="display: block; width: 100%"
+                            oninput="display2()">
                         <div class=processed id="toaddress2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
                     </div>
                 </div>
@@ -78,7 +79,8 @@
                     <div class=input-group>
 
                         <div class=outer style="position: relative">
-                            <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number eqgt0"  style="display: block; width: 100%" oninput="display2()">
+                            <input type=text class=form-control id=amount data-i18n=amount data-validate-order-matters="required number eqgt0" style="display: block; width: 100%"
+                                oninput="display2()">
                             <div class=processed id="amount2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
                         </div>
 
@@ -90,7 +92,8 @@
                 <div class="form-group col-md-6">
                     <label for=limit data-i18n=gas-limit>Gas Limit</label>
                     <div class=outer style="position: relative">
-                        <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0"  style="display: block; width: 100%" oninput="display2()">
+                        <input type=text class=form-control id=limit value=20000 data-validate-order-matters="required number gt0" style="display: block; width: 100%"
+                            oninput="display2()">
                         <div class=processed id="limit2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
                     </div>
                 </div>
@@ -98,7 +101,8 @@
                     <label for=price data-i18n=gas-price>Gas Price</label>
                     <div class=input-group>
                         <div class=outer style="position: relative">
-                            <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0" style="display: block; width: 100%" oninput="display2()">
+                            <input type=text class=form-control id=price value=1000000 data-validate-order-matters="required number gt0" style="display: block; width: 100%"
+                                oninput="display2()">
                             <div class=processed id="price2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
                         </div>
                         <div class=input-group-addon>Wei</div>
@@ -108,7 +112,8 @@
             <div class=form-group>
                 <label for=nonce>Nonce</label>
                 <div class=outer style="position: relative">
-                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0" style="display: block; width: 100%" oninput="display2()">
+                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0" style="display: block; width: 100%"
+                        oninput="display2()">
                     <div class=processed id="nonce2" style="position: absolute; pointer-events: none; color: #04ce0f; top: 0; right: 0"></div>
                 </div>
             </div>
@@ -138,7 +143,8 @@
         </div>
         <div class="row">
             <div class=col-md-12>
-                <button type="button" id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal" data-target="#exampleModal" data-i18n=send-nas/send>Send </button>
+                <button type="button" id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle="modal"
+                    data-target="#exampleModal" data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 
@@ -185,18 +191,11 @@
 
     <!-- Transaction -->
     <div class="container transaction" id=receipt_div style=display:none;>
-        <a  href="#" id="tx-hash">TX hash :</a>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=raw>txhash</label>
-                <textarea readonly id=receipt rows=6 class=form-control></textarea>
-            </div>
-        </div>
-        <div class=col-md-6>
-            <div class=form-group>
-                <label for=signed data-i18n=send-nas/receipt>receipt</label>
-                <textarea readonly id=receipt_state rows=6 class=form-control></textarea>
-            </div>
+        TX hash :
+        <a href="check.html" id=receipt></a>
+        <div class=form-group>
+            <label for=signed data-i18n=send-nas/receipt>receipt :</label>
+            <textarea readonly id=receipt_state rows=6 class=form-control disabled></textarea>
         </div>
     </div>
 
@@ -283,7 +282,7 @@
                             amount = Utils.toBigNumber(0);
                         else
                             amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
-                    
+
                     console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
                     gTx = new Transaction(chainId, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
@@ -311,7 +310,9 @@
         });
 
         function onClickSendTransaction() {
-            $(".check_list").addClass("active1");
+            $(".modal-backdrop").removeClass("show");
+            $(".modal").removeClass("show");
+            $(".modal").css("display:none");
             var mTxHash;
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
@@ -320,7 +321,7 @@
                     mTxHash = resp.txhash;
                     return neb.api.getTransactionReceipt(mTxHash);
                 }).then(function (resp) {
-                    $("#receipt").val(mTxHash);
+                    $("#receipt").text(mTxHash);
                     $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt_div").show();
 

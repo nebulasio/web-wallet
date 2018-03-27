@@ -62,7 +62,7 @@ var i18n = function () {
             "send-nas/close": "Close",
             "send-nas/from-address": "From Address",
             "send-nas/raw": "Raw Transaction",
-            "send-nas/receipt": "receipt",
+            "send-nas/receipt": "receipt :",
             "send-nas/send": "Send Transaction",
             "send-nas/signed": "Signed Transaction",
             "send-nas/signed_qr": "Signed Transaction QR",
