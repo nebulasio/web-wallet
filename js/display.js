@@ -19,23 +19,3 @@ function display2() {
     var sendNas6 = document.getElementById("nonce").value;
     document.getElementById("nonce2").innerHTML = sendNas6
 }
-
-function toWei(n) {
-    var arr = ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
-        i, len = arr.length - 1;
-
-    for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
-
-    n = n.toFixed();
-    return (i == len ? numberAddComma(n) : n) + " " + arr[i];
-}
-
-function toNas(n) {
-    var arr = ["kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"],
-        i, len = arr.length - 1;
-
-    for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
-
-    n = n.toFixed();
-    return (i == len ? numberAddComma(n) : n) + " " + arr[i];
-}

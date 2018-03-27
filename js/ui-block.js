@@ -2,8 +2,39 @@
 // requires - jquery blockies bootbox i18n.js nebulas.js
 // because this project already uses them
 
-var uiBlock = {
-    insert: function (dic) {
+var uiBlock = function () {
+    return {
+        insert: insert,
+        numberAddComma: numberAddComma,
+        toWeiOrNas: toWeiOrNas,
+        validate: validate
+    };
+
+    // function toWei(n) { return toWeiOrNas(n); }
+    // function toNas(n) { return toWeiOrNas(n, true); }
+    function toWeiOrNas(n, nas) {
+        var arr = nas ?
+            ["Nas", "kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"] :
+            ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
+            i, len = arr.length - 1;
+
+        for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
+
+        n = n.toFixed();
+        return (i == len ? numberAddComma(n) : n) + " " + arr[i];
+    }
+
+    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    function numberAddComma(n) {
+        n = +n || 0;
+
+        var parts = n.toString().split(".");
+
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
+
+    function insert(dic) {
         // f({ header: ".header-1, .abc" })
         // - will insert header html string into all elements found by document.querySelectorAll(".header-1, .abc")
 
@@ -13,6 +44,7 @@ var uiBlock = {
                 header: header,
                 iconAddress: iconAddress,
                 logoMain: logoMain,
+                numberComma: numberComma,
                 selectWalletFile: selectWalletFile
             }, i;
 
@@ -65,12 +97,26 @@ var uiBlock = {
         }
 
         function iconAddress(selector) {
-            $(selector)
-                .addClass("icon-address")
-                .html(
-                    '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5>' +
-                    "<canvas class=placeholder></canvas>")
-                .on("input", "input", onInput);
+            var $selector = $(selector);
+
+            $selector.each(each);
+            i18n.run($selector);
+
+            function each(i, o) {
+                var $o = $(o),
+                    attrDisabled = $o.attr("data-disabled") != undefined,
+                    attrI18n = $o.attr("data-data-i18n"),
+                    attrId = $o.attr("data-id");
+
+                $o.addClass("icon-address")
+                    .html(
+                        '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5' +
+                        (attrDisabled ? " disabled" : "") +
+                        (attrI18n ? " data-i18n=" + attrI18n : "") +
+                        (attrId ? " id=" + attrId : "") +
+                        "><canvas class=placeholder></canvas>")
+                    .on("input", "input", onInput);
+            }
 
             function onInput(e) {
                 var val = e.target.value,
@@ -90,8 +136,7 @@ var uiBlock = {
                 list = [
                     { chainId: 1001, name: "testnet.nebulas.io", url: "https://testnet.nebulas.io/" },
                     { chainId: 1002, name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" },
-                    { chainId: 1003, name: "34.205.26.12:8685", url: "http://34.205.26.12:8685/" },
-                    { chainId: 1003, name: "13.57.120.136:8685", url: "http://13.57.120.136:8685 /" }
+                    { chainId: 1003, name: "13.57.120.136:8685", url: "http://13.57.120.136:8685/" }
                 ],
                 apiPrefix, sApiButtons, sApiText,
                 lang, langs, sLangButtons;
@@ -124,7 +169,7 @@ var uiBlock = {
                 sLangButtons += '<button class="' + (langs[i] == lang ? "active " : "") + 'dropdown-item" data-lang=' + langs[i] + ">" + i18n.langName(langs[i]) + "</button>"
 
             //
-            // $.replaceAll
+            // $.html
 
             i18n.run($(selector)
                 .addClass("container logo-main")
@@ -166,6 +211,41 @@ var uiBlock = {
                     $this.parent().children().removeClass("active");
                     $this.addClass("active");
                 }
+            }
+        }
+
+        function numberComma(selector) {
+            var $selector = $(selector);
+
+            $selector.each(each);
+            $selector.children("input").trigger("input");
+            i18n.run($selector);
+
+            function each(i, o) {
+                var $o = $(o),
+                    attrDisabled = $o.attr("data-disabled") != undefined,
+                    attrI18n = $o.attr("data-data-i18n"),
+                    attrId = $o.attr("data-id"),
+                    attrValidate = $o.attr("data-validate"),
+                    attrValue = $o.attr("data-value");
+
+                $o.addClass("number-comma")
+                    .html('<input class="form-control"' +
+                        (attrDisabled ? " disabled" : "") +
+                        (attrI18n ? " data-i18n=" + attrI18n : "") +
+                        (attrId ? " id=" + attrId : "") +
+                        (attrValidate ? ' data-validate-order-matters="' + attrValidate + '"' : "") +
+                        (attrValue ? " value=" + attrValue : "") +
+                        "><div></div>")
+                    .on("input", "input", onInput)
+            }
+
+            function onInput() {
+                var $this = $(this),
+                    $parent = $this.parent(),
+                    attrNas = $parent.attr("data-nas") != undefined;
+
+                $parent.children("div").text(toWeiOrNas($this.val(), attrNas));
             }
         }
 
@@ -244,8 +324,9 @@ var uiBlock = {
                 }
             }
         }
-    },
-    validate: function (selector) {
+    }
+
+    function validate(selector) {
         // these validates depend on logical order of value of data-validate-order-matters so proceed with caution
         // queries inputs on each validateAll call so you can add <input> into selector at any time
 
@@ -324,4 +405,4 @@ var uiBlock = {
             $(this).removeClass("invalid").popover("hide");
         }
     }
-};
+}();
