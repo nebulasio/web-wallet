@@ -62,14 +62,20 @@
     */
 
 .icon-address {
-    align-items: center;
-    display: flex;
+    position: relative;
 }
 
 .icon-address canvas {
-    height: 42px;
-    margin-left: 10px;
-    width: 42px;
+    font-size: .875rem;
+    height: 32px;
+    position: absolute;
+    right: .35em;
+    top: .35em;
+    width: 32px;
+}
+
+.icon-address input {
+    padding-right: 40px;
 }
 
 /*

@@ -1608,8 +1608,8 @@ h3.nebulas-description {
 }
 
 /*
-    added since moved to https://github.com/nebulasio/web-wallet.git
     ============================================================
+    added since moved to https://github.com/nebulasio/web-wallet.git
     ============================================================
     */
 
@@ -1623,15 +1623,6 @@ input.invalid {
 
 input.validation-guard {
     border-color: #e8e8e8;
-}
-
-/*
-    because .icon-address > canvas has a height of 50 which is taller than input's height 42,
-    if placed in same line they are not aligned, see sendOffline.html #step2 .col-8 and col-4,
-    hence the margin-bottom
-    */
-.mb4 {
-    margin-bottom: 4px;
 }
 
 /*
