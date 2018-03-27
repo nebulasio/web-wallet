@@ -268,7 +268,6 @@
 
             function onUnlockFile(swf, fileJson, account, password) {
                 var state, balance_nas;
-
                 try {
                     account.fromKey(fileJson, password);
                     globalParams.account = account;
@@ -405,7 +404,7 @@
                 params.value = "0";
                 params.contract =  {
                     "source": $("#source").val(),
-                    "sourceType": $("input[name=sourceType]").val(),
+                    "sourceType": $("input[name=sourceType]:checked").val(),
                     "args": $("#deploy_args").val().trim()
                 };
 
