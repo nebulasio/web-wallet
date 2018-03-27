@@ -185,27 +185,27 @@
 
             $("#info").removeClass("active1 ");
 
-            $(".tx_hash").append(o.hash);
+            $(".tx_hash").html(o.hash);
 
-            $(".contract_addr").append(o.contract_address);
+            $(".contract_addr").html(o.contract_address);
 
-            $(".status").append(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
+            $(".status").html(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
 
-            $(".from_address").append(o.from);
+            $(".from_address").html(o.from);
 
-            $(".to_address").append(o.to);
+            $(".to_address").html(o.to);
 
-            $(".nonce").append(o.nonce);
+            $(".nonce").html(o.nonce);
 
-            $(".gasLimit").append(o.gas_limit);
+            $(".gasLimit").html(o.gas_limit + 'Wei');
 
             var num = toWei(o.gas_price);
-            $(".gasPrice").append(num);
+            $(".gasPrice").html(num);
 
-            $("#code").append(o.data);
+            $("#code").html(o.data);
 
             var nas = toNas(o.value);
-            $(".value").append(nas);
+            $(".value").html(nas);
         }
     </script>
 
