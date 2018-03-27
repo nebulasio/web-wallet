@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -41,6 +42,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class=logo-main></div>
     <div class=header></div>
@@ -107,7 +109,8 @@
         </div>
         <div class=row>
             <div class=col-md-12>
-                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal data-target=#exampleModal data-i18n=send-nas/send>Send </button>
+                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal
+                    data-target=#exampleModal data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 
@@ -261,7 +264,11 @@
 
                     $("#raw").val(gTx.toString());
                     $("#signed").val(gTx.toProtoString());
-                    $('#addressqr').qrcode(gTx.toProtoString());
+
+                    $("<div id=addressqr></div>")
+                        .qrcode(gTx.toProtoString())
+                        .replaceAll('#addressqr');
+
                     $("#transaction").show();
                 } catch (e) {
                     bootbox.dialog({
@@ -316,4 +323,5 @@
         }
     </script>
 </body>
+
 </html>

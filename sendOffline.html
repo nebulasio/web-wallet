@@ -304,7 +304,12 @@
                     $("#raw").val(tx.toString());
                     $("#signed").val(tx.toProtoString());
                     $("#signedoffline").val(tx.toProtoString());
-                    $("#qrcode").qrcode(tx.toProtoString());
+                    // $("#qrcode").qrcode(tx.toProtoString());
+
+                     $("<div id=qrcode style=text-align:center;></div>")
+                        .qrcode(tx.toProtoString())
+                        .replaceAll('#qrcode');
+
                     $("#transaction").show();
                 } catch (e) {
                     bootbox.dialog({
