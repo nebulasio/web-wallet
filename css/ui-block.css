@@ -102,6 +102,25 @@
 }
 
 /*
+    .number-comma
+    ============================================================
+    */
+
+.number-comma {
+    position: relative;
+}
+
+.number-comma > div {
+    color: #aaa;
+    font-size: .875rem;
+    line-height: 3em;
+    pointer-events: none;
+    position: absolute;
+    right: 3px;
+    top: 0;
+}
+
+/*
     .select-wallet-file
     ============================================================
     */
