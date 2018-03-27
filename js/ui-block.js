@@ -68,8 +68,8 @@ var uiBlock = {
             $(selector)
                 .addClass("icon-address")
                 .html(
-                    "<canvas class=placeholder></canvas>" +
-                    '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5>')
+                    '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5>' +
+                    "<canvas class=placeholder></canvas>")
                 .on("input", "input", onInput);
 
             function onInput(e) {
