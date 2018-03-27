@@ -136,3 +136,135 @@ h6 {
 .footerImg {
   width: 128px;
   height: 29px; }
+
+  .wrapperExample1 .search_contract {
+    border: none;
+}
+
+.wrapperExample1 .run_contract {
+    border: none;
+    margin-top: 20px;
+}
+
+.wrapperExample1 .run_contract span {
+    color: gray;
+}
+
+.wrapperExample1 .deploy_contract {
+    border: none;
+    margin-top: 20px;
+}
+
+.wrapperExample1 input {
+    background-color: #f5f5f5;
+}
+
+.deploy_contract span {
+    color: gray;
+}
+
+
+.title {
+    text-align: center;
+    color: black;
+    font-size: 30px;
+}
+
+.code {
+    height: 300px;
+}
+
+.active1 {
+    display: none;
+}
+
+#tabs {
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#tabs li {
+    float: left;
+    margin: 0;
+}
+
+#tabs li a {
+    position: relative;
+    padding: 10px 50px;
+    float: left;
+    text-decoration: none;
+    color: #444;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+    /* box-shadow: 0 2px 2px rgba(0, 0, 0, .4); */
+}
+
+/* #tabs li a:focus {
+    background-color: #ccc;
+} */
+
+.ccc {
+    background-color: #cccccc;
+}
+
+.current a {
+    outline: 0;
+    z-index: 4;
+}
+
+.hoverItem a {
+    background: #AAC8B9;
+}
+
+.item {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.nonce {
+    display: none;
+}
+
+.row {
+    color: black;
+}
+
+.lh {
+    line-height: 100px;
+}
+
+.stop {
+    background-color: gray;
+}
+
+.execution_banner {
+    width: 90%;
+    height: 200px;
+    background-color: #f5f5f5;
+    margin: 0 auto;
+}
+
+.form-check {
+    display: inline-block;
+}
+
+.deploy_contract .deploy_errmsg {
+    color: red;
+}
+
+#tab3 .run_errmsg {
+    color: red;
+}
+
+.err {
+    border-color: red;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
