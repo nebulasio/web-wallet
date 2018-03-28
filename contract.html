@@ -109,14 +109,16 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <span data-i18n=gas-limit></span> <i> （ 1 NAS = 100，000，000 Wei ）</i>
-                        <!-- <span id=gas_limit></span> -->
-                        <input type=text id=gas_limit value=200000>
+                        <span data-i18n=gas-limit></span>
+                        <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=20000></div>
+
                     </div>
                     <div class="col-md-6">
-                        <span data-i18n=gas-price></span> <i> （ 1 NAS = 100，000，000 Wei ）</i>
-                        <!-- <span id=gas_price></span> -->
-                        <input type=text id=gas_price>
+                        <span data-i18n=gas-price></span>
+                        <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_price data-validate="required number gt0" data-value=20000></div>
+
                     </div>
                 </div>
 
@@ -256,13 +258,14 @@
                 account: null
             };
 
-             // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+            // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
             neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
 
             uiBlock.insert({
                 footer: ".footer",
                 header: ".header",
                 logoMain: ".logo-main",
+                numberComma: ".number-comma",
                 selectWalletFile: [".select-wallet-file", onUnlockFile]
             });
 
@@ -317,21 +320,21 @@
             });
 
             // deploy run --------------------------------
-            $("#deploy_run").click(function(){
-                innerDeploy(function(params){
+            $("#deploy_run").click(function () {
+                innerDeploy(function (params) {
                     neb.api.estimateGas({
                         from: params.from,
                         to: params.to,
                         value: params.value,
-                        nonce:  params.nonce,
-                        gasPrice:   params.gasPrice,
-                        gasLimit:   params.gasLimit,
-                        contract:   params.contract
-                    }).then(function(resp){
+                        nonce: params.nonce,
+                        gasPrice: params.gasPrice,
+                        gasLimit: params.gasLimit,
+                        contract: params.contract
+                    }).then(function (resp) {
                         $("#deploy_run_result").text(JSON.stringify(resp));
                         // 显示test结果
                         $("#deploy_run_result").parents(".next").removeClass("active1");
-                    }).catch(function(err){
+                    }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
                     });
@@ -339,20 +342,20 @@
             });
 
             // deploy---------------------------------------
-            $("#deploy").click(function(){
-                innerDeploy(function(params){
+            $("#deploy").click(function () {
+                innerDeploy(function (params) {
 
                     var chainId = parseInt(localStorage.chainId) || 1003;
-                    var gTx = new wallet.Transaction(chainId, globalParams.account, params.from, 
-                            params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                    var gTx = new wallet.Transaction(chainId, globalParams.account, params.from,
+                        params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                     gTx.signTransaction();
                     console.log(gTx.toString());
-                    
-                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function(resp){
+
+                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                         // if deploy success show txhash
                         $("#deploy_txhash").text("Deploy result: " + JSON.stringify);
                         // TODO 显示deploy结果
-                    }).catch(function(err){
+                    }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
                     });
@@ -403,20 +406,20 @@
                 }
                 params.gasPrice = gasPrice.toNumber();
                 params.value = "0";
-                params.contract =  {
+                params.contract = {
                     "source": $("#source").val(),
                     "sourceType": $("input[name=sourceType]:checked").val(),
                     "args": $("#deploy_args").val().trim()
                 };
 
                 // prepare nonce
-                neb.api.getAccountState(params.from).then(function(resp){
+                neb.api.getAccountState(params.from).then(function (resp) {
                     params.nonce = parseInt(resp.nonce) + 1;
                     $("#balance").text(resp.balance);
                     $("#run_balance").text(resp.balance);
                     console.log("prepared params: " + JSON.stringify(params));
                     callback(params);
-                }).catch(function(err){
+                }).catch(function (err) {
                     console.log("prepare nonce error: " + err);
                 });
             }
@@ -446,21 +449,21 @@
 
             // run function
             $("#run_run").click(function () {
-                innerCall(function(params){
+                innerCall(function (params) {
                     neb.api.estimateGas({
                         from: params.from,
                         to: params.to,
                         value: params.value,
-                        nonce:  params.nonce,
-                        gasPrice:   params.gasPrice,
-                        gasLimit:   params.gasLimit,
-                        contract:   params.contract
-                    }).then(function(resp){
+                        nonce: params.nonce,
+                        gasPrice: params.gasPrice,
+                        gasLimit: params.gasLimit,
+                        contract: params.contract
+                    }).then(function (resp) {
                         $("#call_run_result").text(JSON.stringify(resp));
                         // TODO 显示test结果
                         //run result show
                         $(".next").removeClass("active1");
-                    }).catch(function(err){
+                    }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
                     });
@@ -469,7 +472,7 @@
 
             //call function
             $("#call").click(function () {
-                innerCall(function(params){
+                innerCall(function (params) {
                     neb.api.call(params).then(function (resp) {
                         console.log(JSON.stringify(resp));
                         $("#call_result").text("Call result: " + JSON.stringify(resp));
@@ -552,19 +555,19 @@
                 params.value = value;
 
                 // prepare contract
-                params.contract =  {
+                params.contract = {
                     "function": $("#call_function").val(),
                     "args": $("#call_args").val().trim()
                 };
 
                 // prepare nonce
-                neb.api.getAccountState(params.from).then(function(resp){
+                neb.api.getAccountState(params.from).then(function (resp) {
                     params.nonce = parseInt(resp.nonce) + 1;
                     $("#balance").text(resp.balance);
                     $("#run_balance").text(resp.balance);
                     console.log("prepared params: " + JSON.stringify(params));
                     callback(params);
-                }).catch(function(err){
+                }).catch(function (err) {
                     console.log("prepare nonce error: " + err);
                 });
             }
