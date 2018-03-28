@@ -7,7 +7,6 @@
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
     <link rel=stylesheet href=css/base.css>
-    <link rel=stylesheet href=css/home.css>
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
@@ -39,6 +38,11 @@
             position: absolute;
             right: 4%;
             top: 18%;
+        }
+
+        .transaction {
+            margin-top: 1rem;
+            display: none;
         }
     </style>
 </head>
@@ -73,11 +77,13 @@
         </div>
         <div class=row>
             <div class="form-group col-md-6">
-                <label for=limit data-i18n=gas-limit>Gas Limit</label> <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <label for=limit data-i18n=gas-limit>Gas Limit</label>
+                <i> （ 1 NAS = 100，000，000 Wei ）</i>
                 <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=20000></div>
             </div>
             <div class="form-group col-md-6">
-                <label for=price data-i18n=gas-price>Gas Price</label> <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <label for=price data-i18n=gas-price>Gas Price</label>
+                <i> （ 1 NAS = 100，000，000 Wei ）</i>
                 <div class=number-comma data-data-i18n=amount data-id=price data-validate="required number gt0" data-value=1000000></div>
             </div>
         </div>
@@ -109,8 +115,7 @@
         </div>
         <div class=row>
             <div class=col-md-12>
-                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal
-                    data-target=#exampleModal data-i18n=send-nas/send>Send </button>
+                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal data-target=#exampleModal data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 

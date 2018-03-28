@@ -7,10 +7,45 @@
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
     <link rel=stylesheet href=css/base.css>
-    <link rel=stylesheet href=css/home.css>
-    <link rel=stylesheet href=css/check.css>
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
+    <style>
+        .hash {
+            height: 400px;
+            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
+            padding: 1.5rem 2rem;
+            min-height: 1.5rem;
+            margin: 1rem auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .information {
+            height: 830px;
+            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
+            padding: 1.5rem 2rem;
+            min-height: 1.5rem;
+            margin: 1rem auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .active1 {
+            display: none;
+        }
+
+        .errmsg {
+            color: red;
+        }
+
+        .form-control {
+            text-align: center;
+        }
+
+        .table tr>td:first-child {
+            text-align: left;
+        }
+    </style>
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
 
@@ -30,7 +65,7 @@
             </p>
         </section>
         <section class="col text-center">
-            <input id=input class=form-control type=text placeholder=344da3d68386...a6bb2817d4c1>
+            <input id=input class=form-control data-validate-order-matters="required lengthEq45" placeholder=344da3d68386...a6bb2817d4c1>
             <button id=btn tabindex=0 role=button class="btn btn-primary" data-i18n=header/check>Check TX Status</button>
             <br>
             <span class="active1 errmsg" data-i18n=check/comment1>Please enter a valid TX hash</span>
@@ -128,85 +163,59 @@
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
     <script src=js/nebulas.js></script>
     <script>
-        $(function () {
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            neb = new nebulas.Neb(),
+            hash = location.search.slice(1),
+            validateAll = uiBlock.validate();
 
-            uiBlock.insert({
-                footer: ".footer",
-                header: ".header",
-                logoMain: ".logo-main"
-            });
+        uiBlock.insert({
+            footer: ".footer",
+            header: ".header",
+            logoMain: ".logo-main"
+        });
 
-            var nebulas = require("nebulas");
-            var Account = nebulas.Account;
-            var neb = new nebulas.Neb();
-            // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
+        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
 
-            $("#btn").click(function () {
-                if ($("#input").val().length < 46) {
-                    $(".errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $(".errmsg").addClass("active1");
-                    }, 2000);
-                } else {
-                    neb.api.getTransactionReceipt($("#input").val()).then(done).catch(function (err) {
+        $("#btn").on("click", onClickBtn);
+
+        if (hash) {
+            $("#input").val(hash);
+            $("#btn").trigger("click");
+        }
+
+        function onClickBtn() {
+            if (validateAll())
+                neb.api.getTransactionReceipt($("#input").val())
+                    .then(doneGetTransactionReceipt)
+                    .catch(function (err) {
                         // TODO handle error
                         console.log(err)
                     });
-                }
-            });
-        });
+            else {
+                $(".errmsg").removeClass("active1");
 
-        function toWei(n) {
-            var arr = ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
-                i, len = arr.length - 1;
-
-            for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
-
-            n = n.toFixed();
-            return (i == len ? numberAddComma(n) : n) + " " + arr[i];
+                setTimeout(function () {
+                    $(".errmsg").addClass("active1");
+                }, 2000);
+            }
         }
 
-        function toNas(n) {
-            var arr = ["kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"],
-                i, len = arr.length - 1;
-
-            for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
-
-            n = n.toFixed();
-            return (i == len ? numberAddComma(n) : n) + " " + arr[i];
-        }
-
-
-        function done(o) {
-            console.log(o);
-
-            $("#info").removeClass("active1 ");
-
-            $(".tx_hash").html(o.hash);
-
-            $(".contract_addr").html(o.contract_address);
-
-            $(".status").html(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
-
-            $(".from_address").html(o.from);
-
-            $(".to_address").html(o.to);
-
-            $(".nonce").html(o.nonce);
-
-            $(".gasLimit").html(o.gas_limit + 'Wei');
-
-            var num = toWei(o.gas_price);
-            $(".gasPrice").html(num);
-
+        function doneGetTransactionReceipt(o) {
+            $("#info").removeClass("active1");
             $("#code").html(o.data);
-
-            var nas = toNas(o.value);
-            $(".value").html(nas);
+            $(".tx_hash").html(o.hash);
+            $(".contract_addr").html(o.contract_address);
+            $(".status").html(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
+            $(".from_address").html(o.from);
+            $(".to_address").html(o.to);
+            $(".nonce").html(o.nonce);
+            $(".gasLimit").html(o.gas_limit + 'Wei');
+            $(".gasPrice").html(uiBlock.toWeiOrNas(o.gas_price));
+            $(".value").html(uiBlock.toWeiOrNas(o.value, true));
         }
     </script>
-
 </body>
 
 </html>
