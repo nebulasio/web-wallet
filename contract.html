@@ -266,38 +266,6 @@
                 numberComma: ".number-comma",
                 selectWalletFile: [".select-wallet-file", onUnlockFile]
             });
-
-            function onUnlockFile(swf, fileJson, account, password) {
-                var state, balance_nas;
-                try {
-                    account.fromKey(fileJson, password);
-                    globalParams.account = account;
-                    $("#from_addr").val(account.getAddressString());
-                    $("#to_addr").val(account.getAddressString());
-                    $("#run_from_addr").val(account.getAddressString());
-                    $("#unlock").hide();
-                    $("#send").show();
-
-                    neb.api.gasPrice().then(function (resp) {
-                        $("#gas_price").val(resp.gas_price);
-                        $("#run_gas_price").val(resp.gas_price);
-                        return neb.api.getAccountState($("#from_addr").val());
-                    }).then(function (resp) {
-                        $("#balance").text(resp.balance);
-                        $("#run_balance").text(resp.balance);
-                    }).catch(function (err) {
-                        // TODO handle error
-                    });
-
-                } catch (e) {
-                    bootbox.dialog({
-                        message: e,
-                        size: "large",
-                        title: "Error"
-                    });
-                }
-            }
-
             //tab change
 
             $('#tabs a').click(function (e) {
@@ -360,6 +328,102 @@
                 });
             });
 
+            //call------------------------------------------
+            $(".search").click(function () {
+                if ($("#addr_input").val().length != 64) {
+                    $(".errmsg").removeClass("active1");
+
+                    setTimeout(function () {
+                        $(".errmsg").addClass("active1");
+                    }, 2000);
+
+                } else {
+                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
+                        var jsonString = atob(o.data);
+
+                        $(".search_result").text(jsonString);
+                        $("#to_addr").val(o.contract_address);
+                        $(".search_result").removeClass("active1");
+                    }).catch(function (o) {
+                        bootbox.dialog({
+                            message: i18n.apiErrorToText(o.error),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
+                }
+            });
+
+            // run function
+            $("#run_run").click(function () {
+                innerCall(function (params) {
+                    neb.api.estimateGas({
+                        from: params.from,
+                        to: params.to,
+                        value: params.value,
+                        nonce: params.nonce,
+                        gasPrice: params.gasPrice,
+                        gasLimit: params.gasLimit,
+                        contract: params.contract
+                    }).then(function (resp) {
+                        $("#call_run_result").text(JSON.stringify(resp));
+                        // TODO 显示test结果
+                        //run result show
+                        $(".next").removeClass("active1");
+                    }).catch(function (err) {
+                        // TODO handle error
+                        console.log(err);
+                    });
+                });
+            })
+
+            //call function
+            $("#call").click(function () {
+                innerCall(function (params) {
+                    neb.api.call(params).then(function (resp) {
+                        console.log(JSON.stringify(resp));
+                        $("#call_result").text("Call result: " + JSON.stringify(resp));
+                        // TODO 确认显示效果
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
+                    }).catch(function (err) {
+                        // TODO handle error
+                        console.log("call run error: " + err);
+                    });
+                });
+            });
+
+            function onUnlockFile(swf, fileJson, account, password) {
+                var state, balance_nas;
+                try {
+                    account.fromKey(fileJson, password);
+                    globalParams.account = account;
+                    $("#from_addr").val(account.getAddressString());
+                    $("#to_addr").val(account.getAddressString());
+                    $("#run_from_addr").val(account.getAddressString());
+                    $("#unlock").hide();
+                    $("#send").show();
+
+                    neb.api.gasPrice().then(function (resp) {
+                        $("#gas_price").val(resp.gas_price);
+                        $("#run_gas_price").val(resp.gas_price);
+                        return neb.api.getAccountState($("#from_addr").val());
+                    }).then(function (resp) {
+                        $("#balance").text(resp.balance);
+                        $("#run_balance").text(resp.balance);
+                    }).catch(function (err) {
+                        // TODO handle error
+                    });
+
+                } catch (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
+                }
+            }
+
             function innerDeploy(callback) {
                 let params = {};
 
@@ -421,68 +485,6 @@
                     console.log("prepare nonce error: " + err);
                 });
             }
-
-            //call------------------------------------------
-            $(".search").click(function () {
-                if ($("#addr_input").val().length != 64) {
-                    $(".errmsg").removeClass("active1");
-
-                    setTimeout(function () {
-                        $(".errmsg").addClass("active1");
-                    }, 2000);
-
-                } else {
-                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
-                        var jsonString = atob(o.data);
-
-                        $(".search_result").text(jsonString);
-                        $("#to_addr").val(o.contract_address);
-                        $(".search_result").removeClass("active1");
-                    }).catch(function (err) {
-                        // TODO handle error
-                        console.log(err);
-                    });
-                }
-            });
-
-            // run function
-            $("#run_run").click(function () {
-                innerCall(function (params) {
-                    neb.api.estimateGas({
-                        from: params.from,
-                        to: params.to,
-                        value: params.value,
-                        nonce: params.nonce,
-                        gasPrice: params.gasPrice,
-                        gasLimit: params.gasLimit,
-                        contract: params.contract
-                    }).then(function (resp) {
-                        $("#call_run_result").text(JSON.stringify(resp));
-                        // TODO 显示test结果
-                        //run result show
-                        $(".next").removeClass("active1");
-                    }).catch(function (err) {
-                        // TODO handle error
-                        console.log(err);
-                    });
-                });
-            })
-
-            //call function
-            $("#call").click(function () {
-                innerCall(function (params) {
-                    neb.api.call(params).then(function (resp) {
-                        console.log(JSON.stringify(resp));
-                        $("#call_result").text("Call result: " + JSON.stringify(resp));
-                        // TODO 确认显示效果
-                        $(".result").removeClass("active1");
-                        $(".next").removeClass("active1");
-                    }).catch(function (err) {
-                        // TODO handle error
-                        console.log("call run error: " + err);
-                    });
-                });
-            });
 
             function innerCall(callback) {
                 let params = {};
@@ -569,10 +571,7 @@
                     console.log("prepare nonce error: " + err);
                 });
             }
-
         });
-
     </script>
 </body>
-
 </html>

@@ -34,7 +34,7 @@
             display: none;
         }
 
-        .transaction{
+        .transaction {
             position: relative;
         }
 
@@ -81,13 +81,19 @@
         </div>
         <div class=row>
             <div class="form-group col-md-6">
-                <label for=limit data-i18n=gas-limit>Gas Limit</label>
-                <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <label for=limit>
+                    <span data-i18n=gas-limit>Gas Limit</span>
+                    <i>( 1 NAS = 10
+                        <sup>18</sup> Wei )</i>
+                </label>
                 <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=20000></div>
             </div>
             <div class="form-group col-md-6">
-                <label for=price data-i18n=gas-price>Gas Price</label>
-                <i> （ 1 NAS = 100，000，000 Wei ）</i>
+                <label for=price>
+                    <span data-i18n=gas-price>Gas Price</span>
+                    <i>( 1 NAS = 10
+                        <sup>18</sup> Wei )</i>
+                </label>
                 <div class=number-comma data-data-i18n=amount data-id=price data-validate="required number gt0" data-value=1000000></div>
             </div>
         </div>
@@ -234,9 +240,9 @@
 
                     $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                 });
-            } catch (e) {
+            } catch (o) {
                 bootbox.dialog({
-                    message: e,
+                    message: i18n.apiErrorToText(o.error),
                     size: "large",
                     title: "Error"
                 });
@@ -324,14 +330,14 @@
                                 // TODO error
                             });
                     }, 60 * 1000);
-                }).catch(function (err) {
-                    // TODO handle error
-                    console.log(err)
+                }).catch(function (o) {
+                    bootbox.dialog({
+                        message: i18n.apiErrorToText(o.error),
+                        size: "large",
+                        title: "Error"
+                    });
                 });
         }
-
-
-
     </script>
 </body>
 

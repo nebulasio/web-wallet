@@ -86,7 +86,7 @@ var i18n = function () {
             "validate/eqgt0": "invalid: must equal to or greater than 0",
             "validate/gt0": "invalid: must greater than 0",
             "validate/lengthEq35": "invalid: length should be 35",
-            "validate/lengthEq45": "invalid: length should be 45",
+            "validate/lengthEq46": "invalid: length should be 46",
             "validate/lengthGt8": "invalid: length should at least be 9",
             "validate/number": "invalid: must be number",
             "validate/required": "invalid: required",
@@ -169,7 +169,7 @@ var i18n = function () {
             "validate/eqgt0": "无效：必须等于或大于 0",
             "validate/gt0": "无效：必须大于 0",
             "validate/lengthEq35": "无效：长度应等于 35",
-            "validate/lengthEq45": "无效：长度应等于 45",
+            "validate/lengthEq46": "无效：长度应等于 46",
             "validate/lengthGt8": "无效：长度至少是 9",
             "validate/number": "无效：必须是数字",
             "validate/required": "无效：必填",
@@ -182,10 +182,47 @@ var i18n = function () {
     };
 
     return {
+        apiErrorToText: apiErrorToText,
         langName: langName,
         run: run,
         supports: supports
     };
+
+    function apiErrorToText(s) {
+        var lang = localStorage.lang,
+            table = {
+                // GetTransactionReceipt
+                "invalid argument(s)": {
+                    en: "invalid transaction hash",
+                    zh: "无效的交易散列"
+                },
+                "params eror/system error": {
+                    en: "transaction hash or system error",
+                    zh: "交易散列或者系统错误"
+                },
+                "transaction not found": {
+                    en: "transaction not found",
+                    zh: "交易未找到"
+                },
+                // senRawTransaction
+                "transaction's nonce is invalid, should bigger than the from's nonce":{
+                    en:s,
+                    zh:"交易的 nonce 无效，应该大于发送方的 nonce"
+                },
+
+                // 2. contract transaction from-address not equal to to-address 发布合约的from/to地址不一致
+                // 3. contract check failed 合约地址无效
+                // 4. duplicated transaction 不能重复提交相同的交易
+                // 5. below the gas price gas 价格太低
+                // 6. gas limit less or equal to 0 
+                // 7. out of gas limit    gasLimit过大
+                // 8. invalid transaction chainID 无效的chainID
+                // 9. invalid transaction hash 无效的交易哈希
+                // 10. invalid transaction signer 无效的交易签名
+            };
+
+        return table[s] ? table[s][lang] || table[s].en : s;
+    }
 
     function langName(s) {
         return table[s].name;

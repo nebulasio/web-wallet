@@ -335,7 +335,7 @@ var uiBlock = function () {
                 eqgt0: function (s) { return s > -1; },
                 gt0: function (s) { return s > 0; },
                 lengthEq35: function (s) { return s.length == 35; },
-                lengthEq45: function (s) { return s.length == 45; },
+                lengthEq46: function (s) { return s.length == 46; },
                 lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
                     try {

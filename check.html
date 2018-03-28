@@ -65,7 +65,7 @@
             </p>
         </section>
         <section class="col text-center">
-            <input id=input class=form-control data-validate-order-matters="required lengthEq45" placeholder=344da3d68386...a6bb2817d4c1>
+            <input id=input class=form-control data-validate-order-matters="required lengthEq46" placeholder=344da3d68386...a6bb2817d4c1>
             <button id=btn tabindex=0 role=button class="btn btn-primary" data-i18n=header/check>Check TX Status</button>
             <br>
             <span class="active1 errmsg" data-i18n=check/comment1>Please enter a valid TX hash</span>
@@ -189,9 +189,12 @@
             if (validateAll())
                 neb.api.getTransactionReceipt($("#input").val())
                     .then(doneGetTransactionReceipt)
-                    .catch(function (err) {
-                        // TODO handle error
-                        console.log(err)
+                    .catch(function (o) {
+                        bootbox.dialog({
+                            message: i18n.apiErrorToText(o.error),
+                            size: "large",
+                            title: "Error"
+                        });
                     });
             else {
                 $(".errmsg").removeClass("active1");
