@@ -339,7 +339,14 @@
                         title: "Error"
                     });
                 });
-        }
+        };
+
+        $("#signedoffline").on("input", function () {
+            $("<div id=qrcode style=text-align:center;></div>")
+                .qrcode($("#signedoffline").val())
+                .replaceAll('#qrcode');
+        })
+
     </script>
 </body>
 
