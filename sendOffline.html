@@ -9,6 +9,11 @@
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
+    <style>
+        .transaction {
+            display: none;
+        }
+    </style>
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
 
@@ -77,7 +82,7 @@
 
     <div class=select-wallet-file></div>
 
-    <div id=transaction class="container transaction">
+    <div class="container transaction">
         <button id=generate class="btn btn-block" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
         <div class=row>
             <div class=col-6>
@@ -113,7 +118,19 @@
         </div>
     </div>
 
-    <div class="modal fade" id=exampleModal tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
+    <div class="container transaction" id=receipt_div>
+        TX hash :
+        <a href="check.html" id=receipt></a>
+        <div class=form-group>
+            <label for=signed data-i18n=send-nas/receipt>receipt :</label>
+            <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
+        </div>
+    </div>
+
+
+    <div class=footer></div>
+
+    <div class="fade modal" id=exampleModal tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
         <div class=modal-dialog role=document>
             <div class=modal-content>
                 <div class=modal-header>
@@ -145,26 +162,13 @@
                 </div>
                 <div class=modal-footer>
                     <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
-                    <button id=sendtransaction type=button class="btn btn-primary" data-i18n=send-nas/check onclick=sendtransaction()></button>
+                    <button id=sendtransaction type=button class="btn btn-primary" data-dismiss=modal data-i18n=send-nas/check onclick=sendtransaction()></button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="container transaction" id=receipt_div style=display:none;>
-        TX hash :
-        <a href="check.html" id=receipt></a>
-        <div class=form-group>
-            <label for=signed data-i18n=send-nas/receipt>receipt :</label>
-            <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
-        </div>
-    </div>
-
-
-    <div class=footer></div>
-
-    <div class="modal fade" tabindex=-1 id=info role=dialog>
+    <div class="fade modal" tabindex=-1 id=info role=dialog>
         <div class=modal-dialog role=document>
             <div class=modal-content>
                 <div class=modal-header>
@@ -221,7 +225,7 @@
             try {
                 account.fromKey(fileJson, password);
                 gAccount = account;
-                $("#transaction").show();
+                $(".transaction").show();
             } catch (e) {
                 bootbox.dialog({
                     message: e,
@@ -297,7 +301,7 @@
                         .qrcode(tx.toProtoString())
                         .replaceAll('#qrcode');
 
-                    $("#transaction").show();
+                    $(".transaction").show();
                 } catch (e) {
                     bootbox.dialog({
                         message: e,
@@ -310,22 +314,21 @@
         }
 
         $("#send_transaction").click(function () {
-            try {
-                var tx = Transaction.prototype.fromProto($("#signedoffline").val());
-                $("#for_addr").val(tx.from.getAddressString());
-                $("#to_addr").val(tx.to.getAddressString());
-                $("#value").val(unit.fromBasic(tx.value, "nas"));
-            } catch (err) {
-                // TODO signed transaction内容解析失败
-                console.log(err);
-            }
+            var val = $("#signedoffline").val();
+
+            if (val)
+                try {
+                    var tx = Transaction.prototype.fromProto(val);
+                    $("#for_addr").val(tx.from.getAddressString());
+                    $("#to_addr").val(tx.to.getAddressString());
+                    $("#value").val(unit.fromBasic(tx.value, "nas"));
+                } catch (err) {
+                    // TODO signed transaction内容解析失败
+                    console.log(err);
+                }
         });
 
         function sendtransaction() {
-            $(".modal-backdrop").removeClass("show");
-            $(".modal").removeClass("show");
-            $(".modal").css("display:none");
-
             neb.api.sendRawTransaction($("#signedoffline").val())
                 .then(function (resp) {
                     return neb.api.getTransactionReceipt(resp.txhash);
