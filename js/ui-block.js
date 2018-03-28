@@ -110,7 +110,7 @@ var uiBlock = function () {
 
                 $o.addClass("icon-address")
                     .html(
-                        '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder=n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5' +
+                        '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder="fill address here"' +
                         (attrDisabled ? " disabled" : "") +
                         (attrI18n ? " data-i18n=" + attrI18n : "") +
                         (attrId ? " id=" + attrId : "") +
