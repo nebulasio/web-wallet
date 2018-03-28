@@ -7,7 +7,6 @@
     <link rel=apple-touch-icon href=img/logo.png>
     <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
     <link rel=stylesheet href=css/base.css>
-    <link rel=stylesheet href=css/home.css>
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <title>星云链测试网 | Nebulas Testnet</title>
@@ -43,6 +42,11 @@
             position: absolute;
             left: 70%;
             top: 15%;
+        }
+
+        .transaction {
+            margin-top: 1rem;
+            display: none;
         }
     </style>
 </head>
@@ -115,8 +119,7 @@
         </div>
         <div class=row>
             <div class=col-md-12>
-                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal
-                    data-target=#exampleModal data-i18n=send-nas/send>Send </button>
+                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal data-target=#exampleModal data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 

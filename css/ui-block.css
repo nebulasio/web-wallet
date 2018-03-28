@@ -99,7 +99,7 @@
     justify-content: flex-end;
 }
 
-/* overrides - base.css, home.css */
+/* overrides - base.css */
 .logo-main .col:last-child .btn {
     background-color: white;
     color: #aaa;
