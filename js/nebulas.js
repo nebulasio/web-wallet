@@ -12,12 +12,6 @@ var NormalType = 87;
 var ContractType = 88;
 
 /**
- * <Buffer >
- * @typedef {Object} Buffer
- * @global
- */
-
-/**
  * @typedef {Object} KeyOptions
  * @property {Buffer} salt
  * @property {Buffer} iv
@@ -29,18 +23,6 @@ var ContractType = 88;
  * @property {Number} p
  * @property {String} cipher
  * @property {Buffer} uuid
- * @global
- */
-
-/**
- * Client passphrase.
- * @typedef {String} Password
- * @global
- */
-
-/**
- * Hex-string or Buffer hash.
- * @typedef {(Buffer|String)} Hash
  * @global
  */
 
@@ -158,7 +140,8 @@ Account.fromAddress = function (addr) {
         acc.address = Base58.decode(addr);
         return acc;
     }
-    let buf = cryptoUtils.toBuffer(addr);
+
+    var buf = cryptoUtils.toBuffer(addr);
     if (this.isValidAddress(buf)) {
         acc.address = buf;
         return acc;
@@ -858,117 +841,86 @@ API.prototype._setRequest = function (request) {
 
 /**
  * Method get state of Nebulas Network.
- *
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate}
  *
  * @return [NebStateObject]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var state = api.getNebState();
- * //async
- * api.getNebState(function(state) {
+ * api.getNebState().then(function(state) {
  * //code
  * });
  */
 API.prototype.getNebState = function () {
-    var options = utils.argumentsToObject(['callback'], arguments);
-    return this._sendRequest("get", "/nebstate", null, options.callback);
+    return this._sendRequest("get", "/nebstate", null);
 };
 
 /**
  * Method get latest irreversible block of Nebulas Network.
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#latestirreversibleblock}
  *
- * @param {Function} [callback] - Without callback return data synchronous.
- *
- * @return [NebStateObject]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#latestirreversibleblock}
+ * @return [dataBlockInfo.]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#latestirreversibleblock}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var state = api.latestIrreversibleBlock();
- * //async
- * api.latestIrreversibleBlock(function(state) {
+ * api.latestIrreversibleBlock().then(function(blockData) {
  * //code
  * });
  */
 API.prototype.latestIrreversibleBlock = function () {
-    var options = utils.argumentsToObject(['callback'], arguments);
-    return this._sendRequest("get", "/lib", null, options.callback);
+    return this._sendRequest("get", "/lib", null);
 };
 
 /**
  * Method return the state of the account. Balance and nonce.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate}
  *
- * @param {String} address
- * @param {String} height
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {Object} options.address
+ * @param {String} options.height
  *
  * @return [accaountStateObject]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var state = api.getAccountState("n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn");
- * //async
- * api.getAccountState("n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn", function(state) {
+ * api.getAccountState({address: "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn"}).then(function(state) {
  * //code
  * });
  */
-API.prototype.getAccountState = function () {
-    var options = utils.argumentsToObject(['address', 'height', 'callback'], arguments);
+API.prototype.getAccountState = function (options) {
+    options = utils.argumentsToObject(['address', 'height'], arguments);
     var params = { "address": options.address, "height": options.height };
-    return this._sendRequest("post", "/accountstate", params, options.callback);
+    return this._sendRequest("post", "/accountstate", params);
 };
 
 /**
  * Method wrap smart contract call functionality.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#call}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#call}
  *
- * @param {String} from
- * @param {String} to
- * @param {Number|Sting} value
- * @param {Number} nonce
- * @param {Number|String} gasPrice
- * @param {Number|String} gasLimit
- * @param {Object} contract
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {TransactionOptions} options
  *
  * @return [Transcation hash]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#call}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var tx = api.call(
- *     "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn",
- *     "n1Lf5VcZQnzBc69iANxLTBqmojCeMFKowoM",
- *     "0",
- *     3,
- *     "1000000",
- *     "2000000",
- *     "contract":{"function":"save","args":"[0]"}
- * );
- * //async
- * api.call(
- *     100,
- *     "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn",
- *     "n1Lf5VcZQnzBc69iANxLTBqmojCeMFKowoM",
- *     "0",
- *      3,
- *      "1000000",
- *      "2000000",
- *      "contract":{"function":"save","args":"[0]"},
- *      function(tx) {
- *          //code
- *      }
- * );
+ * api.call({
+ *    chainID: 1,
+ *    from: "5bed67f99cb3319e0c6f6a03548be3c8c52a8364464f886f",
+ *    to: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+ *    value: 10,
+ *    nonce: 12,
+ *    gasPrice: 1000000,
+ *    gasLimit: 2000000,
+ *    contract: {
+ *        function: "save",
+ *        args: "[0]"
+ *    }
+ * }).then(function(tx) {
+ *     //code
+ * });
  */
-API.prototype.call = function () {
-    var options = utils.argumentsToObject(['from', 'to', 'value', 'nonce', 'gasPrice', 'gasLimit', 'contract', 'callback'], arguments);
+API.prototype.call = function (options) {
+    options = utils.argumentsToObject(['from', 'to', 'value', 'nonce', 'gasPrice', 'gasLimit', 'contract'], arguments);
     var params = {
         "from": options.from,
         "to": options.to,
@@ -978,203 +930,185 @@ API.prototype.call = function () {
         "gasLimit": utils.toString(options.gasLimit),
         "contract": options.contract
     };
-    return this._sendRequest("post", "/call", params, options.callback);
+    return this._sendRequest("post", "/call", params);
 };
 
 /**
  * Method wrap submit the signed transaction.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction}
  *
- * @param {Object} data
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {String} options.data
  *
  * @return [Transcation hash]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction}
  *
  * @example
  * var api = new Neb().api;
- * var tx = new Transaction(ChainID, from, to, transferValue, nonce, gasPrice, gasLimit);
+ * var tx = new Transaction({
+ *    chainID: 1,
+ *    from: acc1,
+ *    to: acc2,
+ *    value: 10,
+ *    nonce: 12,
+ *    gasPrice: 1000000,
+ *    gasLimit: 2000000
+ * });
  * tx.signTransaction();
- * //sync
- * var hash = api.sendRawTransaction( tx.toProtoString() );
- * //async
- * api.sendRawTransaction( tx.toProtoString(), function(hash) {
+ * api.sendRawTransaction( {data: tx.toProtoString()} ).then(function(hash) {
  * //code
  * });
  */
-API.prototype.sendRawTransaction = function () {
-    var options = utils.argumentsToObject(['data', 'callback'], arguments);
+API.prototype.sendRawTransaction = function (options) {
+    options = utils.argumentsToObject(['data'], arguments);
     var params = { "data": options.data };
-    return this._sendRequest("post", "/rawtransaction", params, options.callback);
+    return this._sendRequest("post", "/rawtransaction", params);
 };
 
 /**
  * Get block header info by the block hash.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyhash}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyhash}
  *
- * @param {String} hash
- * @param {Boolean} fullTransaction
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {String} options.hash
+ * @param {Boolean} options.fullTransaction
  *
  * @return [Block]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyhash}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var block = api.getBlockByHash("00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", true);
- * //async
- * api.getBlockByHash("00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", true,  function(block) {
+ * api.getBlockByHash({
+ *     hash: "00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8",
+ *     fullTransaction: true
+ * }).then(function(block) {
  * //code
  * });
  */
-API.prototype.getBlockByHash = function () {
-    var options = utils.argumentsToObject(['hash', 'fullTransaction', 'callback'], arguments);
+API.prototype.getBlockByHash = function (options) {
+    options = utils.argumentsToObject(['hash', 'fullTransaction'], arguments);
     var params = { "hash": options.hash, "fullTransaction": options.fullTransaction };
-    return this._sendRequest("post", "/getBlockByHash", params, options.callback);
+    return this._sendRequest("post", "/getBlockByHash", params);
 };
 
 /**
  * Get block header info by the block height.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyheight}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyheight}
  *
- * @param {Number} height
- * @param {Boolean} fullTransaction
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {Number} options.height
+ * @param {Boolean} options.fullTransaction
  *
  * @return [Block]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getblockbyheight}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var block = api.getBlockByHeight(2, true);
- * //async
- * api.getBlockByHeight(2, true,  function(block) {
+ * api.getBlockByHeight({height:2, fullTransaction:true}).then(function(block) {
  * //code
  * });
  */
-API.prototype.getBlockByHeight = function () {
-    var options = utils.argumentsToObject(['height', 'fullTransaction', 'callback'], arguments);
+API.prototype.getBlockByHeight = function (options) {
+    options = utils.argumentsToObject(['height', 'fullTransaction'], arguments);
     var params = { "height": options.height, "fullTransaction": options.fullTransaction };
-    return this._sendRequest("post", "/getBlockByHeight", params, options.callback);
+    return this._sendRequest("post", "/getBlockByHeight", params);
 };
 
 /**
  * Get transactionReceipt info by tansaction hash.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt}
  *
- * @param {String} hash
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {String} options.hash
  *
  * @return [TransactionReceipt]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var receipt = api.getTransactionReceipt("cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c");
- * //async
- * api.getTransactionReceipt("cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c", function(receipt) {
+ * api.getTransactionReceipt({hash: "cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"}).then(function(receipt) {
  * //code
  * });
  */
-API.prototype.getTransactionReceipt = function () {
-    var options = utils.argumentsToObject(['hash', 'callback'], arguments);
+API.prototype.getTransactionReceipt = function (options) {
+    options = utils.argumentsToObject(['hash'], arguments);
     var params = { "hash": options.hash };
-    return this._sendRequest("post", "/getTransactionReceipt", params, options.callback);
+    return this._sendRequest("post", "/getTransactionReceipt", params);
 };
 
 /**
  * Return the subscribed events of transaction & block.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#subscribe}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#subscribe}
  *
- * @param {Array|String} topic
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {Array|String} options.topics
  *
  * @return [eventData]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#subscribe}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var eventData = api.subscribe(["chain.linkBlock", "chain.pendingTransaction"]);
- * //async
- * api.subscribe(["chain.linkBlock", "chain.pendingTransaction"], function(eventData) {
+ * api.subscribe({topics: ["chain.linkBlock", "chain.pendingTransaction"]}).then(function(eventData) {
  * //code
  * });
  */
-API.prototype.subscribe = function () {
-    var options = utils.argumentsToObject(['topic', 'callback'], arguments);
-    var params = { "topic": options.topic };
-    return this._sendRequest("post", "/subscribe", params, options.callback);
+API.prototype.subscribe = function (options) {
+    options = utils.argumentsToObject(['topics', 'onDownloadProgress'], arguments);
+    var params = { "topics": options.topics };
+    var axiosOptions;
+    if (typeof options.onDownloadProgress === 'function') {
+        axiosOptions = {
+            onDownloadProgress: function (e) {
+                if (typeof e.target._readLength === 'undefined') {
+                    e.target._readLength = 0;
+                }
+                var chunk = e.target.responseText.substr(e.target._readLength);
+                // TODO check and split multi events
+                if (chunk && chunk.trim().length > 0) {
+                    e.target._readLength += chunk.length;
+                    options.onDownloadProgress(chunk);
+                }
+            }
+        };
+    }
+    return this._sendRequest("post", "/subscribe", params, null, axiosOptions);
 };
 
 /**
  * Return current gasPrice.
- *
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice}
  *
  * @return [Gas Price]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var gasPrice = api.gasPrice();
- * //async
- * api.gasPrice(function(gasPrice) {
+ * api.gasPrice().then(function(gasPrice) {
  * //code
  * });
  */
 API.prototype.gasPrice = function () {
-    var options = utils.argumentsToObject(['callback'], arguments);
-    return this._sendRequest("get", "/getGasPrice", null, options.callback);
+    return this._sendRequest("get", "/getGasPrice", null);
 };
 
 /**
  * Return the estimate gas of transaction.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#estimategas}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#estimategas}
  *
- * @param {String} from
- * @param {String} to
- * @param {Number|Sting} value
- * @param {Number} nonce
- * @param {Number|String} gasPrice
- * @param {Number|String} gasLimit
- * @param {Object} [contract]
- * @param {String} [binary]
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {TransactionOptions} options
  *
  * @return [Gas]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#estimategas}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var gas = api.estimateGas(
- *     "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn",
- *     "n1Lf5VcZQnzBc69iANxLTBqmojCeMFKowoM",
- *     "10",
- *     1,
- *     "1000000",
- *     "2000000"
- * );
- * //async
- * api.estimateGas(
- *     "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn",
- *     "n1Lf5VcZQnzBc69iANxLTBqmojCeMFKowoM",
- *     "10",
- *     1,
- *     "1000000",
- *     "2000000",
- *     null, null,
- *     function(gas) {
- *          //code
- *     }
- * );
+ * api.estimateGas({
+ *    chainID: 1,
+ *    from: "5bed67f99cb3319e0c6f6a03548be3c8c52a8364464f886f",
+ *    to: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+ *    value: 10,
+ *    nonce: 12,
+ *    gasPrice: 1000000,
+ *    gasLimit: 2000000
+ * }).then(function(gas) {
+ * //code
+ * });
  */
-API.prototype.estimateGas = function () {
-    var options = utils.argumentsToObject(['from', 'to', 'value', 'nonce', 'gasPrice', 'gasLimit', 'contract', 'binary', 'callback'], arguments);
+API.prototype.estimateGas = function (options) {
+    options = utils.argumentsToObject(['from', 'to', 'value', 'nonce', 'gasPrice', 'gasLimit', 'contract', 'binary'], arguments);
     var params = {
         "from": options.from,
         "to": options.to,
@@ -1185,62 +1119,56 @@ API.prototype.estimateGas = function () {
         "contract": options.contract,
         "binary": options.binary
     };
-    return this._sendRequest("post", "/estimateGas", params, options.callback);
+    return this._sendRequest("post", "/estimateGas", params);
 };
 
 /**
  * Return the events list of transaction.
- * For more information about parameters, follow this link:
- * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#geteventsbyhash}
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#geteventsbyhash}
  *
- * @param {String} hash
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {String} options.hash
  *
  * @return [Events]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#geteventsbyhash}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var events = api.getEventsByHash("ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073");
- * //async
- * api.getEventsByHash("ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073", function(events) {
+ * api.getEventsByHash({hash: "ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}).then(function(events) {
  * //code
  * });
  */
-API.prototype.getEventsByHash = function () {
-    var options = utils.argumentsToObject(['hash', 'callback'], arguments);
+API.prototype.getEventsByHash = function (options) {
+    options = utils.argumentsToObject(['hash'], arguments);
     var params = { "hash": options.hash };
-    return this._sendRequest("post", "/getEventsByHash", params, options.callback);
+    return this._sendRequest("post", "/getEventsByHash", params);
 };
 
 /**
- * Method getter for dpos dynasty.{@link https://github.com/nebulasio/go-nebulas/blob/0c3439f9cedc539f64f64dd400878d2318cb215f/rpc/api_service.go#L596}<br>
- * TODO: Add parameter to wiki documentation.
+ * Method getter for dpos dynasty.
+ * @see {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getdynasty}
  *
- * @param {Function} [callback] - Without callback return data synchronous.
+ * @param {Object} options
+ * @param {Number} options.height
  *
- * @return [delegatees]
+ * @return [delegatees]{@link https://github.com/nebulasio/wiki/blob/master/rpc.md#getdynasty}
  *
  * @example
  * var api = new Neb().api;
- * //sync
- * var delegatees = api.getDynasty();
- * //async
- * api.getDynasty(function(delegatees) {
+ * api.getDynasty({height: 1}).then(function(delegatees) {
  * //code
  * });
  */
-API.prototype.getDynasty = function (height, callback) {
-    var params = { "height": height };
-    return this._sendRequest("post", "/dynasty", params, callback);
+API.prototype.getDynasty = function (options) {
+    var params = { "height": options.height };
+    return this._sendRequest("post", "/dynasty", params);
 };
 
-API.prototype._sendRequest = function (method, api, params, callback) {
+API.prototype._sendRequest = function (method, api, params, callback, axiosOptions) {
     var action = this._path + api;
     if (typeof callback === "function") {
         return this._request.asyncRequest(method, action, params, callback);
     } else {
-        return this._request.request(method, action, params);
+        return this._request.request(method, action, params, axiosOptions);
     }
 };
 
@@ -1271,12 +1199,12 @@ HttpRequest.prototype.createUrl = function (api) {
     return this.host + "/" + this.apiVersion + api;
 };
 
-HttpRequest.prototype.request = function (method, api, payload) {
+HttpRequest.prototype.request = function (method, api, payload, axiosOptions) {
     if (debugLog) {
         console.log("[debug] HttpRequest: " + method + " " + this.createUrl(api) + " " + JSON.stringify(payload));
     }
 
-    return axios({
+    var axiosParams = {
         method: method,
         url: this.createUrl(api),
         data: payload,
@@ -1286,7 +1214,11 @@ HttpRequest.prototype.request = function (method, api, payload) {
             }
             return resp.result || resp;
         }]
-    }).then(function (resp) {
+    };
+    if (axiosOptions && typeof axiosOptions.onDownloadProgress === 'function') {
+        axiosParams.onDownloadProgress = axiosOptions.onDownloadProgress;
+    }
+    return axios(axiosParams).then(function (resp) {
         return resp.data;
     }).catch(function (e) {
         throw e.response.data;
@@ -1428,16 +1360,129 @@ var TxPayloadBinaryType = "binary";
 var TxPayloadDeployType = "deploy";
 var TxPayloadCallType = "call";
 
-var Transaction = function (chainID, from, to, value, nonce, gasPrice, gasLimit, payload) {
-    this.chainID = chainID;
-    this.from = account.fromAddress(from);
-    this.to = account.fromAddress(to);
-    this.value = utils.toBigNumber(value);
-    this.nonce = nonce;
+/**
+ * @typedef TransactionInit
+ * @example
+ * var acc1 = Account.NewAccount();
+ * var acc2 = Account.NewAccount();
+ * var tx = new Transaction({
+ *    chainID: 1,
+ *    from: acc1,
+ *    to: acc2,
+ *    value: 10,
+ *    nonce: 12,
+ *    gasPrice: 1000000,
+ *    gasLimit: 2000000
+ * });
+ */
+
+/**
+ * Represent of smart contract payload data.
+ *
+ * @typedef {Object} Contract
+ * @property {String} source - Contract source code for deploy contract.
+ * @property {String} sourceType - Contract source type for deploy contract. Currently support js and ts.
+ * @property {String} args - The params of contract. The args content is JSON string of parameters array.
+ * @property {String} function - The contract call function.
+ * @property {Buffer} binary - Binary contract representation.
+ *
+ * @see [Create own smart contract in Nebulas.]{@link https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md}
+ * @see [More about transaction parameters.]{@link https://github.com/nebulasio/wiki/blob/c3f5ce8908c80e9104e3b512a7fdfd75f16ac38c/rpc.md#sendtransaction}
+ *
+ * @example
+ * // It's example of possible fields values.
+ * // For deploy, and execute smart contracts follow this link - https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md
+ * {
+ *     'source': '"use strict";var DepositeContent=function(t){if(t){let n=JSON.parse(t);' +
+ *               'this.balance=new BigNumber(n.balance),this.expiryHeight=new BigNumber(n.expiryHeight)' +
+ *               '}else this.balance=new BigNumber(0),this.expiryHeight=new BigNumber(0)};' +
+ *               'DepositeContent.prototype={toString:function(){return JSON.stringify(this)}};' +
+ *               'var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,"bankVault",' +
+ *               '{parse:function(t){return new DepositeContent(t)},stringify:function(t){return t.toString()}})};' +
+ *               'BankVaultContract.prototype={init:function(){},save:function(t){var n=Blockchain.transaction.from,' +
+ *               'e=Blockchain.transaction.value,a=new BigNumber(Blockchain.block.height),r=this.bankVault.get(n);' +
+ *               'r&&(e=e.plus(r.balance));var i=new DepositeContent;i.balance=e,i.expiryHeight=a.plus(t),' +
+ *               'this.bankVault.put(n,i)},takeout:function(t){var n=Blockchain.transaction.from,' +
+ *               'e=new BigNumber(Blockchain.block.height),a=new BigNumber(t),r=this.bankVault.get(n);' +
+ *               'if(!r)throw new Error("No deposit before.");if(e.lt(r.expiryHeight))throw new Error("Can't takeout before expiryHeight.");' +
+ *               'if(a.gt(r.balance))throw new Error("Insufficient balance.");if(0!=Blockchain.transfer(n,a))throw new Error("transfer failed.");' +
+ *               'Event.Trigger("BankVault",{Transfer:{from:Blockchain.transaction.to,to:n,value:a.toString()}}),' +
+ *               'r.balance=r.balance.sub(a),this.bankVault.put(n,r)},balanceOf:function(){var t=Blockchain.transaction.from;' +
+ *               'return this.bankVault.get(t)}},module.exports=BankVaultContract;',
+ *     'sourceType': 'js',
+ *     'args': '[0]',
+ *     'function': 'save'
+ * }
+ */
+
+/**
+ * Represent Transaction parameters
+ *
+ * @typedef {Object} TransactionOptions
+ * @property {Number} options.chainID - Transaction chain id.
+ * @property {String} options.from - Hex string of the sender account addresss..
+ * @property {String} options.to - Hex string of the receiver account addresss..
+ * @property {Number} options.value - Value of transaction.
+ * @property {Number} options.nonce - Transaction nonce.
+ * @property {Number} options.gasPrice - Gas price. The unit is 10^-18 NAS.
+ * @property {Number} options.gasLimit - Transaction gas limit.
+ * @property {Contract} [options.contract]
+ *
+ * @example
+ * {
+*    chainID: 1,
+*    from: "5bed67f99cb3319e0c6f6a03548be3c8c52a8364464f886f",
+*    to: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+*    value: 10,
+*    nonce: 12,
+*    gasPrice: 1000000,
+*    gasLimit: 2000000
+* }
+ */
+
+/**
+ * Transaction constructor.
+ * Class encapsulate main operation with transactions.<br>
+ * For more information about parameters, follow this link:
+ * {@link https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction}
+ * @constructor
+ *
+ * @param {TransactionOptions} options - Transaction options.
+ *
+ * @see [Transaction tutorial.]{@link https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md}
+ * @see [Create own smart contract in Nebulas.]{@link https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md}
+ * @see [More about transaction parameters.]{@link https://github.com/nebulasio/wiki/blob/c3f5ce8908c80e9104e3b512a7fdfd75f16ac38c/rpc.md#sendtransaction}
+ *
+ * @example
+ * var acc1 = Account.NewAccount();
+ * var acc2 = Account.NewAccount();
+ * var tx = new Transaction({
+ *    chainID: 1,
+ *    from: acc1,"5bed67f99cb3319e0c6f6a03548be3c8c52a8364464f886f",
+ *    to: acc2"2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+ *    value: 10,
+ *    nonce: 12,
+ *    gasPrice: 1000000,
+ *    gasLimit: 2000000,
+ *    contract: {
+ *        function: "save",
+ *        args: "[0]"
+ *    }
+ * });
+ *
+ */
+var Transaction = function (options) {
+    options = utils.argumentsToObject(['chainID', 'from', 'to', 'value', 'nonce', 'gasPrice', 'gasLimit', 'contract'], arguments);
+
+    this.chainID = options.chainID;
+    this.from = account.fromAddress(options.from);
+    this.to = account.fromAddress(options.to);
+    this.value = utils.toBigNumber(options.value);
+    this.nonce = options.nonce;
     this.timestamp = Math.floor(new Date().getTime() / 1000);
-    this.data = parsePayload(payload);
-    this.gasPrice = utils.toBigNumber(gasPrice);
-    this.gasLimit = utils.toBigNumber(gasLimit);
+    this.data = parseContract(options.contract);
+    this.gasPrice = utils.toBigNumber(options.gasPrice);
+    this.gasLimit = utils.toBigNumber(options.gasLimit);
 
     if (this.gasPrice.lessThanOrEqualTo(0)) {
         this.gasPrice = new BigNumber(1000000);
@@ -1448,7 +1493,7 @@ var Transaction = function (chainID, from, to, value, nonce, gasPrice, gasLimit,
     }
 };
 
-var parsePayload = function (obj) {
+var parseContract = function (obj) {
     /*jshint maxcomplexity:7 */
 
     var payloadType, payload;
@@ -1479,6 +1524,27 @@ var parsePayload = function (obj) {
 };
 
 Transaction.prototype = {
+    /**
+     * Convert transaction to hash by SHA3-256 algorithm.
+     *
+     * @returns {Hash} - hash of Transaction.
+     *
+     * @see {TransactionInit} - Transaction Initialization.
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * var txHash = tx.hashTransaction();
+     * //Uint8Array(32) [211, 213, 102, 103, 23, 231, 246, 141, 20, 202, 210, 25, 92, 142, 162, 242, 232, 95, 44, 239, 45, 57, 241, 61, 34, 2, 213, 160, 17, 207, 75, 40]
+     */
     hashTransaction: function () {
         var Data = root.lookup("corepb.Data");
         var err = Data.verify(this.data);
@@ -1490,7 +1556,23 @@ Transaction.prototype = {
         var hash = cryptoUtils.sha3(this.from.getAddress(), this.to.getAddress(), cryptoUtils.padToBigEndian(this.value, 128), cryptoUtils.padToBigEndian(this.nonce, 64), cryptoUtils.padToBigEndian(this.timestamp, 64), dataBuffer, cryptoUtils.padToBigEndian(this.chainID, 32), cryptoUtils.padToBigEndian(this.gasPrice, 128), cryptoUtils.padToBigEndian(this.gasLimit, 128));
         return hash;
     },
-
+    /**
+     * Sign transaction with the specified algorithm.
+     *
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * tx.signTransaction();
+     */
     signTransaction: function () {
         if (this.from.getPrivateKey() !== null) {
             this.hash = this.hashTransaction();
@@ -1500,7 +1582,25 @@ Transaction.prototype = {
             throw new Error("transaction from address's private key is invalid");
         }
     },
-
+    /**
+     * Convert transaction to JSON string.
+     *
+     * @returns {String} - JSON stringify of transaction data.
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * var txHash = tx.toString();
+     * // "{"chainID":1001,"from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09","value":"1000000000000000000","nonce":1,"timestamp":1521905294,"data":{"payloadType":"binary","payload":null},"gasPrice":"1000000","gasLimit":"20000","hash":"f52668b853dd476fd309f21b22ade6bb468262f55402965c3460175b10cb2f20","alg":1,"sign":"cf30d5f61e67bbeb73bb9724ba5ba3744dcbc995521c62f9b5f43efabd9b82f10aaadf19a9cdb05f039d8bf074849ef4b508905bcdea76ae57e464e79c958fa900"}"
+     */
     toString: function () {
         var payload = utils.isNull(this.data.payload) ? null : JSON.parse(this.data.payload.toString());
         var tx = {
@@ -1520,7 +1620,26 @@ Transaction.prototype = {
         };
         return JSON.stringify(tx);
     },
-
+    /**
+     * Convert transaction to Protobuf format.
+     *
+     * @returns {Buffer} - Transaction data in Protobuf format
+     *
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * var txHash = tx.toProto();
+     * // Uint8Array(127)
+     */
     toProto: function () {
         var Data = root.lookup("corepb.Data");
         var err = Data.verify(this.data);
@@ -1555,12 +1674,50 @@ Transaction.prototype = {
         var txBuffer = TransactionProto.encode(tx).finish();
         return txBuffer;
     },
-
+    /**
+     * Convert transaction to Protobuf hash string.
+     *
+     * @returns {String} - Transaction string.
+     *
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * var txHash = tx.toProtoString();
+     * // "EhjZTY/gKLhWVVMZ+xoY9GiHOHJcxhc4uxkaGNlNj+AouFZVUxn7Ghj0aIc4clzGFzi7GSIQAAAAAAAAAAAN4Lazp2QAACgBMPCz6tUFOggKBmJpbmFyeUDpB0oQAAAAAAAAAAAAAAAAAA9CQFIQAAAAAAAAAAAAAAAAAABOIA=="
+     */
     toProtoString: function () {
         var txBuffer = this.toProto();
         return protobuf.util.base64.encode(txBuffer, 0, txBuffer.length);
     },
-
+    /**
+     * Restore Transaction from Protobuf format.
+     * @property {Buffer|String} data - Buffer or stringify Buffer.
+     *
+     * @returns {Transaction} - Restored transaction.
+     *
+     * @example
+     * var acc1 = Account.NewAccount();
+     * var acc2 = Account.NewAccount();
+     * var tx = new Transaction({
+     *    chainID: 1,
+     *    from: acc1,
+     *    to: acc2,
+     *    value: 10,
+     *    nonce: 12,
+     *    gasPrice: 1000000,
+     *    gasLimit: 2000000
+     * });
+     * var tx = tx.fromProto("EhjZTY/gKLhWVVMZ+xoY9GiHOHJcxhc4uxkaGNlNj+AouFZVUxn7Ghj0aIc4clzGFzi7GSIQAAAAAAAAAAAN4Lazp2QAACgBMPCz6tUFOggKBmJpbmFyeUDpB0oQAAAAAAAAAAAAAAAAAA9CQFIQAAAAAAAAAAAAAAAAAABOIA==");
+     */
     fromProto: function (data) {
 
         var txBuffer;
