@@ -119,19 +119,18 @@
                 </div>
             </div>
         </div>
-        <div class=" qr col-6">
+        <div class="qr col-6">
             <span data-i18n=send-nas/signed_qr>Signed Transaction QR</span>
             <div id=addressqr></div>
         </div>
         <div class=row>
             <div class=col-md-12>
-                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal data-target=#exampleModal data-i18n=send-nas/send>Send </button>
+                <button type=button id=send_transaction class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-toggle=modal data-target=#modal-confirm data-i18n=send-nas/send>Send </button>
             </div>
         </div>
 
-
         <!-- Modal -->
-        <div class="modal fade" id=exampleModal tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
+        <div class="fade modal" id=modal-confirm tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
             <div class=modal-dialog role=document>
                 <div class=modal-content>
                     <div class=modal-header>
@@ -304,9 +303,7 @@
         function onClickSendTransaction() {
             var mTxHash;
 
-            $(".modal-backdrop").removeClass("show");
-            $(".modal").removeClass("show");
-            $(".modal").css("display:none");
+            $("#modal-confirm").modal("hide");
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
                 .then(function (resp) {

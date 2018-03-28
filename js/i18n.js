@@ -102,7 +102,7 @@ var i18n = function () {
             "check/anchor": "有关此工具请阅读这里。",
             "check/blah1": "大容量交易可能持续数小时甚至数天，此工具致力找出并取消 / 替换这类交易。",
             "check/blah2": "正常情况下这是做不到的，不要依赖它，它只在交易池满的时候有效。",
-            "check/comment1": "请输入有效的交易散列",
+            "check/comment1": "请输入有效的交易哈希",
             "check/tx-details": "交易详情",
             community: "社区",
             "contract/addr_input_msg": "请输入你的交易地址",
@@ -194,31 +194,57 @@ var i18n = function () {
                 // GetTransactionReceipt
                 "invalid argument(s)": {
                     en: "invalid transaction hash",
-                    zh: "无效的交易散列"
+                    zh: "无效的交易哈希"
                 },
                 "params eror/system error": {
                     en: "transaction hash or system error",
-                    zh: "交易散列或者系统错误"
+                    zh: "交易哈希或者系统错误"
                 },
                 "transaction not found": {
                     en: "transaction not found",
                     zh: "交易未找到"
                 },
                 // senRawTransaction
-                "transaction's nonce is invalid, should bigger than the from's nonce":{
-                    en:s,
-                    zh:"交易的 nonce 无效，应该大于发送方的 nonce"
+                "transaction's nonce is invalid, should bigger than the from's nonce": {
+                    en: s,
+                    zh: "交易的 nonce 无效，应该大于发送方的 nonce"
                 },
-
-                // 2. contract transaction from-address not equal to to-address 发布合约的from/to地址不一致
-                // 3. contract check failed 合约地址无效
-                // 4. duplicated transaction 不能重复提交相同的交易
-                // 5. below the gas price gas 价格太低
-                // 6. gas limit less or equal to 0 
-                // 7. out of gas limit    gasLimit过大
-                // 8. invalid transaction chainID 无效的chainID
-                // 9. invalid transaction hash 无效的交易哈希
-                // 10. invalid transaction signer 无效的交易签名
+                "contract transaction from-address not equal to to-address": {
+                    en: s,
+                    zh: "发布合约的 from / to 地址不一致"
+                },
+                "contract check failed": {
+                    en: s,
+                    zh: "合约地址无效"
+                },
+                "duplicated transaction": {
+                    en: s,
+                    zh: "不能重复提交相同的交易"
+                },
+                "below the gas price gas": {
+                    en: s,
+                    zh: "价格太低"
+                },
+                "gas limit less or equal to 0 ": {
+                    en: s,
+                    zh: "gas 限制应该大于 0"
+                },
+                "out of gas limit": {
+                    en: s,
+                    zh: "gas 限制过大"
+                },
+                "invalid transaction chainID": {
+                    en: s,
+                    zh: "无效的 chain id"
+                },
+                "invalid transaction hash": {
+                    en: s,
+                    zh: "交易哈希无效"
+                },
+                "invalid transaction signer": {
+                    en: s,
+                    zh: "无效的交易签名"
+                }
             };
 
         return table[s] ? table[s][lang] || table[s].en : s;
