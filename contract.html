@@ -307,7 +307,7 @@
                         $('#deploy').attr("disabled", false);
                         $('#deploy').removeClass("stop");
                     }).catch(function (err) {
-                        $("#deploy_run_result").text(JSON.stringify(error));
+                        $("#deploy_run_result").text(JSON.stringify(err));
                         $("#deploy_run_result").parents(".next").removeClass("active1");
                     });
                 });
@@ -320,13 +320,12 @@
                     var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.from,
                         params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                     gTx.signTransaction();
-                    console.log(gTx.toString());
 
                     neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                         // if deploy success show txhash
-                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify(resp));
+                        $("#deploy_result").text(JSON.stringify(resp));
                     }).catch(function (err) {
-                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify(err));
+                        $("#deploy_result").text(JSON.stringify(err));
                     });
                 });
             });
@@ -377,14 +376,12 @@
                         contract: params.contract
                     }).then(function (resp) {
                         $("#call_run_result").text(JSON.stringify(resp));
-                        // TODO 显示test结果
-                        //run result show
                         $(".next").removeClass("active1");
                         $('#call').attr("disabled", false);
                         $('#deploy').removeClass("stop");
                     }).catch(function (err) {
-                        // TODO handle error
-                        console.log(err);
+                        $("#call_run_result").text(JSON.stringify(err));
+                        $(".next").removeClass("active1");
                     });
                 });
             })
@@ -394,13 +391,13 @@
                 innerCall(function (params) {
                     neb.api.call(params).then(function (resp) {
                         console.log(JSON.stringify(resp));
-                        $("#call_result").text("Call result: " + JSON.stringify(resp));
-                        // TODO 确认显示效果
+                        $("#call_result").text(JSON.stringify(resp));
                         $(".result").removeClass("active1");
                         $(".next").removeClass("active1");
                     }).catch(function (err) {
-                        // TODO handle error
-                        console.log("call run error: " + err);
+                        $("#call_result").text(JSON.stringify(err));
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
                     });
                 });
             });
@@ -424,8 +421,9 @@
                             return neb.api.getAccountState($("#from_addr").val());
                         })
                         .then(function (resp) {
-                            $("#balance").text(resp.balance + 'NAS');
-                            $("#run_balance").text(resp.balance + 'NAS');
+                            var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                            $("#balance").text(balance + ' NAS');
+                            $("#run_balance").text(balance + ' NAS');
                         })
                         .catch(function (e) {
                             // this catches e thrown by nebulas.js!neb

@@ -220,8 +220,12 @@
                     $("#to_addr").val(tx.to.getAddressString());
                     $("#value").val(unit.fromBasic(tx.value, "nas"));
                 } catch (err) {
-                    // TODO signed transaction内容解析失败
-                    console.log(err);
+                    
+                    bootbox.dialog({
+                        message: localStorage.lang == "en" ? err.message : "无效的签名交易",
+                        size: "large",
+                        title: "Error"
+                    });
                 }
         });
 
@@ -299,7 +303,7 @@
                     tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
 
                     balance = unit.fromBasic(utils.toBigNumber(gFromState ? gFromState.balance : 0), "nas");
-                    console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
+                    // console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
                     if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
                         if (balance.lt(tmp))

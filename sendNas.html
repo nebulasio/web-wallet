@@ -259,7 +259,7 @@
                         else
                             amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
 
-                    console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
+                    // console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
                     gTx = new Transaction(parseInt(localStorage.chainId), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
@@ -294,7 +294,7 @@
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
                 .then(function (resp) {
-                    console.log("sendRawTransaction resp: " + JSON.stringify(resp));
+                    // console.log("sendRawTransaction resp: " + JSON.stringify(resp));
                     mTxHash = resp.txhash;
                     return neb.api.getTransactionReceipt(mTxHash);
                 }).then(function (resp) {
@@ -306,7 +306,7 @@
                     setTimeout(function () {
                         neb.api.getAccountState($(".icon-address.from input").val())
                             .then(function (resp) {
-                                console.log("getAccountState resp: " + JSON.stringify(resp));
+                                // console.log("getAccountState resp: " + JSON.stringify(resp));
                                 var balanceNas = Unit.fromBasic(resp.balance, "nas");
                                 $("#balance").val(balanceNas);
                                 $("#nonce").val(resp.nonce);
