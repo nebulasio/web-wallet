@@ -135,11 +135,11 @@
                 <div class="next  active1 row">
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/test_result></span>
-                        <div class="execution_banner" id="deploy_test_result"></div>
+                        <textarea class="execution_banner" id="deploy_test_result"></textarea>
                     </div>
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/result></span>
-                        <div class=execution_banner id=deploy_result></div>
+                        <textarea class=execution_banner id=deploy_result></textarea>
                     </div>
                 </div>
             </div>
@@ -221,11 +221,11 @@
                 <div class="next  active1 row">
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/test_result></span>
-                        <div class="execution_banner" id="call_test_result"></div>
+                        <textarea class="execution_banner" id="call_test_result"></textarea>
                     </div>
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/result></span>
-                        <div class=execution_banner id=call_result></div>
+                        <textarea class=execution_banner id=call_result></textarea>
                     </div>
                 </div>
             </div>
@@ -373,9 +373,9 @@
                         contract: params.contract
                     }).then(function (resp) {
                         $("#call_test_result").text(JSON.stringify(resp));
+                            $('#call').removeClass("stop");
                         if (resp.execute_err && resp.execute_err !== '') {
                             $('#call').attr("disabled", true);
-                            $('#call').addClass("stop");
                             $("#call_result").text("");
                             $(".next").removeClass("active1");
                         } else {
