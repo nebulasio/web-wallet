@@ -110,21 +110,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=gas-limit></span>
-                    
                         <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
-
                     </div>
                     <div class="col-md-6">
                         <span data-i18n=gas-price></span>
-                        <i>( 1 NAS = 10
+                        <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
-                        <div class=number-comma data-data-i18n=amount data-id=gas_price data-validate="required number gt0" data-value=200000></div>
-
+                        <div class=number-comma data-data-i18n=amount data-id=gas_price data-unit=wei data-validate="required number gt0" data-value=200000></div>
                     </div>
                 </div>
 
                 <span class="deploy_errmsg active1" data-i18n=contract/err_msg></span>
-
                 <div class="result active1" id=result></div>
 
                 <div class="row">
@@ -203,7 +199,7 @@
                     </div>
                     <div class="col-md-6">
                         <span data-i18n=gas-price></span>
-                        <i>( 1 NAS = 10
+                        <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
                         <!-- <span id=gas_price></span> -->
                         <input type="text" id=run_gas_price>

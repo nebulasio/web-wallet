@@ -6,31 +6,9 @@ var uiBlock = function () {
     return {
         insert: insert,
         numberAddComma: numberAddComma,
-        toWeiOrNas: toWeiOrNas,
+        toSi: toSi,
         validate: validate
     };
-
-    function toWeiOrNas(n, nas) {
-        var arr = nas ?
-            ["NAS", "kNAS", "MNAS", "GNAS", "TNAS", "PNAS", "ENAS", "ZNAS", "YNAS"] :
-            ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "NAS"],
-            i, len = arr.length - 1;
-
-        for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
-
-        n = n.toFixed();
-        return (i == len ? numberAddComma(n) : n) + " " + arr[i];
-    }
-
-    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-    function numberAddComma(n) {
-        n = +n || 0;
-
-        var parts = n.toString().split(".");
-
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
 
     function insert(dic) {
         // f({ header: ".header-1, .abc" })
@@ -237,11 +215,9 @@ var uiBlock = function () {
             }
 
             function onInput() {
-                var $this = $(this),
-                    $parent = $this.parent(),
-                    attrNas = $parent.attr("data-nas") != undefined;
+                var $this = $(this), $parent = $this.parent();
 
-                $parent.children("div").text("≈ " + toWeiOrNas($this.val(), attrNas));
+                $parent.children("div").text("≈ " + toSi($this.val(), $parent.attr("data-unit")));
             }
         }
 
@@ -320,6 +296,39 @@ var uiBlock = function () {
                 }
             }
         }
+    }
+
+    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    function numberAddComma(n) {
+        var parts = (+n || 0).toString().split(".");
+
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
+
+    function toSi(n, unit) {
+        // https://en.wikipedia.org/wiki/Metric_prefix
+        //        0    1    2    3    4    5    6    7    8
+        var si = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"], i, len;
+
+        n = +n || 0;
+        unit = (unit || "").toLowerCase();
+
+        if (unit == "wei") {
+            len = 6;
+            unit = "Wei";
+        } else {
+            len = si.length - 1;
+            unit == "nas" && (unit = "NAS");
+        }
+
+        for (i = 0; i < len && n >= 1000; ++i, n /= 1000);
+
+        if (i == len && unit == "Wei")
+            for (i = 0, len = si.length - 1, unit = "NAS"; i < len && n >= 1000; ++i, n /= 1000);
+
+        n = n.toFixed();
+        return (i == len ? numberAddComma(n) : n) + " " + si[i] + unit;
     }
 
     function validate(selector) {
