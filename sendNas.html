@@ -117,7 +117,7 @@
         <!-- Transaction -->
         <div class="container transaction" id=receipt_div>
             TX hash :
-            <a href id=receipt></a>
+            <a id=receipt></a>
             <div class=form-group>
                 <label for=signed data-i18n=send-nas/receipt>receipt :</label>
                 <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
@@ -186,8 +186,7 @@
             validateAll = uiBlock.validate(),
             gAccount, gTx;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
-
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
 
@@ -218,8 +217,7 @@
                     console.log("resp: " + JSON.stringify(resp))
 
                     var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
-                    $("#balance").val(nas);
-                    $("#balance").trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value, 
+                    $("#balance").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value, 
 
                     $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                 });
@@ -291,7 +289,7 @@
                     mTxHash = resp.txhash;
                     return neb.api.getTransactionReceipt(mTxHash);
                 }).then(function (resp) {
-                    $("#receipt").text(mTxHash);
+                    $("#receipt").text(mTxHash).prop("href", "check.html?" + mTxHash);
                     $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt_div").show();
 

@@ -10,6 +10,18 @@
     <link rel=stylesheet href=css/ui-block.css>
     <meta name=viewport content="width=device-width">
     <style>
+        .active1 {
+            display: none;
+        }
+
+        .errmsg {
+            color: red;
+        }
+
+        .form-control {
+            text-align: center;
+        }
+
         .hash {
             height: 400px;
             box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
@@ -30,16 +42,9 @@
             text-align: center;
         }
 
-        .active1 {
-            display: none;
-        }
-
-        .errmsg {
-            color: red;
-        }
-
-        .form-control {
-            text-align: center;
+        .number-comma input.form-control {
+            background-color: initial;
+            border: 0;
         }
 
         .table tr>td:first-child {
@@ -76,74 +81,66 @@
     <section class="information active1" id=info>
 
         <div ng-show="txInfo.status == txStatus.found || txInfo.status == txStatus.mined" class="">
-            <h4 translate=tx_Details class=cont-md data-i18n=check/tx-details>Transaction Details</h4>
+            <h4 class=cont-md data-i18n=check/tx-details>Transaction Details</h4>
             <br>
             <table class="table table-striped txstatus__2 cont-md">
                 <tbody>
                     <tr>
-                        <td translate=x_TxHash>TX Hash</td>
+                        <td>TX Hash</td>
                         <td>
                             <a href=# target=_blank rel="noopener noreferrer" class=tx_hash></a>
                         </td>
                     </tr>
-
                     <tr>
-                        <td translate=x_TxHash>Contract address</td>
+                        <td>Contract address</td>
                         <td>
                             <a href=# target=_blank rel="noopener noreferrer" class=contract_addr></a>
                         </td>
                     </tr>
-
-
                     <tr>
-                        <td translate=x_TxHash>TxReceipt Status</td>
+                        <td>TxReceipt Status</td>
                         <td>
                             <a href=# target=_blank rel="noopener noreferrer" class=status></a>
                         </td>
                     </tr>
-
                     <tr>
-                        <td translate=OFFLINE_Step1_Label_1 data-i18n=send-nas/from-address>From Address</td>
+                        <td data-i18n=send-nas/from-address>From Address</td>
                         <td>
                             <a href=# target=_blank rel="noopener noreferrer" class=from_address></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate=OFFLINE_Step2_Label_1 data-i18n=send-nas/to-address>To Address</td>
+                        <td data-i18n=send-nas/to-address>To Address</td>
                         <td>
                             <a href=# target=_blank rel="noopener noreferrer" class=to_address></a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td translate=SEND_amount_short data-i18n=amount>Amount</td>
-                        <td class=value></td>
-                    </tr>
-
-                    <tr>
+                        <td data-i18n=amount>Amount</td>
                         <td>
-                            <span translate=OFFLINE_Step2_Label_5>Nonce</span>
+                            <div class="amount number-comma" data-disabled data-nas></div>
                         </td>
+                    </tr>
+                    <tr>
+                        <td>Nonce</td>
                         <td class=nonce></td>
                     </tr>
-
                     <tr>
+                        <td data-i18n=gas-limit>Gas Limit</td>
                         <td>
-                            <span translate=OFFLINE_Step2_Label_4 data-i18n=gas-limit>Gas Limit</span>
+                            <div class="gas-limit number-comma" data-disabled></div>
                         </td>
-                        <td class=gasLimit></td>
                     </tr>
-
                     <tr>
+                        <td data-i18n=gas-price>Gas Price</td>
                         <td>
-                            <span translate=OFFLINE_Step2_Label_3 data-i18n=gas-price>Gas Price</span>
+                            <div class="gas-price number-comma" data-disabled></div>
                         </td>
-                        <td class=gasPrice></td>
                     </tr>
-
                     <tr>
-                        <td translate=OFFLINE_Step2_Label_6 data-i18n=data>Data</td>
+                        <td data-i18n=data>Data</td>
                         <td class=data>
                             <textarea name=code id=code cols=80 rows=6 wrap=virtual></textarea>
                         </td>
@@ -172,11 +169,11 @@
         uiBlock.insert({
             footer: ".footer",
             header: ".header",
-            logoMain: ".logo-main"
+            logoMain: ".logo-main",
+            numberComma: ".number-comma"
         });
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
-
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#btn").on("click", onClickBtn);
 
         if (hash) {
@@ -206,16 +203,17 @@
 
         function doneGetTransactionReceipt(o) {
             $("#info").removeClass("active1");
-            $("#code").html(o.data);
-            $(".tx_hash").html(o.hash);
-            $(".contract_addr").html(o.contract_address);
-            $(".status").html(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
-            $(".from_address").html(o.from);
-            $(".to_address").html(o.to);
-            $(".nonce").html(o.nonce);
-            $(".gasLimit").html(o.gas_limit + 'Wei');
-            $(".gasPrice").html(uiBlock.toWeiOrNas(o.gas_price));
-            $(".value").html(uiBlock.toWeiOrNas(o.value, true));
+            $("#code").text(o.data);
+            $(".tx_hash").text(o.hash);
+            $(".contract_addr").text(o.contract_address);
+            $(".status").text(o.status == 1 ? "success" : (o.status == 0 ? "fail" : "pending"));
+            $(".from_address").text(o.from);
+            $(".to_address").text(o.to);
+            $(".nonce").text(o.nonce);
+
+            $(".amount input").val(o.value).trigger("input");
+            $(".gas-price input").val(o.gas_price).trigger("input");
+            $(".gas-limit input").val(o.gas_limit).trigger("input");
         }
     </script>
 </body>

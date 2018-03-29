@@ -255,7 +255,7 @@
                 account: null
             };
 
-            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
+            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
 
             uiBlock.insert({
                 footer: ".footer",

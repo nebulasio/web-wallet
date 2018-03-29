@@ -120,13 +120,12 @@
 
     <div class="container transaction" id=receipt_div>
         TX hash :
-        <a href="check.html" id=receipt></a>
+        <a id=receipt></a>
         <div class=form-group>
             <label for=signed data-i18n=send-nas/receipt>receipt :</label>
             <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
         </div>
     </div>
-
 
     <div class=footer></div>
 
@@ -208,8 +207,29 @@
             validateStep2 = uiBlock.validate("#step2"),
             gFromState;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#generate-infomation").click(onClickGenerateInfomation);
+
+        $("#send_transaction").click(function () {
+            var val = $("#signedoffline").val();
+
+            if (val)
+                try {
+                    var tx = Transaction.prototype.fromProto(val);
+                    $("#for_addr").val(tx.from.getAddressString());
+                    $("#to_addr").val(tx.to.getAddressString());
+                    $("#value").val(unit.fromBasic(tx.value, "nas"));
+                } catch (err) {
+                    // TODO signed transaction内容解析失败
+                    console.log(err);
+                }
+        });
+
+        $("#signedoffline").on("input", function () {
+            $("<div id=qrcode style=text-align:center;></div>")
+                .qrcode($("#signedoffline").val())
+                .replaceAll('#qrcode');
+        });
 
         uiBlock.insert({
             footer: ".footer",
@@ -311,28 +331,13 @@
             return false;
         }
 
-        $("#send_transaction").click(function () {
-            var val = $("#signedoffline").val();
-
-            if (val)
-                try {
-                    var tx = Transaction.prototype.fromProto(val);
-                    $("#for_addr").val(tx.from.getAddressString());
-                    $("#to_addr").val(tx.to.getAddressString());
-                    $("#value").val(unit.fromBasic(tx.value, "nas"));
-                } catch (err) {
-                    // TODO signed transaction内容解析失败
-                    console.log(err);
-                }
-        });
-
         function sendtransaction() {
             neb.api.sendRawTransaction($("#signedoffline").val())
                 .then(function (resp) {
                     return neb.api.getTransactionReceipt(resp.txhash);
                 }).then(function (resp) {
                     $("#receipt_state").val(JSON.stringify(resp));
-                    $("#receipt").text(resp.hash);
+                    $("#receipt").text(resp.hash).prop("href", "check.html?" + resp.hash);
                     $("#receipt_div").show();
                 }).catch(function (o) {
                     bootbox.dialog({
@@ -343,13 +348,19 @@
                 });
         };
 
-        $("#signedoffline").on("input", function () {
-            $("<div id=qrcode style=text-align:center;></div>")
-                .qrcode($("#signedoffline").val())
-                .replaceAll('#qrcode');
-        })
-
     </script>
 </body>
 
 </html>
+
+解锁的密码不正确，提示要改下，现在还是英文
+交易状态查询现在错误提示也要改下
+
+
+钱包信息中的私钥，点击显示不生效了
+合约里面的balance没有单位
+nas和wei的转换也要改成10^18
+gas限制默认是20万，不是2万
+执行成功后部署按钮还是灰色，不能部署
+部署切到调用的tab，余额没有清理
+gasLimit和gasPrice也没有清理
