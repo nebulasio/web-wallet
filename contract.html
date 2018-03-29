@@ -499,8 +499,9 @@
                 // prepare nonce
                 neb.api.getAccountState(params.from).then(function (resp) {
                     params.nonce = parseInt(resp.nonce) + 1;
-                    $("#balance").text(resp.balance + 'NAS');
-                    $("#run_balance").text(resp.balance + 'NAS');
+                    var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                    $("#balance").text(balance + ' NAS');
+                    $("#run_balance").text(balance + ' NAS');
                     console.log("prepared params: " + JSON.stringify(params));
                     callback(params);
                 }).catch(function (err) {
@@ -586,8 +587,9 @@
                 // prepare nonce
                 neb.api.getAccountState(params.from).then(function (resp) {
                     params.nonce = parseInt(resp.nonce) + 1;
-                    $("#balance").text(resp.balance + 'NAS');
-                    $("#run_balance").text(resp.balance + 'NAS');
+                    var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                    $("#balance").text(balance + ' NAS');
+                    $("#run_balance").text(balance + ' NAS');
                     console.log("prepared params: " + JSON.stringify(params));
                     callback(params);
                 }).catch(function (err) {
