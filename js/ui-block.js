@@ -14,8 +14,8 @@ var uiBlock = function () {
     // function toNas(n) { return toWeiOrNas(n, true); }
     function toWeiOrNas(n, nas) {
         var arr = nas ?
-            ["Nas", "kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"] :
-            ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
+            ["NAS", "kNAS", "MNAS", "GNAS", "TNAS", "PNAS", "ENAS", "ZNAS", "YNAS"] :
+            ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "NAS"],
             i, len = arr.length - 1;
 
         for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
@@ -335,7 +335,6 @@ var uiBlock = function () {
                 eqgt0: function (s) { return s > -1; },
                 gt0: function (s) { return s > 0; },
                 lengthEq35: function (s) { return s.length == 35; },
-                lengthEq46: function (s) { return s.length == 46; },
                 lengthEq64: function (s) { return s.length == 64; },
                 lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
