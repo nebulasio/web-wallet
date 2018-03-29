@@ -392,6 +392,7 @@
 
             function onUnlockFile(swf, fileJson, account, password) {
                 var state, balance_nas;
+
                 try {
                     account.fromKey(fileJson, password);
                     globalParams.account = account;
@@ -401,20 +402,30 @@
                     $("#unlock").hide();
                     $("#send").show();
 
-                    neb.api.gasPrice().then(function (resp) {
-                        $("#gas_price").val(resp.gas_price);
-                        $("#run_gas_price").val(resp.gas_price);
-                        return neb.api.getAccountState($("#from_addr").val());
-                    }).then(function (resp) {
-                        $("#balance").text(resp.balance);
-                        $("#run_balance").text(resp.balance);
-                    }).catch(function (err) {
-                        // TODO handle error
-                    });
+                    neb.api.gasPrice()
+                        .then(function (resp) {
+                            $("#gas_price").val(resp.gas_price);
+                            $("#run_gas_price").val(resp.gas_price);
+                            return neb.api.getAccountState($("#from_addr").val());
+                        })
+                        .then(function (resp) {
+                            $("#balance").text(resp.balance);
+                            $("#run_balance").text(resp.balance);
+                        })
+                        .catch(function (e) {
+                            // this catches e thrown by nebulas.js!neb
 
+                            bootbox.dialog({
+                                message: i18n.apiErrorToText(e.error),
+                                size: "large",
+                                title: "Error"
+                            });
+                        });
                 } catch (e) {
+                    // this catches e thrown by nebulas.js!account
+
                     bootbox.dialog({
-                        message: e,
+                        message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
                         size: "large",
                         title: "Error"
                     });

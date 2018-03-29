@@ -114,25 +114,33 @@
                 $("#sideaddress").text(account.getAddressString());
                 $("#password").val(account.getPrivateKeyString());
 
-                neb.api.getAccountState(account.getAddressString()).then(function (resp) {
-                    if (resp.error) {
-                        throw new Error(resp.error);
-                    } else {
-                        $("#amount").text(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
-                        $("#addressqr").text("");
-                        $("#privateqr").text("");
-                        $("#addressqr").qrcode(account.getAddressString());
-                        $("#privateqr").qrcode(account.getPrivateKeyString());
-                        $("#walletinfo").show();
-                    }
-                }).catch(function (err) {
-                    // TODO handle error
-                    console.log(err)
-                });
+                neb.api.getAccountState(account.getAddressString())
+                    .then(function (resp) {
+                        if (resp.error) {
+                            throw new Error(resp.error);
+                        } else {
+                            $("#amount").text(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
+                            $("#addressqr").text("");
+                            $("#privateqr").text("");
+                            $("#addressqr").qrcode(account.getAddressString());
+                            $("#privateqr").qrcode(account.getPrivateKeyString());
+                            $("#walletinfo").show();
+                        }
+                    })
+                    .catch(function (e) {
+                        // this catches e thrown by nebulas.js!neb
 
+                        bootbox.dialog({
+                            message: i18n.apiErrorToText(e.error),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
             } catch (e) {
+                // this catches e thrown by nebulas.js!account
+
                 bootbox.dialog({
-                    message: e,
+                    message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"
                 });
