@@ -107,12 +107,18 @@
                 <tr class=mod-child>
                     <td data-i18n=amount>Amount</td>
                     <td>
-                        <div class="amount number-comma" data-disabled data-unit=nas></div>
+                        <div class="amount number-comma" data-disabled data-unit=wei></div>
                     </td>
                 </tr>
                 <tr>
                     <td>Nonce</td>
                     <td class=nonce></td>
+                </tr>
+                <tr class=mod-child>
+                    <td data-i18n=gas-price>Gas Price</td>
+                    <td>
+                        <div class="gas-price number-comma" data-disabled data-unit=wei></div>
+                    </td>
                 </tr>
                 <tr class=mod-child>
                     <td data-i18n=gas-limit>Gas Limit</td>
@@ -121,9 +127,9 @@
                     </td>
                 </tr>
                 <tr class=mod-child>
-                    <td data-i18n=gas-price>Gas Price</td>
+                    <td data-i18n=gas-used>Gas Used</td>
                     <td>
-                        <div class="gas-price number-comma" data-disabled data-unit=wei></div>
+                        <div class="gas-used number-comma" data-disabled data-unit=wei></div>
                     </td>
                 </tr>
                 <tr>
@@ -198,8 +204,9 @@
             $(".nonce").text(o.nonce);
 
             $(".amount input").val(o.value).trigger("input");
-            $(".gas-price input").val(o.gas_price).trigger("input");
             $(".gas-limit input").val(o.gas_limit).trigger("input");
+            $(".gas-price input").val(o.gas_price).trigger("input");
+            $(".gas-used input").val(o.gas_used).trigger("input");
         }
     </script>
 </body>
