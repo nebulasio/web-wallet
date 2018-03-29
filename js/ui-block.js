@@ -10,8 +10,6 @@ var uiBlock = function () {
         validate: validate
     };
 
-    // function toWei(n) { return toWeiOrNas(n); }
-    // function toNas(n) { return toWeiOrNas(n, true); }
     function toWeiOrNas(n, nas) {
         var arr = nas ?
             ["NAS", "kNAS", "MNAS", "GNAS", "TNAS", "PNAS", "ENAS", "ZNAS", "YNAS"] :
@@ -276,11 +274,11 @@ var uiBlock = function () {
                 // https://stackoverflow.com/questions/857618/javascript-how-to-extract-filename-from-a-file-input-control
                 // this.value.split(/[\\|/]/).pop()
                 $("<span>" + file.name + "</span>").replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
-                fr.onload = onLoad1;
+                fr.onload = onload;
                 fr.readAsText(file);
 
                 // open file, parse json string, create account from address, then it's a success
-                function onLoad1(e) {
+                function onload(e) {
                     try {
                         mFileJson = JSON.parse(e.target.result);
                         mAccount = Account.fromAddress(mFileJson.address)
@@ -385,7 +383,7 @@ var uiBlock = function () {
                                     placement: "auto",
                                     trigger: "manual"
                                 })
-                                    .popover("show")[0];
+                                    .popover("show");
 
                                 setTimeout(() => {
                                     // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
