@@ -247,7 +247,7 @@
                 $(".transaction").show();
             } catch (e) {
                 bootbox.dialog({
-                    message: e,
+                    message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"
                 });
@@ -352,15 +352,3 @@
 </body>
 
 </html>
-
-解锁的密码不正确，提示要改下，现在还是英文
-交易状态查询现在错误提示也要改下
-
-
-钱包信息中的私钥，点击显示不生效了
-合约里面的balance没有单位
-nas和wei的转换也要改成10^18
-gas限制默认是20万，不是2万
-执行成功后部署按钮还是灰色，不能部署
-部署切到调用的tab，余额没有清理
-gasLimit和gasPrice也没有清理
