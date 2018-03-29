@@ -125,17 +125,17 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <button id=deploy_run data-i18n=contract/run></button>
+                        <button id=deploy_test data-i18n=contract/deploy_test></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=deploy class=stop data-i18n=contract/deploy></button>
+                        <button id=deploy class=stop data-i18n=contract/deploy_submit></button>
                     </div>
                 </div>
 
                 <div class="next  active1 row">
                     <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/execution_result></span>
-                        <div class="execution_banner" id="deploy_run_result"></div>
+                        <span class="execution" data-i18n=contract/test_result></span>
+                        <div class="execution_banner" id="deploy_test_result"></div>
                     </div>
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/result></span>
@@ -145,9 +145,9 @@
             </div>
 
             <div class="run_contract item " id="tab3">
-                <!-- <div class="title">
-                    <span data-i18n=contract/run_contract></span>
-                </div> -->
+                <div class="title">
+                    <span data-i18n=contract/call_contract></span>
+                </div>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -208,20 +208,20 @@
 
                 <span class="run_errmsg active1" data-i18n=contract/err_msg></span>
 
-                <div class="result active1" id=result>Results:success,you can deploy this contract.</div>
+                <div class="result active1" id=result></div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button id=run_run data-i18n=contract/run></button>
+                        <button id=call_test data-i18n=contract/call_test></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=call class=stop data-i18n=contract/call></button>
+                        <button id=call class=stop data-i18n=contract/call_submit></button>
                     </div>
                 </div>
 
                 <div class="next  active1 row">
                     <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/execution_result></span>
-                        <div class="execution_banner" id="call_run_result"></div>
+                        <span class="execution" data-i18n=contract/test_result></span>
+                        <div class="execution_banner" id="call_test_result"></div>
                     </div>
                     <div class="col-md-6">
                         <span class="execution" data-i18n=contract/result></span>
@@ -284,10 +284,10 @@
                 $(this).parent().removeClass("hoverItem");
             });
 
-            // deploy run --------------------------------
-            $("#deploy_run").click(function () {
+            // deploy test --------------------------------
+            $("#deploy_test").click(function () {
                 innerDeploy(function (params) {
-                    neb.api.estimateGas({
+                    neb.api.call({
                         from: params.from,
                         to: params.to,
                         value: params.value,
@@ -296,13 +296,17 @@
                         gasLimit: params.gasLimit,
                         contract: params.contract
                     }).then(function (resp) {
-                        $("#deploy_run_result").text(JSON.stringify(resp));
-                        $("#deploy_run_result").parents(".next").removeClass("active1");
+                        $("#deploy_test_result").text(JSON.stringify(resp));
                         $('#deploy').attr("disabled", false);
                         $('#deploy').removeClass("stop");
+                        $("#deploy_result").text("");
+                        $("#deploy_test_result").parents(".next").removeClass("active1");
                     }).catch(function (err) {
-                        $("#deploy_run_result").text(JSON.stringify(err));
-                        $("#deploy_run_result").parents(".next").removeClass("active1");
+                        $("#deploy_test_result").text(JSON.stringify(err));
+                        $('#deploy').attr("disabled", true);
+                        $('#deploy').addClass("stop");
+                        $("#deploy_result").text("");
+                        $("#deploy_test_result").parents(".next").removeClass("active1");
                     });
                 });
             });
@@ -311,12 +315,11 @@
             $("#deploy").click(function () {
                 innerDeploy(function (params) {
 
-                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.from,
+                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
                         params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                     gTx.signTransaction();
 
                     neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                        // if deploy success show txhash
                         $("#deploy_result").text(JSON.stringify(resp));
                     }).catch(function (err) {
                         $("#deploy_result").text(JSON.stringify(err));
@@ -357,10 +360,10 @@
                 }
             });
 
-            // run function
-            $("#run_run").click(function () {
+            // test call function
+            $("#call_test").click(function () {
                 innerCall(function (params) {
-                    neb.api.estimateGas({
+                    neb.api.call({
                         from: params.from,
                         to: params.to,
                         value: params.value,
@@ -369,12 +372,23 @@
                         gasLimit: params.gasLimit,
                         contract: params.contract
                     }).then(function (resp) {
-                        $("#call_run_result").text(JSON.stringify(resp));
-                        $(".next").removeClass("active1");
-                        $('#call').attr("disabled", false);
-                        $('#deploy').removeClass("stop");
+                        $("#call_test_result").text(JSON.stringify(resp));
+                        if (resp.execute_err && resp.execute_err !== '') {
+                            $('#call').attr("disabled", true);
+                            $('#call').addClass("stop");
+                            $("#call_result").text("");
+                            $(".next").removeClass("active1");
+                        } else {
+                            $('#call').attr("disabled", false);
+                            $('#call').removeClass("stop");
+                            $("#call_result").text("");
+                            $(".next").removeClass("active1");
+                        }
                     }).catch(function (err) {
-                        $("#call_run_result").text(JSON.stringify(err));
+                        $("#call_test_result").text(JSON.stringify(err));
+                        $('#call').attr("disabled", true);
+                        $("#call_result").text("");
+                        $('#call').addClass("stop");
                         $(".next").removeClass("active1");
                     });
                 });
@@ -383,7 +397,11 @@
             //call function
             $("#call").click(function () {
                 innerCall(function (params) {
-                    neb.api.call(params).then(function (resp) {
+                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
+                        params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                    gTx.signTransaction();
+
+                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                         console.log(JSON.stringify(resp));
                         $("#call_result").text(JSON.stringify(resp));
                         $(".result").removeClass("active1");

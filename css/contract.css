@@ -137,8 +137,13 @@ h6 {
   width: 128px;
   height: 29px; }
 
-  .wrapperExample1 .search_contract {
+.wrapperExample1 .search_contract {
     border: none;
+    margin-top: 20px;
+}
+
+.wrapperExample1 .search_contract span {
+    color: gray;
 }
 
 .wrapperExample1 .run_contract {
@@ -247,6 +252,8 @@ h6 {
     height: 200px;
     background-color: #f5f5f5;
     margin: 0 auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .form-check {
