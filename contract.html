@@ -110,14 +110,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=gas-limit></span>
-                        <i> （ 1 NAS = 100，000，000 Wei ）</i>
-                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=20000></div>
+                        <i>( 1 NAS = 10
+                                <sup>18</sup> Wei )</i>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
 
                     </div>
                     <div class="col-md-6">
                         <span data-i18n=gas-price></span>
-                        <i> （ 1 NAS = 100，000，000 Wei ）</i>
-                        <div class=number-comma data-data-i18n=amount data-id=gas_price data-validate="required number gt0" data-value=20000></div>
+                        <i>( 1 NAS = 10
+                                <sup>18</sup> Wei )</i>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_price data-validate="required number gt0" data-value=200000></div>
 
                     </div>
                 </div>
@@ -196,11 +198,15 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=gas-limit></span>
+                        <i>( 1 NAS = 10
+                                <sup>18</sup> Wei )</i>
                         <!-- <span id=gas_limit></span> -->
                         <input type=text id=run_gas_limit value=200000>
                     </div>
                     <div class="col-md-6">
                         <span data-i18n=gas-price></span>
+                        <i>( 1 NAS = 10
+                                <sup>18</sup> Wei )</i>
                         <!-- <span id=gas_price></span> -->
                         <input type="text" id=run_gas_price>
                     </div>
@@ -298,6 +304,7 @@
                         $("#deploy_run_result").text(JSON.stringify(resp));
                         // 显示test结果
                         $("#deploy_run_result").parents(".next").removeClass("active1");
+                        $('#deploy').attr("disabled",false);
                     }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
@@ -367,6 +374,7 @@
                         // TODO 显示test结果
                         //run result show
                         $(".next").removeClass("active1");
+                        $('#call').attr("disabled",false);
                     }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
@@ -406,7 +414,7 @@
                         $("#run_gas_price").val(resp.gas_price);
                         return neb.api.getAccountState($("#from_addr").val());
                     }).then(function (resp) {
-                        $("#balance").text(resp.balance);
+                        $("#balance").text(resp.balance + 'NAS');
                         $("#run_balance").text(resp.balance);
                     }).catch(function (err) {
                         // TODO handle error
