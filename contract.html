@@ -110,8 +110,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=gas-limit></span>
-                        <i>( 1 NAS = 10
-                            <sup>18</sup> Wei )</i>
+                    
                         <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
 
                     </div>
@@ -143,7 +142,7 @@
                         <div class="execution_banner" id="deploy_run_result"></div>
                     </div>
                     <div class="col-md-6">
-                        <a href="check.html" id="deploy_txhash"></a>
+                        <span class="execution" data-i18n=contract/result></span>
                         <div class=execution_banner id=deploy_result></div>
                     </div>
                 </div>
@@ -199,8 +198,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span data-i18n=gas-limit></span>
-                        <i>( 1 NAS = 10
-                            <sup>18</sup> Wei )</i>
                         <!-- <span id=gas_limit></span> -->
                         <input type=text id=run_gas_limit value=200000>
                     </div>
@@ -231,6 +228,7 @@
                         <div class="execution_banner" id="call_run_result"></div>
                     </div>
                     <div class="col-md-6">
+                        <span class="execution" data-i18n=contract/result></span>
                         <div class=execution_banner id=call_result></div>
                     </div>
                 </div>

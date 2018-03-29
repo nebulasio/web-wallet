@@ -95,7 +95,7 @@
 
         neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#keystore").on("click", onClickKeystore);
-        $("#togglePassword").on("input", onInputPassword);
+        $("#togglePassword").on("change", onChangeTogglePassword);
 
         uiBlock.insert({
             footer: ".footer",
@@ -152,7 +152,7 @@
             saveAs(blob, gAccount.getAddressString());
         }
 
-        function onInputPassword(e) {
+        function onChangeTogglePassword(e) {
             if (e.target.checked) {
                 $("#password").prop("type", "text");
                 $(".key_qr").removeClass("display-none");
@@ -163,4 +163,5 @@
         }
     </script>
 </body>
+
 </html>
