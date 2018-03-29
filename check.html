@@ -42,7 +42,14 @@
             text-align: center;
         }
 
+        .mod-child td:last-child {
+            padding-bottom: 0;
+            padding-top: 0;
+            vertical-align: middle;
+        }
+
         .number-comma input.form-control {
+            /* override .form-control:disabled */
             background-color: initial;
             border: 0;
         }
@@ -87,37 +94,25 @@
                 <tbody>
                     <tr>
                         <td>TX Hash</td>
-                        <td>
-                            <a href=# target=_blank rel="noopener noreferrer" class=tx_hash></a>
-                        </td>
+                        <td class=tx_hash></td>
                     </tr>
                     <tr>
                         <td>Contract address</td>
-                        <td>
-                            <a href=# target=_blank rel="noopener noreferrer" class=contract_addr></a>
-                        </td>
+                        <td class=contract_addr></td>
                     </tr>
                     <tr>
                         <td>TxReceipt Status</td>
-                        <td>
-                            <a href=# target=_blank rel="noopener noreferrer" class=status></a>
-                        </td>
+                        <td class=status></td>
                     </tr>
                     <tr>
                         <td data-i18n=send-nas/from-address>From Address</td>
-                        <td>
-                            <a href=# target=_blank rel="noopener noreferrer" class=from_address></a>
-                        </td>
+                        <td class=from_address></td>
                     </tr>
-
                     <tr>
                         <td data-i18n=send-nas/to-address>To Address</td>
-                        <td>
-                            <a href=# target=_blank rel="noopener noreferrer" class=to_address></a>
-                        </td>
+                        <td class=to_address></td>
                     </tr>
-
-                    <tr>
+                    <tr class=mod-child>
                         <td data-i18n=amount>Amount</td>
                         <td>
                             <div class="amount number-comma" data-disabled data-nas></div>
@@ -127,13 +122,13 @@
                         <td>Nonce</td>
                         <td class=nonce></td>
                     </tr>
-                    <tr>
+                    <tr class=mod-child>
                         <td data-i18n=gas-limit>Gas Limit</td>
                         <td>
                             <div class="gas-limit number-comma" data-disabled></div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class=mod-child>
                         <td data-i18n=gas-price>Gas Price</td>
                         <td>
                             <div class="gas-price number-comma" data-disabled></div>
