@@ -305,6 +305,7 @@
                         $("#deploy_run_result").text(JSON.stringify(resp));
                         $("#deploy_run_result").parents(".next").removeClass("active1");
                         $('#deploy').attr("disabled", false);
+                        $('#deploy').removeClass("stop");
                     }).catch(function (err) {
                         $("#deploy_run_result").text(JSON.stringify(error));
                         $("#deploy_run_result").parents(".next").removeClass("active1");
@@ -380,6 +381,7 @@
                         //run result show
                         $(".next").removeClass("active1");
                         $('#call').attr("disabled", false);
+                        $('#deploy').removeClass("stop");
                     }).catch(function (err) {
                         // TODO handle error
                         console.log(err);
