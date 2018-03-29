@@ -197,6 +197,10 @@ var i18n = function () {
     function apiErrorToText(s) {
         var lang = localStorage.lang,
             table = {
+                unknown: {
+                    en: "unknown error",
+                    zh: "未知错误"
+                },
                 // GetTransactionReceipt
                 "invalid argument(s)": {
                     en: "invalid transaction hash",
@@ -253,7 +257,7 @@ var i18n = function () {
                 }
             };
 
-        return table[s] ? table[s][lang] || table[s].en : s;
+        return table[s] ? table[s][lang] || table[s].en : table.unknown[lang] || table.unknown.en;
     }
 
     function langName(s) {
