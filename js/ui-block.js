@@ -40,7 +40,7 @@ var uiBlock = function () {
                     "    <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
                     "    <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
                     "</nav>" +
-                    '<div class="copyright text-center">Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</div>'));
+                    '<div class="copyright text-center">Copyright &copy; 2018 Nebulas.io, 814 Mission Street, San Francisco</div>'));
         }
 
         function header(selector) {
