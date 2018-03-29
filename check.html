@@ -68,8 +68,8 @@
     <section class=hash>
         <article class=row></article>
         <section class=col>
-            <h1 translate=NAV_CheckTxStatus data-i18n=header/check>Check TX Status</h1>
-            <p translate=tx_Summary>
+            <h1 data-i18n=header/check>Check TX Status</h1>
+            <p>
                 <span data-i18n=check/blah1>During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs.</span>
                 <strong>
                     <span data-i18n=check/blah2>This is not typically something you can do. It should not be relied upon &amp; will only work when the TX Pools are full.</span>
@@ -77,72 +77,68 @@
             </p>
         </section>
         <section class="col text-center">
-            <input id=input class=form-control data-validate-order-matters="required lengthEq64" placeholder="fill transaction hash here">
-            <button id=btn tabindex=0 role=button class="btn btn-primary" data-i18n=header/check>Check TX Status</button>
+            <input id=input class=form-control data-validate-order-matters="required lengthEq64" data-i18n=placeholder/tx#>
+            <button id=btn class="btn btn-primary" data-i18n=header/check>Check TX Status</button>
             <br>
             <span class="active1 errmsg" data-i18n=check/comment1>Please enter a valid TX hash</span>
         </section>
-        </article>
     </section>
 
-    <section class="information active1" id=info>
-
-        <div ng-show="txInfo.status == txStatus.found || txInfo.status == txStatus.mined" class="">
-            <h4 class=cont-md data-i18n=check/tx-details>Transaction Details</h4>
-            <br>
-            <table class="table table-striped txstatus__2 cont-md">
-                <tbody>
-                    <tr>
-                        <td>TX Hash</td>
-                        <td class=tx_hash></td>
-                    </tr>
-                    <tr>
-                        <td>Contract address</td>
-                        <td class=contract_addr></td>
-                    </tr>
-                    <tr>
-                        <td>TxReceipt Status</td>
-                        <td class=status></td>
-                    </tr>
-                    <tr>
-                        <td data-i18n=send-nas/from-address>From Address</td>
-                        <td class=from_address></td>
-                    </tr>
-                    <tr>
-                        <td data-i18n=send-nas/to-address>To Address</td>
-                        <td class=to_address></td>
-                    </tr>
-                    <tr class=mod-child>
-                        <td data-i18n=amount>Amount</td>
-                        <td>
-                            <div class="amount number-comma" data-disabled data-nas></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nonce</td>
-                        <td class=nonce></td>
-                    </tr>
-                    <tr class=mod-child>
-                        <td data-i18n=gas-limit>Gas Limit</td>
-                        <td>
-                            <div class="gas-limit number-comma" data-disabled></div>
-                        </td>
-                    </tr>
-                    <tr class=mod-child>
-                        <td data-i18n=gas-price>Gas Price</td>
-                        <td>
-                            <div class="gas-price number-comma" data-disabled></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-i18n=data>Data</td>
-                        <td class=data>
-                            <textarea name=code id=code cols=80 rows=6 wrap=virtual></textarea>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <section class="active1 information" id=info>
+        <h4 data-i18n=check/tx-details>Transaction Details</h4>
+        <br>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>TX Hash</td>
+                    <td class=tx_hash></td>
+                </tr>
+                <tr>
+                    <td>Contract address</td>
+                    <td class=contract_addr></td>
+                </tr>
+                <tr>
+                    <td>TxReceipt Status</td>
+                    <td class=status></td>
+                </tr>
+                <tr>
+                    <td data-i18n=send-nas/from-address>From Address</td>
+                    <td class=from_address></td>
+                </tr>
+                <tr>
+                    <td data-i18n=send-nas/to-address>To Address</td>
+                    <td class=to_address></td>
+                </tr>
+                <tr class=mod-child>
+                    <td data-i18n=amount>Amount</td>
+                    <td>
+                        <div class="amount number-comma" data-disabled data-nas></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nonce</td>
+                    <td class=nonce></td>
+                </tr>
+                <tr class=mod-child>
+                    <td data-i18n=gas-limit>Gas Limit</td>
+                    <td>
+                        <div class="gas-limit number-comma" data-disabled></div>
+                    </td>
+                </tr>
+                <tr class=mod-child>
+                    <td data-i18n=gas-price>Gas Price</td>
+                    <td>
+                        <div class="gas-price number-comma" data-disabled></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td data-i18n=data>Data</td>
+                    <td class=data>
+                        <textarea name=code id=code cols=80 rows=6 wrap=virtual></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </section>
 
     <div class=footer></div>

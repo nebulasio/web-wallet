@@ -94,6 +94,8 @@
         <button id=generate type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" data-i18n=send-nas/button/generate>Generate Transaction</button>
     </div>
 
+    <div class=footer></div>
+
     <!-- send -->
     <div id=transaction class="container transaction">
         <div class=row>
@@ -123,44 +125,42 @@
                 <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
             </div>
         </div>
+    </div>
 
-        <div class=footer></div>
-
-        <!-- Modal -->
-        <div class="fade modal" id=modal-confirm tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
-            <div class=modal-dialog role=document>
-                <div class=modal-content>
-                    <div class=modal-header>
-                        <h5 class=modal-title id=exampleModalLabel data-i18n=send-nas/transfer_msg>transfer message :</h5>
-                        <button type=button class=close data-dismiss=modal aria-label=Close>
-                            <span aria-hidden=true>&times;</span>
-                        </button>
+    <!-- Modal -->
+    <div class="fade modal" id=modal-confirm tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
+        <div class=modal-dialog role=document>
+            <div class=modal-content>
+                <div class=modal-header>
+                    <h5 class=modal-title id=exampleModalLabel data-i18n=send-nas/transfer_msg>transfer message :</h5>
+                    <button type=button class=close data-dismiss=modal aria-label=Close>
+                        <span aria-hidden=true>&times;</span>
+                    </button>
+                </div>
+                <div class=modal-body>
+                    <div>
+                        <label data-i18n=send-nas/from-address>From Address</label>
+                        <input type=text class=form-control id=for_addr disabled>
                     </div>
-                    <div class=modal-body>
-                        <div>
-                            <label data-i18n=send-nas/from-address>From Address</label>
-                            <input type=text class=form-control id=for_addr disabled>
-                        </div>
-                        <div>
-                            <label data-i18n=send-nas/to-address>To Address</label>
-                            <input type=text class=form-control id=to_addr disabled>
-                        </div>
-                        <div>
-                            <label data-i18n=send-nas/amount>Value / Amount to Send</label>
-                            <div class=input-group>
-                                <input type=text class=form-control id=value disabled>
-                                <div class=input-group-addon>NAS</div>
-                            </div>
-                        </div>
-                        <div class=data>
-                            <label>data</label>
-                            <input type=text class=data id=data disabled style="width: 100%;">
+                    <div>
+                        <label data-i18n=send-nas/to-address>To Address</label>
+                        <input type=text class=form-control id=to_addr disabled>
+                    </div>
+                    <div>
+                        <label data-i18n=send-nas/amount>Value / Amount to Send</label>
+                        <div class=input-group>
+                            <input type=text class=form-control id=value disabled>
+                            <div class=input-group-addon>NAS</div>
                         </div>
                     </div>
-                    <div class=modal-footer>
-                        <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
-                        <button id=sendtransaction type=button class="btn btn-primary" data-dismiss=modal data-i18n=send-nas/check></button>
+                    <div class=data>
+                        <label>data</label>
+                        <input type=text class=data id=data disabled style="width: 100%;">
                     </div>
+                </div>
+                <div class=modal-footer>
+                    <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
+                    <button id=sendtransaction type=button class="btn btn-primary" data-dismiss=modal data-i18n=send-nas/check></button>
                 </div>
             </div>
         </div>

@@ -103,14 +103,12 @@ var uiBlock = function () {
             function each(i, o) {
                 var $o = $(o),
                     attrDisabled = $o.attr("data-disabled") != undefined,
-                    attrI18n = $o.attr("data-data-i18n"),
                     attrId = $o.attr("data-id");
 
                 $o.addClass("icon-address")
                     .html(
-                        '<input class="address form-control" data-validate-order-matters="required lengthEq35" placeholder="fill address here"' +
+                        '<input class="address form-control" data-validate-order-matters="required lengthEq35" data-i18n=placeholder/addr' +
                         (attrDisabled ? " disabled" : "") +
-                        (attrI18n ? " data-i18n=" + attrI18n : "") +
                         (attrId ? " id=" + attrId : "") +
                         "><canvas class=placeholder></canvas>")
                     .on("input", "input", onInput);
