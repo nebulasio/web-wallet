@@ -186,7 +186,7 @@
             validateAll = uiBlock.validate(),
             gAccount, gTx;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
@@ -239,13 +239,11 @@
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
-                toAddress = $(".icon-address.to input").val(),
-                chainId = +(localStorage.chainId || 1003),
-                tmp;
+                toAddress = $(".icon-address.to input").val();
 
             if (validateAll())
                 try {
-                    tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
+                    var tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
                         .times(Utils.toBigNumber(gasprice)), "nas");
 
                     if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
@@ -256,7 +254,7 @@
 
                     console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
-                    gTx = new Transaction(chainId, gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                    gTx = new Transaction(parseInt(localStorage.chainId), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
 
                     $("#raw").val(gTx.toString());

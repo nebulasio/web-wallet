@@ -65,7 +65,7 @@
             </p>
         </section>
         <section class="col text-center">
-            <input id=input class=form-control data-validate-order-matters="required lengthEq46" placeholder="fill transaction hash here">
+            <input id=input class=form-control data-validate-order-matters="required lengthEq64" placeholder="fill transaction hash here">
             <button id=btn tabindex=0 role=button class="btn btn-primary" data-i18n=header/check>Check TX Status</button>
             <br>
             <span class="active1 errmsg" data-i18n=check/comment1>Please enter a valid TX hash</span>
@@ -175,7 +175,7 @@
             logoMain: ".logo-main"
         });
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
 
         $("#btn").on("click", onClickBtn);
 

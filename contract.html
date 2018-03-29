@@ -247,16 +247,15 @@
 
         $(function () {
 
-            var wallet = require("nebulas");
-            var Account = wallet.Account;
-            var Utils = wallet.Utils;
-            var neb = new wallet.Neb();
-            var testnetchainID = 1003;
+            var nebulas = require("nebulas");
+            var Account = nebulas.Account;
+            var Utils = nebulas.Utils;
+            var neb = new nebulas.Neb();
             var globalParams = {
                 account: null
             };
 
-            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
 
             uiBlock.insert({
                 footer: ".footer",
@@ -310,8 +309,7 @@
             $("#deploy").click(function () {
                 innerDeploy(function (params) {
 
-                    var chainId = parseInt(localStorage.chainId) || 1003;
-                    var gTx = new wallet.Transaction(chainId, globalParams.account, params.from,
+                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.from,
                         params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                     gTx.signTransaction();
                     console.log(gTx.toString());
@@ -543,7 +541,7 @@
                 // prepare value
                 let value = Utils.toBigNumber(0);
                 try {
-                    value = wallet.Unit.toBasic(Utils.toBigNumber($("#run_value").val()), "nas");
+                    value = nebulas.Unit.toBasic(Utils.toBigNumber($("#run_value").val()), "nas");
                 } catch (err) {
                     console.log(err);
                 }

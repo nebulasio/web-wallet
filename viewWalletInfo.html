@@ -93,7 +93,7 @@
             neb = new Neb(),
             gAccount, gFileJson;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
 
         $("#keystore").on("click", onClickKeystore);
         $("#togglePassword").on("input", onInputPassword);

@@ -134,8 +134,9 @@ var uiBlock = function () {
         function logoMain(selector) {
             var i, len,
                 list = [
-                    { chainId: 1, name: "mainnet.nebulas.io", url: "http://mainnet.nebulas.io/" },
-                    { chainId: 1001, name: "testnet.nebulas.io", url: "https://testnet.nebulas.io/" }
+                    { chainId: 1, name: "mainnet.nebulas.io", url: "http://mainnet.nebulas.io" },
+                    { chainId: 1001, name: "testnet.nebulas.io", url: "https://testnet.nebulas.io" },
+                    { chainId: 1003, name: "develop", url: "http://13.57.120.136:8685" }
                 ],
                 apiPrefix, sApiButtons, sApiText,
                 lang, langs, sLangButtons;

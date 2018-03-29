@@ -208,7 +208,7 @@
             validateStep2 = uiBlock.validate("#step2"),
             gFromState;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix));
         $("#generate-infomation").click(onClickGenerateInfomation);
 
         uiBlock.insert({
@@ -271,7 +271,6 @@
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
-                chainId = +(localStorage.chainId || 1003),
                 toaccount, tmp, tx, balance;
 
             if (validateStep2())
@@ -288,7 +287,7 @@
                         else
                             amount = balance.minus(tmp);
 
-                    tx = new Transaction(chainId, gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
 
                     $("#raw").val(tx.toString());
