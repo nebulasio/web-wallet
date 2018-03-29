@@ -133,7 +133,7 @@
                         <button id=deploy_run data-i18n=contract/run></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=deploy disabled=disabled class=stop data-i18n=contract/deploy></button>
+                        <button id=deploy class=stop data-i18n=contract/deploy></button>
                     </div>
                 </div>
 
@@ -220,7 +220,7 @@
                         <button id=run_run data-i18n=contract/run></button>
                     </div>
                     <div class="col-md-6">
-                        <button id=call disabled=disabled class=stop data-i18n=contract/call></button>
+                        <button id=call class=stop data-i18n=contract/call></button>
                     </div>
                 </div>
 
@@ -302,12 +302,11 @@
                         contract: params.contract
                     }).then(function (resp) {
                         $("#deploy_run_result").text(JSON.stringify(resp));
-                        // 显示test结果
                         $("#deploy_run_result").parents(".next").removeClass("active1");
                         $('#deploy').attr("disabled", false);
                     }).catch(function (err) {
-                        // TODO handle error
-                        console.log(err);
+                        $("#deploy_run_result").text(JSON.stringify(error));
+                        $("#deploy_run_result").parents(".next").removeClass("active1");
                     });
                 });
             });
@@ -323,11 +322,9 @@
 
                     neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                         // if deploy success show txhash
-                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify);
-                        // TODO 显示deploy结果
+                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify(resp));
                     }).catch(function (err) {
-                        // TODO handle error
-                        console.log(err);
+                        $("#deploy_txhash").text("Deploy result: " + JSON.stringify(err));
                     });
                 });
             });
@@ -342,15 +339,22 @@
                     }, 2000);
 
                 } else {
-                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (o) {
-                        var jsonString = atob(o.data);
+                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (resp) {
 
-                        $(".search_result").text(jsonString);
-                        $("#to_addr").val(o.contract_address);
-                        $(".search_result").removeClass("active1");
-                    }).catch(function (o) {
+                        if (!resp.contract_address || resp.contract_address === "") {
+                            bootbox.dialog({
+                                message: i18n.apiErrorToText("contract not exist"),
+                                size: "large",
+                                title: "Error"
+                            });
+                        } else {
+                            $(".search_result").text(atob(resp.data));
+                            // $("#to_addr").val(resp.contract_address);
+                            $(".search_result").removeClass("active1");
+                        }
+                    }).catch(function (err) {
                         bootbox.dialog({
-                            message: i18n.apiErrorToText(o.error),
+                            message: i18n.apiErrorToText(err.error),
                             size: "large",
                             title: "Error"
                         });
@@ -567,6 +571,7 @@
                 }
                 if (value.cmp(Utils.toBigNumber(0)) < 0) {
                     // TODO 添加提示value输入不对
+                    console.log("invalid value");
                     return;
                 }
                 params.value = value;
