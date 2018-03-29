@@ -256,8 +256,7 @@
                 account: null
             };
 
-            // neb.setRequest(new wallet.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-            neb.setRequest(new wallet.HttpRequest("http://13.57.120.136:8685"));
+            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
 
             uiBlock.insert({
                 footer: ".footer",

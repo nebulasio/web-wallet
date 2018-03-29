@@ -175,8 +175,7 @@
             logoMain: ".logo-main"
         });
 
-        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
 
         $("#btn").on("click", onClickBtn);
 

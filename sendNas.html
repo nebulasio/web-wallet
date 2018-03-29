@@ -186,8 +186,7 @@
             validateAll = uiBlock.validate(),
             gAccount, gTx;
 
-        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
 
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);

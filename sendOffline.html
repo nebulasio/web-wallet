@@ -208,8 +208,7 @@
             validateStep2 = uiBlock.validate("#step2"),
             gFromState;
 
-        // neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io"));
-        neb.setRequest(new nebulas.HttpRequest("http://13.57.120.136:8685"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#generate-infomation").click(onClickGenerateInfomation);
 
         uiBlock.insert({
