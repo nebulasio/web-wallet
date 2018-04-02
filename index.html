@@ -43,10 +43,10 @@
         <div class="download active1">
             <h1>
                 <span data-i18n=new/save1>Save your</span>
-                <code >Keystore</code>
+                <code>Keystore</code>
                 <span data-i18n=new/save3>File.</span>
             </h1>
-            <button id=genNewWallet class="btn btn-block"data-i18n=new/gen>Download Keystore File</button>
+            <button id=genNewWallet class="btn btn-block" data-i18n=new/gen>Download Keystore File</button>
         </div>
         <div class=col-12>
             <p class=wallet_help data-i18n=new/comment>This password encrypts your private key.
@@ -103,7 +103,7 @@
 
                 // i can't close bootstrap modal when it's animating, tried below to no avail
                 // https://stackoverflow.com/questions/16493280/close-bootstrap-modal
-                setTimeout(() => {
+                setTimeout(function () {
                     bootbox.hideAll();
                     // $(".bootbox.modal .close").click();
                 }, 500);

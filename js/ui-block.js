@@ -331,8 +331,8 @@ var uiBlock = function () {
     }
 
     function validate(selector) {
-        // these validates depend on logical order of value of data-validate-order-matters so proceed with caution
-        // queries inputs on each validateAll call so you can add <input> into selector at any time
+        // these validates performed in order listed in the value of data-validate-order-matters
+        // queries inputs on each validateAll call so you can add or remove <input> into selector at any time
 
         var nebulas = require("nebulas"),
             mRules = {
@@ -391,7 +391,7 @@ var uiBlock = function () {
                                 })
                                     .popover("show");
 
-                                setTimeout(() => {
+                                setTimeout(function () {
                                     // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
                                     $el[0].scrollIntoView({ behavior: "smooth" });
                                 });
