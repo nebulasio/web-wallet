@@ -174,15 +174,24 @@
         }
 
         function onClickBtn() {
+            var addr = $("#input").val();
+
             if (validateAll())
-                neb.api.getTransactionReceipt($("#input").val())
-                    .then(doneGetTransactionReceipt)
-                    .catch(function (o) {
-                        bootbox.dialog({
-                            message: i18n.apiErrorToText(o.error),
-                            size: "large",
-                            title: "Error"
+                if (Account.isValidAddress(addr))
+                    neb.api.getTransactionReceipt(addr)
+                        .then(doneGetTransactionReceipt)
+                        .catch(function (o) {
+                            bootbox.dialog({
+                                message: i18n.apiErrorToText(o.error),
+                                size: "large",
+                                title: "Error"
+                            });
                         });
+                else
+                    bootbox.dialog({
+                        message: "invalid address",
+                        size: "large",
+                        title: "Error"
                     });
             else {
                 $(".errmsg").removeClass("active1");

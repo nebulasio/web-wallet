@@ -108,7 +108,7 @@ var uiBlock = function () {
         function logoMain(selector) {
             var i, len,
                 list = [
-                    { chainId: 1, name: "mainnet.nebulas.io", url: "http://mainnet.nebulas.io" },
+                    { chainId: 1, name: "mainnet.nebulas.io", url: "https://mainnet.nebulas.io" },
                     { chainId: 1001, name: "testnet.nebulas.io", url: "https://testnet.nebulas.io" }
                 ],
                 apiPrefix, sApiButtons, sApiText,
@@ -345,7 +345,7 @@ var uiBlock = function () {
                     try {
                         nebulas.Utils.toBigNumber(s);
                         return true;
-                    } catch (e) {
+                    } catch (e) {789012345678901234
                         return false;
                     }
                 },
