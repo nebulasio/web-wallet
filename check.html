@@ -142,6 +142,23 @@
         </table>
     </section>
 
+    <!--  loading  -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                            aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class=footer></div>
 
     <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
@@ -176,26 +193,22 @@
         function onClickBtn() {
             var addr = $("#input").val();
 
-            if (validateAll())
-                if (Account.isValidAddress(addr))
-                    neb.api.getTransactionReceipt(addr)
-                        .then(doneGetTransactionReceipt)
-                        .catch(function (o) {
-                            bootbox.dialog({
-                                message: i18n.apiErrorToText(o.error),
-                                size: "large",
-                                title: "Error"
-                            });
-                        });
-                else
-                    bootbox.dialog({
-                        message: "invalid address",
-                        size: "large",
-                        title: "Error"
-                    });
-            else {
-                $(".errmsg").removeClass("active1");
+            if (validateAll()) {
+                $("#myModal").modal("show");
 
+                neb.api.getTransactionReceipt(addr)
+                    .then(doneGetTransactionReceipt)
+                    .catch(function (o) {
+                        $("#myModal").modal("hide");
+
+                        bootbox.dialog({
+                            message: i18n.apiErrorToText(o.error),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
+            } else {
+                $(".errmsg").removeClass("active1");
                 setTimeout(function () {
                     $(".errmsg").addClass("active1");
                 }, 2000);
@@ -203,6 +216,8 @@
         }
 
         function doneGetTransactionReceipt(o) {
+            $("#myModal").modal("hide");
+
             $("#info").removeClass("active1");
             $("#code").text(o.data);
             $(".tx_hash").text(o.hash);
@@ -217,6 +232,8 @@
             $(".gas-price input").val(o.gas_price).trigger("input");
             $(".gas-used input").val(o.gas_used).trigger("input");
         }
+
+
     </script>
 </body>
 
