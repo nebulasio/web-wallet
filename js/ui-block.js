@@ -345,7 +345,7 @@ var uiBlock = function () {
                     try {
                         nebulas.Utils.toBigNumber(s);
                         return true;
-                    } catch (e) {789012345678901234
+                    } catch (e) {
                         return false;
                     }
                 },

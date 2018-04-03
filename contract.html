@@ -1,70 +1,269 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
     <link rel=apple-touch-icon href=img/logo.png>
-    <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css>
+    <link rel=stylesheet href=lib/bootstrap-4.0.0-dist/css/bootstrap.min.css>
+    <link rel=stylesheet href=lib/prismjs-1.13.0/prism.css>
     <link rel=stylesheet href=css/base.css>
-    <link rel=stylesheet href=css/contract.css>
     <link rel=stylesheet href=css/ui-block.css>
-    <link rel=stylesheet href=lib/codeMirror/codemirror.css>
-    <link rel=stylesheet href=lib/codeMirror/dracula.css>
     <meta name=viewport content="width=device-width">
-    <title>Blockchain playground</title>
-</head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
+        textarea {
+            width: 100%;
+            font-size: large;
+        }
+
+        input {
+            width: 100%;
+            font-size: large;
+        }
+
+        body {
+            font-family: 'Roboto Mono';
+            position: relative;
+        }
+
+        button {
+            background: black;
+            color: white;
+            margin-top: 1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            padding: 0.75rem 2.1875rem;
+            line-height: 1.8;
+            border-radius: 0;
+            transition: all 0.3s ease-in-out;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            font-size: 1rem;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            touch-action: manipulation;
+            width: 100%;
+        }
+
+        .bootbox button {
+            width: auto;
+        }
+
+        h1 {
+            color: black;
+            font-family: "Adobe Ming Std";
+        }
+
+        h2 {
+            color: black;
+            font-family: "Times New Roman";
+        }
+
+        h3 {
+            color: green;
+            font-family: "American Typewriter";
+        }
+
+        h4 {
+            color: black;
+            font-family: "Times New Roman";
+        }
+
+        h5 {
+            color: black;
+        }
+
+        h6 {
+            float: right;
+        }
+
+        .time {
+            margin-left: 13%;
+            font-size: 48px;
+        }
+
+        #display6 {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+            color: #b2b2b2;
+            font-weight: 200;
+            font-size: 0.8rem;
+            border-top: 1px solid #F8F8F8;
+            text-align: center;
+        }
+
+        .footerImg {
+            width: 128px;
+            height: 29px;
+        }
+
+        .deploy_contract span {
+            color: gray;
+        }
+
+
+        .title {
+            text-align: center;
+            color: black;
+            font-size: 30px;
+        }
+
+        .active1 {
+            display: none;
+        }
+
+        #tabs {
+            overflow: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #tabs li {
+            float: left;
+            margin: 0;
+        }
+
+        #tabs li a {
+            position: relative;
+            padding: 10px 50px;
+            float: left;
+            text-decoration: none;
+            color: #444;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+        }
+
+        .ccc {
+            background-color: #cccccc;
+        }
+
+        .current a {
+            outline: 0;
+            z-index: 4;
+        }
+
+        .hoverItem a {
+            background: #AAC8B9;
+        }
+
+        .item {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .nonce {
+            display: none;
+        }
+
+        .row {
+            color: black;
+        }
+
+        .lh {
+            line-height: 100px;
+        }
+
+        .stop {
+            background-color: gray;
+        }
+
+        .execution_banner {
+            width: 90%;
+            height: 200px;
+            background-color: #f5f5f5;
+            margin: 0 auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .form-check {
+            display: inline-block;
+        }
+
+        .deploy_contract .deploy_errmsg {
+            color: red;
+        }
+
+        #tab3 .run_errmsg {
+            color: red;
+        }
+
+        .err {
+            border-color: red;
+        }
+
+        .mt20 {
+            margin-top: 20px;
+        }
+
+        .code {
+            background-color: #f8f9fa;
+            font-family: consolas, menlo, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
+            overflow: auto;
+            white-space: pre;
+        }
+    </style>
+    <title>星云链测试网 | Nebulas Testnet</title>
+</head>
 <body>
     <div class=logo-main></div>
     <div class=header></div>
 
-    <!-- Code Editor window -->
-    <div class=wrapperExample1>
-        <ul id="tabs" id="myTab" role="tablist">
+    <div class=container>
+        <ul id=tabs id=myTab role=tablist>
             <li class="current ccc">
-                <a href="#" title="tab1" data-i18n=contract/search></a>
+                <a href=# title=tab1 data-i18n=contract/search></a>
             </li>
             <li>
-                <a href="#" title="tab2" data-i18n=contract/deploy></a>
+                <a href=# title=tab2 data-i18n=contract/deploy></a>
             </li>
             <li>
-                <a href="#" title="tab3" data-i18n=contract/call></a>
+                <a href=# title=tab3 data-i18n=contract/call></a>
             </li>
         </ul>
-        <div id="content">
+        <div id=content>
             <!-- search contract -->
-            <div class="search_contract item show" id="tab1">
-                <div class="title">
+            <div class="search_contract item show" id=tab1>
+                <div class=title>
                     <span data-i18n=contract/search_contract></span>
                 </div>
                 <input id=addr_input type=text data-i18n=contract/addr_input_msg>
                 <span class="errmsg active1" data-i18n=contract/err_msg_hash>Please enter a valid TX hash</span>
                 <button class=search data-i18n=contract/search></button>
-                <textarea class="search_result active1" name=search_result id=search_result cols=30 rows=10></textarea>
+                <div class="active1 code search_result"></div>
             </div>
 
-            <div class="deploy_contract item " id="tab2">
-                <div class="title">
+            <div class="deploy_contract item" id=tab2>
+                <div class=title>
                     <span data-i18n=contract/deploy_contract></span>
                 </div>
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea name="" id="source" cols="30" rows="10"></textarea>
+                <textarea name="" id=source cols=30 rows=10></textarea>
                 <br>
                 <br>
                 <!-- select codetype -->
 
-                <div class="codetype">
+                <div class=codetype>
                     <span data-i18n=contract/contract_codetype></span>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios1" value="js" checked>
-                        <label class="form-check-label" for="exampleRadios1">js</label>
+                    <div class=form-check>
+                        <input class=form-check-input type=radio name=sourceType id=exampleRadios1 value=js checked>
+                        <label class=form-check-label for=exampleRadios1>js</label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sourceType" id="exampleRadios2" value="ts">
-                        <label class="form-check-label" for="exampleRadios2">ts</label>
+                    <div class=form-check>
+                        <input class=form-check-input type=radio name=sourceType id=exampleRadios2 value=ts>
+                        <label class=form-check-label for=exampleRadios2>ts</label>
                     </div>
                     <span data-i18n=contract/contract_codetype_banner>(请选择代码类型！ )</span>
 
@@ -74,26 +273,26 @@
                 <!-- function args -->
 
                 <span data-i18n=contract/contract_fun></span>
-                <input type=text id="deploy_args">
+                <input type=text id=deploy_args>
 
                 <!-- select wallet -->
 
                 <div class="select-wallet-file mt20"></div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="fromaddress" data-i18n=send-nas/from-address></label>
-                        <input type="text" class="form-control" id="from_addr" disabled>
+                <div class=row>
+                    <div class=col-md-6>
+                        <label for=fromaddress data-i18n=send-nas/from-address></label>
+                        <input type=text class=form-control id=from_addr disabled>
                     </div>
-                    <div class="col-md-6">
-                        <label for="toaddress" data-i18n=send-nas/to-address></label>
-                        <input type="text" class="form-control" id="to_addr" disabled>
+                    <div class=col-md-6>
+                        <label for=toaddress data-i18n=send-nas/to-address></label>
+                        <input type=text class=form-control id=to_addr disabled>
                     </div>
 
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <label data-i18n=send-nas/amount></label>
                         <input type=text id=value value=0 disabled>
                     </div>
@@ -107,12 +306,12 @@
                         </div> -->
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <span data-i18n=gas-limit></span>
                         <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class=col-md-6>
                         <span data-i18n=gas-price></span>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
@@ -123,63 +322,60 @@
                 <span class="deploy_errmsg active1" data-i18n=contract/err_msg></span>
                 <div class="result active1" id=result></div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <button id=deploy_test data-i18n=contract/deploy_test></button>
                     </div>
-                    <div class="col-md-6">
+                    <div class=col-md-6>
                         <button id=deploy class=stop data-i18n=contract/deploy_submit></button>
                     </div>
                 </div>
 
                 <div class="next  active1 row">
-                    <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/test_result></span>
-                        <textarea class="execution_banner" id="deploy_test_result"></textarea>
+                    <div class=col-md-6>
+                        <span class=execution data-i18n=contract/test_result></span>
+                        <textarea class=execution_banner id=deploy_test_result></textarea>
                     </div>
-                    <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/result></span>
+                    <div class=col-md-6>
+                        <span class=execution data-i18n=contract/result></span>
                         <textarea class=execution_banner id=deploy_result></textarea>
                     </div>
                 </div>
             </div>
 
-            <div class="run_contract item " id="tab3">
-                <div class="title">
+            <div class="run_contract item " id=tab3>
+                <div class=title>
                     <span data-i18n=contract/call_contract></span>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <span data-i18n=contract/contract_funtion></span>
-                        <input type=text id="call_function">
+                        <input type=text id=call_function>
                     </div>
-                    <div class="col-md-6">
+                    <div class=col-md-6>
                         <span data-i18n=contract/contract_fun></span>
-                        <input type=text id="call_args">
+                        <input type=text id=call_args>
                     </div>
                 </div>
 
-
-
-
                 <div class=select-wallet-file></div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="fromaddress" data-i18n=send-nas/from-address></label>
-                        <input type="text" class="form-control" id=run_from_addr disabled>
+                <div class=row>
+                    <div class=col-md-6>
+                        <label for=fromaddress data-i18n=send-nas/from-address></label>
+                        <input type=text class=form-control id=run_from_addr disabled>
                     </div>
-                    <div class="col-md-6">
-                        <label for="toaddress" data-i18n=send-nas/to-address></label>
+                    <div class=col-md-6>
+                        <label for=toaddress data-i18n=send-nas/to-address></label>
                         <input type=text class=form-control id=run_to_addr>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <label data-i18n=send-nas/amount></label>
-                        <input type=text id="run_value" value=0>
+                        <input type=text id=run_value value=0>
                     </div>
                     <div class="col-md-6 lh">
                         <span data-i18n=send-nas/balance></span>
@@ -191,40 +387,40 @@
                     </div> -->
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <span data-i18n=gas-limit></span>
                         <!-- <span id=gas_limit></span> -->
                         <input type=text id=run_gas_limit value=200000>
                     </div>
-                    <div class="col-md-6">
+                    <div class=col-md-6>
                         <span data-i18n=gas-price></span>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
                         <!-- <span id=gas_price></span> -->
-                        <input type="text" id=run_gas_price>
+                        <input type=text id=run_gas_price>
                     </div>
                 </div>
 
                 <span class="run_errmsg active1" data-i18n=contract/err_msg></span>
 
                 <div class="result active1" id=result></div>
-                <div class="row">
-                    <div class="col-md-6">
+                <div class=row>
+                    <div class=col-md-6>
                         <button id=call_test data-i18n=contract/call_test></button>
                     </div>
-                    <div class="col-md-6">
+                    <div class=col-md-6>
                         <button id=call class=stop data-i18n=contract/call_submit></button>
                     </div>
                 </div>
 
                 <div class="next  active1 row">
-                    <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/test_result></span>
-                        <textarea class="execution_banner" id="call_test_result"></textarea>
+                    <div class=col-md-6>
+                        <span class=execution data-i18n=contract/test_result></span>
+                        <textarea class=execution_banner id=call_test_result></textarea>
                     </div>
-                    <div class="col-md-6">
-                        <span class="execution" data-i18n=contract/result></span>
+                    <div class=col-md-6>
+                        <span class=execution data-i18n=contract/result></span>
                         <textarea class=execution_banner id=call_result></textarea>
                     </div>
                 </div>
@@ -234,110 +430,111 @@
 
     <div class=footer></div>
 
-    <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
-    <script src=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
-    <script src=https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
+    <script src=lib/jquery-3.3.1.min.js></script>
+    <script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
+    <script src=lib/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
+    <script src=lib/js-beautify-1.7.5/beautify.js></script>
+    <script src=lib/prismjs-1.13.0/prism.js></script>
+    <script src=lib/nebulas.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
-    <script src=lib/codeMirror/codemirror.js></script>
-    <script src=lib/codeMirror/javascript.js></script>
-    <script src=lib/nebulas.js></script>
     <script>
         "use strict";
 
-        $(function () {
-
-            var nebulas = require("nebulas");
-            var Account = nebulas.Account;
-            var Utils = nebulas.Utils;
-            var neb = new nebulas.Neb();
-            var globalParams = {
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            Utils = nebulas.Utils,
+            neb = new nebulas.Neb(),
+            globalParams = {
                 account: null
             };
 
-            neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
 
-            uiBlock.insert({
-                footer: ".footer",
-                header: ".header",
-                logoMain: ".logo-main",
-                numberComma: ".number-comma",
-                selectWalletFile: [".select-wallet-file", onUnlockFile]
-            });
-            //tab change
+        uiBlock.insert({
+            footer: ".footer",
+            header: ".header",
+            logoMain: ".logo-main",
+            numberComma: ".number-comma",
+            selectWalletFile: [".select-wallet-file", onUnlockFile]
+        });
 
-            $('#tabs a').click(function (e) {
-                e.preventDefault();
-                $('#tabs li').removeClass("ccc");
-                $(this).parent().addClass("ccc");
-                $("#content div").removeClass("show");
-                $('#' + $(this).attr('title')).addClass('show');
-                $('this').addClass('current');
-            });
+        $('#tabs a').click(function (e) {
+            e.preventDefault();
+            $('#tabs li').removeClass("ccc");
+            $(this).parent().addClass("ccc");
+            $("#content div").removeClass("show");
+            $('#' + $(this).attr('title')).addClass('show');
+            $(this).addClass('current');
+        });
 
-            $('#tabs a').hover(function () {
-                if (!$(this).parent().hasClass("current")) {
-                    $(this).parent().addClass("hoverItem");
-                }
-            }, function () {
-                $(this).parent().removeClass("hoverItem");
-            });
+        $('#tabs a').hover(function () {
+            if (!$(this).parent().hasClass("current")) {
+                $(this).parent().addClass("hoverItem");
+            }
+        }, function () {
+            $(this).parent().removeClass("hoverItem");
+        });
 
-            // deploy test --------------------------------
-            $("#deploy_test").click(function () {
-                innerDeploy(function (params) {
-                    neb.api.call({
-                        from: params.from,
-                        to: params.to,
-                        value: params.value,
-                        nonce: params.nonce,
-                        gasPrice: params.gasPrice,
-                        gasLimit: params.gasLimit,
-                        contract: params.contract
-                    }).then(function (resp) {
-                        $("#deploy_test_result").text(JSON.stringify(resp));
-                        $('#deploy').attr("disabled", false);
-                        $('#deploy').removeClass("stop");
-                        $("#deploy_result").text("");
-                        $("#deploy_test_result").parents(".next").removeClass("active1");
-                    }).catch(function (err) {
-                        $("#deploy_test_result").text(JSON.stringify(err));
-                        $('#deploy').attr("disabled", true);
-                        $('#deploy').addClass("stop");
-                        $("#deploy_result").text("");
-                        $("#deploy_test_result").parents(".next").removeClass("active1");
-                    });
+        $(".search").on("click", onClickSearch);
+        $("#deploy_test").on("click", onClickDeployTest);
+        $("#deploy").on("click", onClickDeploy);
+        $("#call_test").on("click", onClickCallTest);
+        $("#call").on("click", onClickCall);
+
+        function onClickDeployTest() {
+            innerDeploy(function (params) {
+                neb.api.call({
+                    from: params.from,
+                    to: params.to,
+                    value: params.value,
+                    nonce: params.nonce,
+                    gasPrice: params.gasPrice,
+                    gasLimit: params.gasLimit,
+                    contract: params.contract
+                }).then(function (resp) {
+                    $("#deploy_test_result").text(JSON.stringify(resp));
+                    $('#deploy').attr("disabled", false);
+                    $('#deploy').removeClass("stop");
+                    $("#deploy_result").text("");
+                    $("#deploy_test_result").parents(".next").removeClass("active1");
+                }).catch(function (err) {
+                    $("#deploy_test_result").text(JSON.stringify(err));
+                    $('#deploy').attr("disabled", true);
+                    $('#deploy').addClass("stop");
+                    $("#deploy_result").text("");
+                    $("#deploy_test_result").parents(".next").removeClass("active1");
                 });
             });
+        }
 
-            // deploy---------------------------------------
-            $("#deploy").click(function () {
-                innerDeploy(function (params) {
+        function onClickDeploy() {
+            innerDeploy(function (params) {
 
-                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
-                        params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
-                    gTx.signTransaction();
+                var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
+                    params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                gTx.signTransaction();
 
-                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                        $("#deploy_result").text(JSON.stringify(resp));
-                    }).catch(function (err) {
-                        $("#deploy_result").text(JSON.stringify(err));
-                    });
+                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
+                    $("#deploy_result").text(JSON.stringify(resp));
+                }).catch(function (err) {
+                    $("#deploy_result").text(JSON.stringify(err));
                 });
             });
+        }
 
-            //call------------------------------------------
-            $(".search").click(function () {
-                if ($("#addr_input").val().length != 64) {
-                    $(".errmsg").removeClass("active1");
+        function onClickSearch() {
+            if ($("#addr_input").val().length != 64) {
+                $(".errmsg").removeClass("active1");
 
-                    setTimeout(function () {
-                        $(".errmsg").addClass("active1");
-                    }, 2000);
-
-                } else {
-                    neb.api.getTransactionReceipt($("#addr_input").val()).then(function (resp) {
+                setTimeout(function () {
+                    $(".errmsg").addClass("active1");
+                }, 2000);
+            } else {
+                neb.api.getTransactionReceipt($("#addr_input").val())
+                    .then(function (resp) {
+                        var data, s, lang;
 
                         if (!resp.contract_address || resp.contract_address === "") {
                             bootbox.dialog({
@@ -346,270 +543,281 @@
                                 title: "Error"
                             });
                         } else {
-                            $(".search_result").text(atob(resp.data));
-                            // $("#to_addr").val(resp.contract_address);
                             $(".search_result").removeClass("active1");
+
+                            if (resp.data) {
+                                data = atob(resp.data);
+                                lang = Prism.languages.javascript;
+
+                                if (resp.type == "binary")
+                                    s = data;
+                                else if (resp.type == "deploy")
+                                    s = Prism.highlight(js_beautify(JSON.parse(data).Source), lang);
+                                else if (resp.type == "call")
+                                    s = Prism.highlight(js_beautify(data), lang);
+                                else
+                                    s = "0x0";
+
+                                $(".search_result").html(s);
+                            }
                         }
-                    }).catch(function (err) {
+                    })
+                    .catch(function (err) {
                         bootbox.dialog({
                             message: i18n.apiErrorToText(err.error),
                             size: "large",
                             title: "Error"
                         });
                     });
-                }
-            });
+            }
+        }
 
-            // test call function
-            $("#call_test").click(function () {
-                innerCall(function (params) {
-                    neb.api.call({
-                        from: params.from,
-                        to: params.to,
-                        value: params.value,
-                        nonce: params.nonce,
-                        gasPrice: params.gasPrice,
-                        gasLimit: params.gasLimit,
-                        contract: params.contract
-                    }).then(function (resp) {
-                        $("#call_test_result").text(JSON.stringify(resp));
-                            $('#call').removeClass("stop");
-                        if (resp.execute_err && resp.execute_err !== '') {
-                            $('#call').attr("disabled", true);
-                            $("#call_result").text("");
-                            $(".next").removeClass("active1");
-                        } else {
-                            $('#call').attr("disabled", false);
-                            $('#call').removeClass("stop");
-                            $("#call_result").text("");
-                            $(".next").removeClass("active1");
-                        }
-                    }).catch(function (err) {
-                        $("#call_test_result").text(JSON.stringify(err));
+        function onClickCallTest() {
+            innerCall(function (params) {
+                neb.api.call({
+                    from: params.from,
+                    to: params.to,
+                    value: params.value,
+                    nonce: params.nonce,
+                    gasPrice: params.gasPrice,
+                    gasLimit: params.gasLimit,
+                    contract: params.contract
+                }).then(function (resp) {
+                    $("#call_test_result").text(JSON.stringify(resp));
+                    $('#call').removeClass("stop");
+                    if (resp.execute_err && resp.execute_err !== '') {
                         $('#call').attr("disabled", true);
                         $("#call_result").text("");
-                        $('#call').addClass("stop");
                         $(".next").removeClass("active1");
-                    });
-                });
-            })
-
-            //call function
-            $("#call").click(function () {
-                innerCall(function (params) {
-                    var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
-                        params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
-                    gTx.signTransaction();
-
-                    neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                        console.log(JSON.stringify(resp));
-                        $("#call_result").text(JSON.stringify(resp));
-                        $(".result").removeClass("active1");
+                    } else {
+                        $('#call').attr("disabled", false);
+                        $('#call').removeClass("stop");
+                        $("#call_result").text("");
                         $(".next").removeClass("active1");
-                    }).catch(function (err) {
-                        $("#call_result").text(JSON.stringify(err));
-                        $(".result").removeClass("active1");
-                        $(".next").removeClass("active1");
-                    });
+                    }
+                }).catch(function (err) {
+                    $("#call_test_result").text(JSON.stringify(err));
+                    $('#call').attr("disabled", true);
+                    $("#call_result").text("");
+                    $('#call').addClass("stop");
+                    $(".next").removeClass("active1");
                 });
             });
+        }
 
-            function onUnlockFile(swf, fileJson, account, password) {
-                var state, balance_nas;
+        function onClickCall() {
+            innerCall(function (params) {
+                var gTx = new nebulas.Transaction(parseInt(localStorage.chainId), globalParams.account, params.to,
+                    params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                gTx.signTransaction();
 
-                try {
-                    account.fromKey(fileJson, password);
-                    globalParams.account = account;
-                    $("#from_addr").val(account.getAddressString());
-                    $("#to_addr").val(account.getAddressString());
-                    $("#run_from_addr").val(account.getAddressString());
-                    $("#unlock").hide();
-                    $("#send").show();
+                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
+                    console.log(JSON.stringify(resp));
+                    $("#call_result").text(JSON.stringify(resp));
+                    $(".result").removeClass("active1");
+                    $(".next").removeClass("active1");
+                }).catch(function (err) {
+                    $("#call_result").text(JSON.stringify(err));
+                    $(".result").removeClass("active1");
+                    $(".next").removeClass("active1");
+                });
+            });
+        }
 
-                    neb.api.gasPrice()
-                        .then(function (resp) {
-                            $("#gas_price").val(resp.gas_price);
-                            $("#run_gas_price").val(resp.gas_price);
-                            return neb.api.getAccountState($("#from_addr").val());
-                        })
-                        .then(function (resp) {
-                            var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                            $("#balance").text(balance + ' NAS');
-                            $("#run_balance").text(balance + ' NAS');
-                        })
-                        .catch(function (e) {
-                            // this catches e thrown by nebulas.js!neb
+        function onUnlockFile(swf, fileJson, account, password) {
+            var state, balance_nas;
 
-                            bootbox.dialog({
-                                message: i18n.apiErrorToText(e.error),
-                                size: "large",
-                                title: "Error"
-                            });
+            try {
+                account.fromKey(fileJson, password);
+                globalParams.account = account;
+                $("#from_addr").val(account.getAddressString());
+                $("#to_addr").val(account.getAddressString());
+                $("#run_from_addr").val(account.getAddressString());
+                $("#unlock").hide();
+                $("#send").show();
+
+                neb.api.gasPrice()
+                    .then(function (resp) {
+                        $("#gas_price").val(resp.gas_price);
+                        $("#run_gas_price").val(resp.gas_price);
+                        return neb.api.getAccountState($("#from_addr").val());
+                    })
+                    .then(function (resp) {
+                        var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                        $("#balance").text(balance + ' NAS');
+                        $("#run_balance").text(balance + ' NAS');
+                    })
+                    .catch(function (e) {
+                        // this catches e thrown by nebulas.js!neb
+
+                        bootbox.dialog({
+                            message: i18n.apiErrorToText(e.error),
+                            size: "large",
+                            title: "Error"
                         });
-
-                } catch (e) {
-                    // this catches e thrown by nebulas.js!account
-
-                    bootbox.dialog({
-                        message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
-                        size: "large",
-                        title: "Error"
                     });
-                }
-            }
 
-            function innerDeploy(callback) {
-                let params = {};
+            } catch (e) {
+                // this catches e thrown by nebulas.js!account
 
-                if (!globalParams.account) {
-                    // TODO 提示钱包信息不正确
-                    return;
-                }
-                params.from = globalParams.account.getAddressString();
-                params.to = params.from;
-
-                // prepare gasLimit
-                let gasLimit = Utils.toBigNumber(0);
-                try {
-                    gasLimit = Utils.toBigNumber($("#gas_limit").val());
-                } catch (err) {
-                    console.log(err);
-                }
-                if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
-                    $("#gas_limit").addClass("err");
-                    $(".deploy_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#gas_limit").removeClass("err");
-                    }, 5000);
-                    return;
-                }
-                params.gasLimit = gasLimit.toNumber();
-
-                // prepare gasPrice
-                let gasPrice = Utils.toBigNumber(0);
-                try {
-                    gasPrice = Utils.toBigNumber($("#gas_price").val());
-                } catch (err) {
-                    console.log(err);
-                }
-                if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
-                    $("#gas_price").addClass("err");
-                    $(".deploy_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#gas_price").removeClass("err");
-                    }, 5000);
-                    return;
-                }
-                params.gasPrice = gasPrice.toNumber();
-                params.value = "0";
-                params.contract = {
-                    "source": $("#source").val(),
-                    "sourceType": $("input[name=sourceType]:checked").val(),
-                    "args": $("#deploy_args").val().trim()
-                };
-
-                // prepare nonce
-                neb.api.getAccountState(params.from).then(function (resp) {
-                    params.nonce = parseInt(resp.nonce) + 1;
-                    var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                    $("#balance").text(balance + ' NAS');
-                    $("#run_balance").text(balance + ' NAS');
-                    console.log("prepared params: " + JSON.stringify(params));
-                    callback(params);
-                }).catch(function (err) {
-                    console.log("prepare nonce error: " + err);
+                bootbox.dialog({
+                    message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
+                    size: "large",
+                    title: "Error"
                 });
             }
+        }
 
-            function innerCall(callback) {
-                let params = {};
+        function innerDeploy(callback) {
+            let params = {};
 
-                if (!globalParams.account) {
-                    // TODO 提示钱包信息不正确
-                    return;
-                }
-                params.from = globalParams.account.getAddressString();
-
-                // prepare to
-                let toAddr = $("#run_to_addr").val().trim();
-                if (!Account.isValidAddress(toAddr)) {
-                    $("#run_to_addr").addClass("err");
-                    $(".run_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#run_to_addr").removeClass("err");
-                    }, 5000);
-                    return;
-                }
-                params.to = toAddr;
-
-                // prepare gasLimit
-                let gasLimit = Utils.toBigNumber(0);
-                try {
-                    gasLimit = Utils.toBigNumber($("#run_gas_limit").val());
-                } catch (err) {
-                    console.log(err);
-                }
-                if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
-                    $("#run_gas_limit").addClass("err");
-                    $(".run_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#run_gas_limit").removeClass("err");
-                    }, 5000);
-                    return;
-                }
-                params.gasLimit = gasLimit.toNumber();
-
-                // prepare gasPrice
-                let gasPrice = Utils.toBigNumber(0);
-                try {
-                    gasPrice = Utils.toBigNumber($("#run_gas_price").val());
-                } catch (err) {
-                    console.log(err);
-                }
-                if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
-                    $("#run_gas_price").addClass("err");
-                    $(".run_errmsg").removeClass("active1");
-                    setTimeout(function () {
-                        $("#run_gas_price").removeClass("err");
-                    }, 5000);
-                    return;
-                }
-                params.gasPrice = gasPrice.toNumber();
-
-                // prepare value
-                let value = Utils.toBigNumber(0);
-                try {
-                    value = nebulas.Unit.toBasic(Utils.toBigNumber($("#run_value").val()), "nas");
-                } catch (err) {
-                    console.log(err);
-                }
-                if (value.cmp(Utils.toBigNumber(0)) < 0) {
-                    // TODO 添加提示value输入不对
-                    console.log("invalid value");
-                    return;
-                }
-                params.value = value;
-
-                // prepare contract
-                params.contract = {
-                    "function": $("#call_function").val(),
-                    "args": $("#call_args").val().trim()
-                };
-
-                // prepare nonce
-                neb.api.getAccountState(params.from).then(function (resp) {
-                    params.nonce = parseInt(resp.nonce) + 1;
-                    var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                    $("#balance").text(balance + ' NAS');
-                    $("#run_balance").text(balance + ' NAS');
-                    console.log("prepared params: " + JSON.stringify(params));
-                    callback(params);
-                }).catch(function (err) {
-                    console.log("prepare nonce error: " + err);
-                });
+            if (!globalParams.account) {
+                // TODO 提示钱包信息不正确
+                return;
             }
-        });
+            params.from = globalParams.account.getAddressString();
+            params.to = params.from;
+
+            // prepare gasLimit
+            let gasLimit = Utils.toBigNumber(0);
+            try {
+                gasLimit = Utils.toBigNumber($("#gas_limit").val());
+            } catch (err) {
+                console.log(err);
+            }
+            if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
+                $("#gas_limit").addClass("err");
+                $(".deploy_errmsg").removeClass("active1");
+                setTimeout(function () {
+                    $("#gas_limit").removeClass("err");
+                }, 5000);
+                return;
+            }
+            params.gasLimit = gasLimit.toNumber();
+
+            // prepare gasPrice
+            let gasPrice = Utils.toBigNumber(0);
+            try {
+                gasPrice = Utils.toBigNumber($("#gas_price").val());
+            } catch (err) {
+                console.log(err);
+            }
+            if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
+                $("#gas_price").addClass("err");
+                $(".deploy_errmsg").removeClass("active1");
+                setTimeout(function () {
+                    $("#gas_price").removeClass("err");
+                }, 5000);
+                return;
+            }
+            params.gasPrice = gasPrice.toNumber();
+            params.value = "0";
+            params.contract = {
+                "source": $("#source").val(),
+                "sourceType": $("input[name=sourceType]:checked").val(),
+                "args": $("#deploy_args").val().trim()
+            };
+
+            // prepare nonce
+            neb.api.getAccountState(params.from).then(function (resp) {
+                params.nonce = parseInt(resp.nonce) + 1;
+                var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                $("#balance").text(balance + ' NAS');
+                $("#run_balance").text(balance + ' NAS');
+                console.log("prepared params: " + JSON.stringify(params));
+                callback(params);
+            }).catch(function (err) {
+                console.log("prepare nonce error: " + err);
+            });
+        }
+
+        function innerCall(callback) {
+            let params = {};
+
+            if (!globalParams.account) {
+                // TODO 提示钱包信息不正确
+                return;
+            }
+            params.from = globalParams.account.getAddressString();
+
+            // prepare to
+            let toAddr = $("#run_to_addr").val().trim();
+            if (!Account.isValidAddress(toAddr)) {
+                $("#run_to_addr").addClass("err");
+                $(".run_errmsg").removeClass("active1");
+                setTimeout(function () {
+                    $("#run_to_addr").removeClass("err");
+                }, 5000);
+                return;
+            }
+            params.to = toAddr;
+
+            // prepare gasLimit
+            let gasLimit = Utils.toBigNumber(0);
+            try {
+                gasLimit = Utils.toBigNumber($("#run_gas_limit").val());
+            } catch (err) {
+                console.log(err);
+            }
+            if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
+                $("#run_gas_limit").addClass("err");
+                $(".run_errmsg").removeClass("active1");
+                setTimeout(function () {
+                    $("#run_gas_limit").removeClass("err");
+                }, 5000);
+                return;
+            }
+            params.gasLimit = gasLimit.toNumber();
+
+            // prepare gasPrice
+            let gasPrice = Utils.toBigNumber(0);
+            try {
+                gasPrice = Utils.toBigNumber($("#run_gas_price").val());
+            } catch (err) {
+                console.log(err);
+            }
+            if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
+                $("#run_gas_price").addClass("err");
+                $(".run_errmsg").removeClass("active1");
+                setTimeout(function () {
+                    $("#run_gas_price").removeClass("err");
+                }, 5000);
+                return;
+            }
+            params.gasPrice = gasPrice.toNumber();
+
+            // prepare value
+            let value = Utils.toBigNumber(0);
+            try {
+                value = nebulas.Unit.toBasic(Utils.toBigNumber($("#run_value").val()), "nas");
+            } catch (err) {
+                console.log(err);
+            }
+            if (value.cmp(Utils.toBigNumber(0)) < 0) {
+                // TODO 添加提示value输入不对
+                console.log("invalid value");
+                return;
+            }
+            params.value = value;
+
+            // prepare contract
+            params.contract = {
+                "function": $("#call_function").val(),
+                "args": $("#call_args").val().trim()
+            };
+
+            // prepare nonce
+            neb.api.getAccountState(params.from).then(function (resp) {
+                params.nonce = parseInt(resp.nonce) + 1;
+                var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
+                $("#balance").text(balance + ' NAS');
+                $("#run_balance").text(balance + ' NAS');
+                console.log("prepared params: " + JSON.stringify(params));
+                callback(params);
+            }).catch(function (err) {
+                console.log("prepare nonce error: " + err);
+            });
+        }
     </script>
 </body>
-
 </html>
