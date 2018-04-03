@@ -22,24 +22,13 @@
             text-align: center;
         }
 
-        .hash {
-            height: 400px;
-            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
-            padding: 1.5rem 2rem;
-            min-height: 1.5rem;
-            margin: 1rem auto;
-            position: relative;
+        .hash,
+        .information {
             text-align: center;
         }
 
         .information {
-            height: 830px;
-            box-shadow: 16px 16px 47px 2px rgba(0, 0, 0, .07);
-            padding: 1.5rem 2rem;
-            min-height: 1.5rem;
-            margin: 1rem auto;
-            position: relative;
-            text-align: center;
+            margin-top: 20px;
         }
 
         .mod-child td:last-child {
@@ -65,7 +54,7 @@
     <div class=logo-main></div>
     <div class=header></div>
 
-    <section class=hash>
+    <section class="container hash">
         <article class=row></article>
         <section class=col>
             <h1 data-i18n=header/check>Check TX Status</h1>
@@ -79,7 +68,7 @@
         </section>
     </section>
 
-    <section class="active1 information" id=info>
+    <section class="active1 container information" id=info>
         <h4 data-i18n=check/tx-details>Transaction Details</h4>
         <br>
         <table class="table table-striped">
@@ -149,8 +138,7 @@
                 <!-- dialog body -->
                 <div class="modal-body">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                            aria-valuemax="100" style="width: 100%"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                     </div>
                 </div>
             </div>

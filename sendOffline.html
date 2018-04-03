@@ -13,6 +13,10 @@
         .transaction {
             display: none;
         }
+
+        #qrcode {
+            text-align: center;
+        }
     </style>
     <title>星云链测试网 | Nebulas Testnet</title>
 </head>
@@ -45,34 +49,34 @@
     <div id=step2 class="container wallet">
         <div id=generate_transaction>
             <h1 data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</h1>
+            <div class=form-group>
+                <label data-i18n=send-nas/to-address>To Address</label>
+                <div class="icon-address to"></div>
+            </div>
             <div class=row>
-                <div class="col-8 form-group">
-                    <label data-i18n=send-nas/to-address>To Address</label>
-                    <div class="icon-address to"></div>
-                </div>
-                <div class="col-4 form-group">
+                <div class="col form-group">
                     <label data-i18n=send-nas/amount>Value / Amount to Send</label>
                     <div class=number-comma data-data-i18n=amount data-id=amount data-unit=nas data-validate="required number eqgt0"></div>
                 </div>
+                <div class="col form-group">
+                    <label>Nonce</label>
+                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
+                </div>
             </div>
             <div class=row>
-                <div class="col-5 form-group">
+                <div class="col form-group">
                     <label>
                         <span data-i18n=gas-limit>Gas Limit</span>
                     </label>
                     <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=200000></div>
                 </div>
-                <div class="col-5 form-group">
+                <div class="col form-group">
                     <label>
                         <span data-i18n=gas-price>Gas Price</span>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
                     </label>
                     <div class=number-comma data-data-i18n=amount data-id=price data-unit=wei data-validate="required number gt0" data-value=1000000></div>
-                </div>
-                <div class="col-2 form-group">
-                    <label>Nonce</label>
-                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
                 </div>
             </div>
         </div>
@@ -97,7 +101,6 @@
             </div>
         </div>
     </div>
-
 
     <div id=step3 class="container wallet">
         <h1 data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</h1>
@@ -206,32 +209,9 @@
             gFromState;
 
         neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
-        $("#generate-infomation").click(onClickGenerateInfomation);
-
-        $("#send_transaction").click(function () {
-            var val = $("#signedoffline").val();
-
-            if (val)
-                try {
-                    var tx = Transaction.prototype.fromProto(val);
-                    $("#for_addr").val(tx.from.getAddressString());
-                    $("#to_addr").val(tx.to.getAddressString());
-                    $("#value").val(unit.fromBasic(tx.value, "nas"));
-                } catch (err) {
-
-                    bootbox.dialog({
-                        message: localStorage.lang == "en" ? err.message : "无效的签名交易",
-                        size: "large",
-                        title: "Error"
-                    });
-                }
-        });
-
-        $("#signedoffline").on("input", function () {
-            $("<div id=qrcode style=text-align:center;></div>")
-                .qrcode($("#signedoffline").val())
-                .replaceAll('#qrcode');
-        });
+        $("#generate-infomation").on("click", onClickGenerateInfomation);
+        $("#send_transaction").on("click", onClickSendTransaction);
+        $("#signedoffline").on("input", onInputSignedOffline);
 
         uiBlock.insert({
             footer: ".footer",
@@ -241,6 +221,10 @@
             numberComma: ".number-comma",
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
+
+        function setAllValid() {
+            $("[data-validate-order-matters]").removeClass("invalid").popover("hide");
+        }
 
         function onUnlockFile(swf, fileJson, account, password) {
             try {
@@ -256,27 +240,52 @@
             }
         }
 
+        function onClickSendTransaction() {
+            var val = $("#signedoffline").val(), tx;
+
+            setAllValid();
+
+            if (val) try {
+                tx = Transaction.prototype.fromProto(val);
+                $("#for_addr").val(tx.from.getAddressString());
+                $("#to_addr").val(tx.to.getAddressString());
+                $("#value").val(unit.fromBasic(tx.value, "nas"));
+            } catch (err) {
+                bootbox.dialog({
+                    message: localStorage.lang == "en" ? err.message : "无效的签名交易",
+                    size: "large",
+                    title: "Error"
+                });
+            }
+        }
+
         function onClickGenerateInfomation() {
             var fromaddress = $(".icon-address.from input").val();
+
+            setAllValid();
 
             if (validateStep1())
                 try {
                     gAccount = Account.fromAddress(fromaddress);
+
                     neb.api.gasPrice()
                         .then(function (resp) {
                             $("#fa_gasprice").val(resp.gas_price);
                             $("#price").val(resp.gas_price);
 
                             return neb.api.getAccountState(gAccount.getAddressString());
-                        }).then(function (resp) {
+                        })
+                        .then(function (resp) {
                             gFromState = {
                                 balance: resp.balance,
                                 nonce: resp.nonce
                             };
+
                             $("#fa_nonce").val(parseInt(resp.nonce) + 1);
                             $("#nonce").val(parseInt(resp.nonce) + 1);
                             $("#information").show();
-                        }).catch(function (e) { throw e });
+                        })
+                        .catch(function (e) { throw e });
                 } catch (e) {
                     bootbox.dialog({
                         message: e,
@@ -284,6 +293,14 @@
                         title: "Error"
                     });
                 }
+        }
+
+        function onInputSignedOffline() {
+            setAllValid();
+
+            $("<div id=qrcode></div>")
+                .qrcode($("#signedoffline").val())
+                .replaceAll('#qrcode');
         }
 
         function generate() {
@@ -348,9 +365,7 @@
                         title: "Error"
                     });
                 });
-        };
-
+        }
     </script>
 </body>
-
 </html>
