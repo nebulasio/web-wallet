@@ -50,15 +50,15 @@
         <div id=generate_transaction>
             <h1 data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</h1>
             <div class="row">
-            <div class="form-group col-6">
-                <label data-i18n=send-nas/from-address>From Address</label>
-                <div class="icon-address from"></div>
+                <div class="form-group col-6">
+                    <label data-i18n=send-nas/from-address>From Address</label>
+                    <div class="icon-address from"></div>
+                </div>
+                <div class="form-group col-6">
+                    <label data-i18n=send-nas/to-address>To Address</label>
+                    <div class="icon-address to"></div>
+                </div>
             </div>
-            <div class="form-group col-6">
-                <label data-i18n=send-nas/to-address>To Address</label>
-                <div class="icon-address to"></div>
-            </div>
-        </div>
             <div class=row>
                 <div class="col form-group">
                     <label data-i18n=send-nas/amount>Value / Amount to Send</label>
@@ -214,7 +214,10 @@
         neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
         $("#generate-infomation").on("click", onClickGenerateInfomation);
         $("#send_transaction").on("click", onClickSendTransaction);
-        $("#signedoffline").on("input", onInputSignedOffline);
+        $("#signedoffline").on({
+            focus: onFocusSignedOffline,
+            input: onInputSignedOffline
+        });
 
         uiBlock.insert({
             footer: ".footer",
@@ -224,6 +227,53 @@
             numberComma: ".number-comma",
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
+
+        function generate() {
+            var fromaddress = $(".icon-address.from input").val(),
+                toaddress = $(".icon-address.to input").val(),
+                amount = $("#amount").val(),
+                gaslimit = $("#limit").val(),
+                gasprice = $("#price").val(),
+                nonce = $("#nonce").val(),
+                toaccount, tmp, tx, balance;
+
+            if (validateStep2())
+                try {
+                    toaccount = Account.fromAddress(toaddress);
+                    tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
+
+                    balance = unit.fromBasic(utils.toBigNumber(gFromState ? gFromState.balance : 0), "nas");
+                    // console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
+
+                    if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
+                        if (balance.lt(tmp))
+                            amount = utils.toBigNumber(0);
+                        else
+                            amount = balance.minus(tmp);
+
+                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    tx.signTransaction();
+
+                    $("#raw").val(tx.toString());
+                    $("#signed").val(tx.toProtoString());
+                    $("#signedoffline").val(tx.toProtoString());
+                    // $("#qrcode").qrcode(tx.toProtoString());
+
+                    $("<div id=qrcode style=text-align:center;></div>")
+                        .qrcode(tx.toProtoString())
+                        .replaceAll('#qrcode');
+
+                    $(".transaction").show();
+                } catch (e) {
+                    bootbox.dialog({
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
+                }
+
+            return false;
+        }
 
         function onUnlockFile(swf, fileJson, account, password) {
             var address;
@@ -294,57 +344,14 @@
                 }
         }
 
+        function onFocusSignedOffline() {
+            $("[data-validate-order-matters]").removeClass("invalid").popover("hide");
+        }
+
         function onInputSignedOffline() {
             $("<div id=qrcode></div>")
                 .qrcode($("#signedoffline").val())
                 .replaceAll('#qrcode');
-        }
-
-        function generate() {
-            var fromaddress = $(".icon-address.from input").val(),
-                toaddress = $(".icon-address.to input").val(),
-                amount = $("#amount").val(),
-                gaslimit = $("#limit").val(),
-                gasprice = $("#price").val(),
-                nonce = $("#nonce").val(),
-                toaccount, tmp, tx, balance;
-
-            if (validateStep2())
-                try {
-                    toaccount = Account.fromAddress(toaddress);
-                    tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
-
-                    balance = unit.fromBasic(utils.toBigNumber(gFromState ? gFromState.balance : 0), "nas");
-                    // console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
-
-                    if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
-                        if (balance.lt(tmp))
-                            amount = utils.toBigNumber(0);
-                        else
-                            amount = balance.minus(tmp);
-
-                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
-                    tx.signTransaction();
-
-                    $("#raw").val(tx.toString());
-                    $("#signed").val(tx.toProtoString());
-                    $("#signedoffline").val(tx.toProtoString());
-                    // $("#qrcode").qrcode(tx.toProtoString());
-
-                    $("<div id=qrcode style=text-align:center;></div>")
-                        .qrcode(tx.toProtoString())
-                        .replaceAll('#qrcode');
-
-                    $(".transaction").show();
-                } catch (e) {
-                    bootbox.dialog({
-                        message: e,
-                        size: "large",
-                        title: "Error"
-                    });
-                }
-
-            return false;
         }
 
         function sendtransaction() {

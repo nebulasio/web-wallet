@@ -364,30 +364,28 @@ var uiBlock = function () {
 
         return validateAll;
 
-        function onBlur() {
-            // validate when
-            // - body has focus, in this case i can not (easily) tell what user want to do, so validate anyway
-            // - focused element is child of selector
+        function onBlur(e) {
+            // https://stackoverflow.com/questions/121499/when-a-blur-event-occurs-how-can-i-find-out-which-element-focus-went-to
+            // Oriol
             //
-            // put the code into timeout because when executed synchronized document.activeElement always be document.body, correct me if I'm wrong
-            setTimeout(function () {
-                var activeEl = document.activeElement;
+            // rel = element currently has focus, validate when
+            // - rel is falsy, many cases here, just validate anyway
+            // - rel is child of selector
+            var rel = e.relatedTarget;
 
-                if (activeEl == document.body || $(selector).find(activeEl).length)
-                    validateAll();
-                else
-                    $(selector).find("[data-validate-order-matters]").removeClass("invalid").popover("hide");
-            });
+            if (!rel || $(selector).find(rel).length)
+                validateAll();
         }
 
         function validateAll() {
             var ret = true;
 
+            // doubt - remove all invalid state?
+            $("[data-validate-order-matters]").removeClass("invalid").popover("hide");
+
             $(selector).find("[data-validate-order-matters]").each(function (i, o) {
                 var $o = $(o), arr, i, len,
                     s = $o.data("validate-order-matters");
-
-                $o.removeClass("invalid").popover("hide");
 
                 if (s) for (arr = s.match(/\S+/g) || [], i = 0, len = arr.length; i < len; ++i)
                     if (mRules[arr[i]]) {
@@ -423,6 +421,7 @@ var uiBlock = function () {
         }
 
         function onFocus() {
+            validateAll();
             $(this).removeClass("invalid").popover("hide");
         }
     }
