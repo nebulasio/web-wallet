@@ -226,10 +226,6 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
-        function setAllValid() {
-            $("[data-validate-order-matters]").removeClass("invalid").popover("hide");
-        }
-
         function onUnlockFile(swf, fileJson, account, password) {
             try {
                 account.fromKey(fileJson, password);
@@ -249,8 +245,6 @@
         function onClickSendTransaction() {
             var val = $("#signedoffline").val(), tx;
 
-            setAllValid();
-
             if (val) try {
                 tx = Transaction.prototype.fromProto(val);
                 $("#for_addr").val(tx.from.getAddressString());
@@ -267,8 +261,6 @@
 
         function onClickGenerateInfomation() {
             var fromaddress = $(".icon-address.from input").val();
-
-            setAllValid();
 
             if (validateStep1())
                 try {
@@ -302,8 +294,6 @@
         }
 
         function onInputSignedOffline() {
-            setAllValid();
-
             $("<div id=qrcode></div>")
                 .qrcode($("#signedoffline").val())
                 .replaceAll('#qrcode');

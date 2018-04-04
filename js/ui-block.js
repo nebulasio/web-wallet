@@ -357,32 +357,48 @@ var uiBlock = function () {
         // or use focusin/focusout, see
         // https://stackoverflow.com/questions/9577971/focus-and-blur-jquery-events-not-bubbling
         $(selector).on({
-            blur: validateAll,
+            blur: onBlur,
             focus: onFocus
         }, "[data-validate-order-matters]");
 
         return validateAll;
 
+        function onBlur() {
+            // validate when
+            // - body has focus, in this case i can not (easily) tell what user want to do, so validate anyway
+            // - focused element is child of selector
+            //
+            // put the code into timeout because when executed synchronized document.activeElement always be document.body, correct me if I'm wrong
+            setTimeout(function () {
+                var activeEl = document.activeElement;
+
+                if (activeEl == document.body || $(selector).find(activeEl).length)
+                    validateAll();
+                else
+                    $(selector).find("[data-validate-order-matters]").removeClass("invalid").popover("hide");
+            });
+        }
+
         function validateAll() {
             var ret = true;
 
             $(selector).find("[data-validate-order-matters]").each(function (i, o) {
-                var $el = $(o), arr, i, len,
-                    s = $el.data("validate-order-matters");
+                var $o = $(o), arr, i, len,
+                    s = $o.data("validate-order-matters");
 
-                $el.removeClass("invalid").popover("hide");
+                $o.removeClass("invalid").popover("hide");
 
                 if (s) for (arr = s.match(/\S+/g) || [], i = 0, len = arr.length; i < len; ++i)
                     if (mRules[arr[i]]) {
                         if (!mRules[arr[i]](o.value)) {
-                            $el.addClass("invalid");
+                            $o.addClass("invalid");
 
                             // only show popover for first invalid input
                             if (ret) {
                                 ret = false;
-                                $el.data("index", arr[i]);
+                                $o.data("index", arr[i]);
 
-                                $el.popover({
+                                $o.popover({
                                     container: "body",
                                     content: function () { return i18n.run($("<div><span data-i18n=validate/" + $(this).data("index") + "></span></div>")).html(); },
                                     html: true,
@@ -393,7 +409,7 @@ var uiBlock = function () {
 
                                 setTimeout(function () {
                                     // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
-                                    $el[0].scrollIntoView({ behavior: "smooth" });
+                                    o.scrollIntoView({ behavior: "smooth" });
                                 });
                             }
                             break;
