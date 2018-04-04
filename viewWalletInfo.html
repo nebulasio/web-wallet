@@ -40,7 +40,7 @@
                 </div>
                 <div class=form-group>
                     <label for=amount data-i18n=wallet-info/acc-balance>Account Balance : </label>
-                    <span id=amount style=list-style-type:none;word-break:break-all;></span>
+                    <input type=text id=amount class=form-control id=address disabled>
                 </div>
                 <div class=form-group>
                     <label for=keystore data-i18n=wallet-info/keystore>Keystore File (UTC / JSON · Recommended · Encrypted)</label>
@@ -119,7 +119,7 @@
                         if (resp.error) {
                             throw new Error(resp.error);
                         } else {
-                            $("#amount").text(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
+                            $("#amount").val(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
                             $("#addressqr").text("");
                             $("#privateqr").text("");
                             $("#addressqr").qrcode(account.getAddressString());

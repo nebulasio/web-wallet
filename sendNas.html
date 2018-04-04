@@ -143,16 +143,13 @@
                         <input type=text class=form-control id=to_addr disabled>
                     </div>
                     <div>
-                        <label data-i18n=send-nas/amount>Value / Amount to Send</label>
-                        <div class=input-group>
-                            <input type=text class=form-control id=value disabled>
-                            <div class=input-group-addon>NAS</div>
-                        </div>
+                        <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
+                        <div class=number-comma data-data-i18n=amount data-id=value data-unit=nas data-disabled></div>
                     </div>
-                    <div class=data>
+                    <!-- <div class=data>
                         <label>data</label>
                         <input type=text class=data id=data disabled style="width: 100%;">
-                    </div>
+                    </div> -->
                 </div>
                 <div class=modal-footer>
                     <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>

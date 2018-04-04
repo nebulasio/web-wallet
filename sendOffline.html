@@ -50,6 +50,10 @@
         <div id=generate_transaction>
             <h1 data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</h1>
             <div class=form-group>
+                <label data-i18n=send-nas/from-address>From Address</label>
+                <div class="icon-address from"></div>
+            </div>
+            <div class=form-group>
                 <label data-i18n=send-nas/to-address>To Address</label>
                 <div class="icon-address to"></div>
             </div>
@@ -229,7 +233,9 @@
         function onUnlockFile(swf, fileJson, account, password) {
             try {
                 account.fromKey(fileJson, password);
+                address = account.getAddressString();
                 gAccount = account;
+                $(".icon-address.from input").val(address);
                 $(".transaction").show();
             } catch (e) {
                 bootbox.dialog({
