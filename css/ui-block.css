@@ -4,10 +4,18 @@
     ============================================================
     */
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .footer {
     font-size: .8rem;
     font-weight: 200;
-    margin: 20px auto;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    margin-top: auto;
 }
 
 .footer .copyright {

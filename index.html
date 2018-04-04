@@ -33,14 +33,14 @@
     <div class=header></div>
 
     <div class="container wallet">
-        <div id=newWallet class=col-12>
+        <div id=newWallet>
             <div class=form-group>
                 <label for=password data-i18n=new/enter-password>Enter a password:（Not less than 9 characters）</label>
                 <input type=password class=form-control id=password data-i18n=new/placeholder/do-not-forget placeholder="Do NOT forget to save this!" data-validate-order-matters="required lengthGt8">
             </div>
             <button class="btn btn-block" data-i18n=new/new id=creat>Create New Wallet</button>
         </div>
-        <div class="download active1">
+        <div class="active1 download">
             <h1>
                 <span data-i18n=new/save1>Save your</span>
                 <code>Keystore</code>
@@ -48,11 +48,11 @@
             </h1>
             <button id=genNewWallet class="btn btn-block" data-i18n=new/gen>Download Keystore File</button>
         </div>
-        <div class=col-12>
-            <p class=wallet_help data-i18n=new/comment>This password encrypts your private key.
-                <br>This does not act as a seed to generate your keys.
-                <br>You will need this password + your private key to unlock your wallet.</p>
-        </div>
+        <p class=wallet_help data-i18n=new/comment>
+            This password encrypts your private key.
+            <br>This does not act as a seed to generate your keys.
+            <br>You will need this password + your private key to unlock your wallet.
+        </p>
     </div>
 
     <div class=footer></div>
