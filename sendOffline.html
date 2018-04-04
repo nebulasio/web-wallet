@@ -227,6 +227,7 @@
         });
 
         function onUnlockFile(swf, fileJson, account, password) {
+            var address;
             try {
                 account.fromKey(fileJson, password);
                 address = account.getAddressString();
