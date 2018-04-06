@@ -235,21 +235,11 @@
                 gaslimit = $("#limit").val(),
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
-                toaccount, tmp, tx, balance;
+                toaccount, tx;
 
             if (validateStep2())
                 try {
                     toaccount = Account.fromAddress(toaddress);
-                    tmp = unit.fromBasic(utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)), "nas");
-
-                    balance = unit.fromBasic(utils.toBigNumber(gFromState ? gFromState.balance : 0), "nas");
-                    // console.log(balance.toNumber(), utils.toBigNumber(amount).toNumber(), tmp.toNumber());
-
-                    if (balance.lt(utils.toBigNumber(amount).plus(tmp)))
-                        if (balance.lt(tmp))
-                            amount = utils.toBigNumber(0);
-                        else
-                            amount = balance.minus(tmp);
 
                     tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
