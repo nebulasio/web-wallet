@@ -236,12 +236,12 @@
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
                 toaccount, tx;
-
+            
             if (validateStep2())
                 try {
                     toaccount = Account.fromAddress(toaddress);
 
-                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount).c , parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
 
                     $("#raw").val(tx.toString());
