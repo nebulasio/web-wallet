@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="form-group col-6">
                     <label data-i18n=send-nas/from-address>From Address</label>
-                    <div class="icon-address from"></div>
+                    <div class="icon-address from" data-disabled></div>
                 </div>
                 <div class="form-group col-6">
                     <label data-i18n=send-nas/to-address>To Address</label>
@@ -268,12 +268,14 @@
 
         function onUnlockFile(swf, fileJson, account, password) {
             var address;
+
             try {
                 account.fromKey(fileJson, password);
                 address = account.getAddressString();
                 gAccount = account;
-                $("#for_addr").val(address);
-                $(".icon-address.from input").trigger("input");
+
+                $("#step2 .icon-address.from input").val(address);
+                $("#step2 .icon-address.from input").trigger("input");
                 $(".transaction").show();
             } catch (e) {
                 bootbox.dialog({
@@ -294,8 +296,6 @@
                 $("#value").val(unit.fromBasic(tx.value, "nas"));
                 $("#value").trigger("input");
                 // $("#value").val(unit.nasToBasic(tx.value).c);
-
-
             } catch (err) {
                 bootbox.dialog({
                     message: localSave.getItem("lang") == "en" ? err.message : "无效的签名交易",
