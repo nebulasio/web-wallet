@@ -346,15 +346,15 @@
                         <span class=execution data-i18n=contract/test_result></span>
                         <textarea class=execution_banner id=deploy_test_result></textarea>
                     </div>
-                    <div class=col-md-6>
+                    <div class="col-md-6 next_right active1">
                         <span class=execution data-i18n=contract/result></span>
                         <br>
-                        <span>tx-hash:</span>
+                        <span data-i18n=contract/txhash></span>
                         <a href="#" type="text">
                             <input type=text class=form-control id=deploy_result_hash disabled>
                         </a>
                         <br>
-                        <span>contract_address:</span>
+                        <span data-i18n=contract/contract_address></span>
                         <input type=text class=form-control id=deploy_result_address disabled>
                     </div>
                 </div>
@@ -437,10 +437,11 @@
                     <div class=col-md-6>
                         <span class=execution data-i18n=contract/result></span>
                         <br>
-                        <span>tx-hash:
-                            <a id=result_hash></a>
-                        </span>
-                        <textarea class=execution_banner id=call_result style="height:172px;"></textarea>
+                        <span data-i18n=contract/txhash></span>
+                        <a href="#" type="text">
+                            <input type=text class=form-control id=result_hash disabled>
+                        </a>
+                        <!-- <textarea class=execution_banner id=call_result style="height:172px;"></textarea> -->
                     </div>
                 </div>
             </div>
@@ -530,6 +531,7 @@
         }
 
         function onClickDeploy() {
+            $(".next_right").removeClass("active1");
             innerDeploy(function (params) {
 
                 var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
@@ -627,6 +629,7 @@
             });
         }
 
+
         function onClickCall() {
             innerCall(function (params) {
                 var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
@@ -636,7 +639,7 @@
                 neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                     console.log(JSON.stringify(resp));
                     $("#call_result").text(JSON.stringify(resp));
-                    $("#result_hash").text(resp.txhash);
+                    $("#result_hash").val(resp.txhash);
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
                 }).catch(function (err) {
