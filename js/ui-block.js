@@ -306,8 +306,29 @@ var uiBlock = function () {
         }
     }
 
-    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    function isOnScreen(el) {
+        // https://stackoverflow.com/questions/20644029/checking-if-a-div-is-visible-within-viewport-using-jquery
+
+        var win = $(window),
+            $el = $(el),
+            bounds = $el.offset(),
+            viewport = {
+                top: win.scrollTop(),
+                left: win.scrollLeft()
+            };
+
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height();
+
+        bounds.right = bounds.left + $el.outerWidth();
+        bounds.bottom = bounds.top + $el.outerHeight();
+
+        return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+    };
+
     function numberAddComma(n) {
+        // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+
         var parts = (+n || 0).toString().split(".");
 
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -416,7 +437,7 @@ var uiBlock = function () {
 
                                 setTimeout(function () {
                                     // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
-                                    o.scrollIntoView({ behavior: "smooth" });
+                                    isOnScreen(o) || o.scrollIntoView({ behavior: "smooth" });
                                 });
                             }
                             break;
