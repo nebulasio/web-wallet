@@ -33,12 +33,12 @@
                 <div class="from icon-address"></div>
             </div>
             <button id=generate-infomation class="btn btn-block" data-i18n=send-offline/gen-info>Inquire Information</button>
-            <div class=row id=information style=display:none;>
-                <div class="col-6 form-group">
+            <div class="form-group row" id=information style=display:none;>
+                <div class=col>
                     <label for=fa_gasprice data-i18n=gas-price>Gas Price:</label>
                     <input type=text id=fa_gasprice class=form-control>
                 </div>
-                <div class="col-6 form-group">
+                <div class=col>
                     <label for=fa_nonce data-i18n=send-offline/nonce>Nonce: (next transaction nonce)</label>
                     <input type=text id=fa_nonce class=form-control>
                 </div>
@@ -49,34 +49,34 @@
     <div id=step2 class="container wallet">
         <div id=generate_transaction>
             <h1 data-i18n=send-offline/step2>Step 2: Generate Transaction (Offline Computer)</h1>
-            <div class="row">
-                <div class="form-group col-6">
+            <div class="form-group row">
+                <div class=col>
                     <label data-i18n=send-nas/from-address>From Address</label>
                     <div class="icon-address from" data-disabled></div>
                 </div>
-                <div class="form-group col-6">
+                <div class=col>
                     <label data-i18n=send-nas/to-address>To Address</label>
                     <div class="icon-address to"></div>
                 </div>
             </div>
-            <div class=row>
-                <div class="col form-group">
+            <div class="form-group row">
+                <div class=col>
                     <label data-i18n=send-nas/amount>Value / Amount to Send</label>
                     <div class=number-comma data-data-i18n=amount data-id=amount data-unit=nas data-validate="required number eqgt0"></div>
                 </div>
-                <div class="col form-group">
+                <div class=col>
                     <label>Nonce</label>
                     <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
                 </div>
             </div>
-            <div class=row>
-                <div class="col form-group">
+            <div class="form-group row">
+                <div class=col>
                     <label>
                         <span data-i18n=gas-limit>Gas Limit</span>
                     </label>
                     <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=200000></div>
                 </div>
-                <div class="col form-group">
+                <div class=col>
                     <label>
                         <span data-i18n=gas-price>Gas Price</span>
                         <i>( 1 NAS = 1EWei = 10
@@ -93,13 +93,13 @@
     <div class="container transaction">
         <button id=generate class="btn btn-block" data-i18n=send-nas/button/generate>Generate Transaction</button>
         <div class=row>
-            <div class=col-6>
+            <div class=col>
                 <div class=form-group>
                     <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
                     <textarea class=form-control rows=8 id=raw disabled></textarea>
                 </div>
             </div>
-            <div class=col-6>
+            <div class=col>
                 <div class=form-group>
                     <label for=signed data-i18n=send-nas/signed>Signed Transaction</label>
                     <textarea class=form-control rows=8 id=signed disabled></textarea>
@@ -110,12 +110,12 @@
 
     <div id=step3 class="container wallet">
         <h1 data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</h1>
-        <div class=row>
-            <div class="col-6 form-group">
+        <div class="form-group row">
+            <div class=col>
                 <label for=signedoffline data-i18n=send-nas/signed>Signed Transaction</label>
                 <textarea class=form-control rows=8 id=signedoffline></textarea>
             </div>
-            <div class="col-6 form-group">
+            <div class=col>
                 <div id=qrcode style=text-align:center;>
                 </div>
             </div>

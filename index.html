@@ -63,11 +63,14 @@
     <script src=lib/Blob.js></script>
     <script src=lib/FileSaver.min.js></script>
     <script src=lib/nebulas.js></script>
+    <script src=js/1-localSave.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
     <script>
         "use strict";
+
+        // replace ="([^ =]+)" with =$1
 
         var nebulas = require("nebulas"),
             account = nebulas.Account.NewAccount(),

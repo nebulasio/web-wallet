@@ -148,7 +148,9 @@ body {
     font-weight: bold;
     height: auto; /* override bootstrap */
     line-height: 50px;
+    overflow: hidden;
     text-align: center;
+    text-overflow: ellipsis;
 }
 
 .select-wallet-file .empty {
