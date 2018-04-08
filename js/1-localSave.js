@@ -1,9 +1,9 @@
 //
 // ====================
-// cause: ios safari
+// cause: macos safari
 // ====================
 //
-// ios safari + file: + localStorage = error
+// macos safari + file: + localStorage = error
 
 var localSave;
 
@@ -20,7 +20,7 @@ try {
     document.cookie = "thetest=b; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
 
     if (document.cookie) {
-        document.cookie = "thetest=; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
+        document.cookie = "thetest=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 
         localSave = {
             getItem: function (sKey) {
