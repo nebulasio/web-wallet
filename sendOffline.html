@@ -236,12 +236,12 @@
                 gasprice = $("#price").val(),
                 nonce = $("#nonce").val(),
                 toaccount, tx;
-            
+
             if (validateStep2())
                 try {
                     toaccount = Account.fromAddress(toaddress);
 
-                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount).c , parseInt(nonce), gasprice, gaslimit);
+                    tx = new Transaction(parseInt(localStorage.chainId), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                     tx.signTransaction();
 
                     $("#raw").val(tx.toString());
@@ -291,6 +291,10 @@
                 $("#for_addr").val(tx.from.getAddressString());
                 $("#to_addr").val(tx.to.getAddressString());
                 $("#value").val(unit.fromBasic(tx.value, "nas"));
+                $("#value").trigger("input");
+                // $("#value").val(unit.nasToBasic(tx.value).c);
+
+
             } catch (err) {
                 bootbox.dialog({
                     message: localStorage.lang == "en" ? err.message : "无效的签名交易",
@@ -362,4 +366,5 @@
         }
     </script>
 </body>
+
 </html>

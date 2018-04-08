@@ -141,7 +141,6 @@ body {
 
 .select-wallet-file label.file {
     background-color: #f5f5f5;
-    border: 1px solid red;
     border-radius: 3px;
     cursor: pointer;
     display: block;
