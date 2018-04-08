@@ -228,7 +228,7 @@ var uiBlock = function () {
                 .addClass("container select-wallet-file")
                 .html(
                     "<p data-i18n=swf/name></p>" +
-                    "<label class=file><span data-i18n=swf/button></span><input type=file></label>" +
+                    '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
                     '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
                     '<button class="btn btn-block" data-i18n=swf/unlock></button>' +
                     "<p class=comment data-i18n=swf/comment></p>")
@@ -257,7 +257,9 @@ var uiBlock = function () {
                         mFileJson = JSON.parse(e.target.result);
                         mAccount = Account.fromAddress(mFileJson.address)
                         $this.closest(".select-wallet-file").find("label.pass").removeClass("hide");
+                        $this.closest(".select-wallet-file").find("label.file").removeClass("empty");
                     } catch (err) {
+                        $this.closest(".select-wallet-file").find("label.file").addClass("empty");
                         bootbox.dialog({
                             message: err,
                             size: "large",

@@ -138,12 +138,14 @@
             padding: 10px 50px;
             float: left;
             text-decoration: none;
-            color: #444;
             text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
         }
 
         .ccc {
-            background-color: #cccccc;
+            background-color: black;
+        }
+        .ccc a{
+            color:#fff;
         }
 
         .current a {
@@ -152,7 +154,8 @@
         }
 
         .hoverItem a {
-            background: #AAC8B9;
+            background: black;
+            color: #fff;
         }
 
         .item {
@@ -217,9 +220,6 @@
 
         .next a {
             display: block;
-            overflow: hidden;
-            width:48%;
-            text-overflow:ellipsis;
         }
     </style>
     <title>NEBULAS</title>
@@ -348,10 +348,13 @@
                     <div class=col-md-6>
                         <span class=execution data-i18n=contract/result></span>
                         <br>
-                        <span>tx-hash:
-                            <a id=deploy_result_hash></a>
-                        </span>
-                        <textarea class=execution_banner id=deploy_result style="height:172px;"></textarea>
+                        <span>tx-hash:</span>
+                        <a href="#" type="text">
+                            <input type=text class=form-control id=deploy_result_hash disabled>
+                        </a>
+                        <br>
+                        <span>contract_address:</span>
+                        <input type=text class=form-control id=deploy_result_address disabled>
                     </div>
                 </div>
             </div>
@@ -533,7 +536,8 @@
 
                 neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
                     $("#deploy_result").text(JSON.stringify(resp));
-                    $("#deploy_result_hash").text(resp.txhash);
+                    $("#deploy_result_hash").val(resp.txhash);
+                    $("#deploy_result_address").val(resp.contract_address);
                 }).catch(function (err) {
                     $("#deploy_result").text(JSON.stringify(err));
                 });

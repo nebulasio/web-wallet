@@ -151,6 +151,10 @@ body {
     text-align: center;
 }
 
+.select-wallet-file .empty {
+    border: 1px solid red;
+}
+
 .select-wallet-file input[type=file] {
     display: none;
 }

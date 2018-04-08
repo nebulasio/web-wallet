@@ -271,7 +271,7 @@
                 account.fromKey(fileJson, password);
                 address = account.getAddressString();
                 gAccount = account;
-                $(".icon-address.from input").val(address);
+                $("#for_addr").val(address);
                 $(".icon-address.from input").trigger("input");
                 $(".transaction").show();
             } catch (e) {
