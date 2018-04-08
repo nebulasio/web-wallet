@@ -207,7 +207,7 @@ var i18n = function () {
     };
 
     function apiErrorToText(s) {
-        var lang = localStorage.lang,
+        var lang = localSave.getItem("lang"),
             table = {
                 unknown: {
                     en: "unknown error",
@@ -278,7 +278,7 @@ var i18n = function () {
 
     function run($parent, lang) {
         // make sure lang is a key of table
-        lang = (lang || localStorage.lang || "").toLowerCase();
+        lang = (lang || localSave.getItem("lang") || "").toLowerCase();
         table[lang] || (lang = "en");
 
         if ($parent)

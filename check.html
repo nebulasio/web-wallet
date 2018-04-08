@@ -145,14 +145,13 @@
         </div>
     </div>
 
-
-
     <div class=footer></div>
 
     <script src=lib/jquery-3.3.1.min.js></script>
     <script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=lib/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
     <script src=lib/nebulas.js></script>
+    <script src=js/1-localSave.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
@@ -171,7 +170,7 @@
             numberComma: ".number-comma"
         });
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
         $("#btn").on("click", onClickBtn);
         $("#myModal").on("shown.bs.modal", onMyModalShown);
 

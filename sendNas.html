@@ -167,6 +167,7 @@
     <script src=lib/jquery.qrcode.min.js data-depends=jquery></script>
     <script src=lib/blockies.min.js></script>
     <script src=lib/nebulas.js></script>
+    <script src=js/1-localSave.js></script>
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
@@ -181,7 +182,7 @@
             validateAll = uiBlock.validate(),
             gAccount, gTx;
 
-        neb.setRequest(new nebulas.HttpRequest(localStorage.apiPrefix || "https://testnet.nebulas.io/"));
+        neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
         $("#generate").on("click", onClickGenerate);
         $("#sendtransaction").on("click", onClickSendTransaction);
 
@@ -227,7 +228,7 @@
                 // this catches e thrown by nebulas.js!account
 
                 bootbox.dialog({
-                    message: localStorage.lang == "en" ? e : "keystore 文件错误, 或者密码错误",
+                    message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"
                 });
@@ -256,7 +257,7 @@
 
                     // console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
 
-                    gTx = new Transaction(parseInt(localStorage.chainId), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                    gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                     gTx.signTransaction();
 
                     $("#raw").val(gTx.toString());
