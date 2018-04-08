@@ -344,7 +344,14 @@
                             $("#nonce").val(parseInt(resp.nonce) + 1);
                             $("#information").show();
                         })
-                        .catch(function (e) { throw e });
+                        .catch(function (e) {
+                            // https://stackoverflow.com/questions/30715367/why-can-i-not-throw-inside-a-promise-catch-handler
+                            bootbox.dialog({
+                                message: e,
+                                size: "large",
+                                title: "Error"
+                            });
+                        });
                 } catch (e) {
                     bootbox.dialog({
                         message: e,
