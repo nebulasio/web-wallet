@@ -91,7 +91,7 @@
     <div class=select-wallet-file></div>
 
     <div class="container transaction">
-        <button id=generate class="btn btn-block" onclick=generate() data-i18n=send-nas/button/generate>Generate Transaction</button>
+        <button id=generate class="btn btn-block" data-i18n=send-nas/button/generate>Generate Transaction</button>
         <div class=row>
             <div class=col-6>
                 <div class=form-group>
@@ -121,7 +121,7 @@
             </div>
         </div>
         <div>
-            <button id=send_transaction data-toggle=modal data-target=#exampleModal class="btn btn-block" data-i18n=send-nas/send>Send Transaction</button>
+            <button data-toggle=modal data-target=#exampleModal class="btn btn-block send" data-i18n=send-nas/send>Send Transaction</button>
         </div>
     </div>
 
@@ -162,8 +162,8 @@
                     </div> -->
                 </div>
                 <div class=modal-footer>
-                    <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
-                    <button id=sendtransaction type=button class="btn btn-primary" data-dismiss=modal data-i18n=send-nas/check onclick=sendtransaction()></button>
+                    <button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
+                    <button class="btn btn-primary send" data-dismiss=modal data-i18n=send-nas/check></button>
                 </div>
             </div>
         </div>
@@ -208,17 +208,20 @@
             unit = nebulas.Unit,
             neb = new Neb(),
             gAccount = new Account(),
+            gLastGenerateInfo = {},
             validateStep1 = uiBlock.validate("#step1"),
             validateStep2 = uiBlock.validate("#step2"),
             gFromState;
 
         neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
+        $("#exampleModal .send").on("click", onClickExampleModalSend);
+        $("#generate").on("click", onClickGenerate);
         $("#generate-infomation").on("click", onClickGenerateInfomation);
-        $("#send_transaction").on("click", onClickSendTransaction);
         $("#signedoffline").on({
             focus: onFocusSignedOffline,
             input: onInputSignedOffline
         });
+        $("#step3 .send").on("click", onClickStep3Send);
 
         uiBlock.insert({
             footer: ".footer",
@@ -228,43 +231,6 @@
             numberComma: ".number-comma",
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
-
-        function generate() {
-            var fromaddress = $(".icon-address.from input").val(),
-                toaddress = $(".icon-address.to input").val(),
-                amount = $("#amount").val(),
-                gaslimit = $("#limit").val(),
-                gasprice = $("#price").val(),
-                nonce = $("#nonce").val(),
-                toaccount, tx;
-
-            if (validateStep2())
-                try {
-                    toaccount = Account.fromAddress(toaddress);
-
-                    tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
-                    tx.signTransaction();
-
-                    $("#raw").val(tx.toString());
-                    $("#signed").val(tx.toProtoString());
-                    $("#signedoffline").val(tx.toProtoString());
-                    // $("#qrcode").qrcode(tx.toProtoString());
-
-                    $("<div id=qrcode style=text-align:center;></div>")
-                        .qrcode(tx.toProtoString())
-                        .replaceAll('#qrcode');
-
-                    $(".transaction").show();
-                } catch (e) {
-                    bootbox.dialog({
-                        message: e,
-                        size: "large",
-                        title: "Error"
-                    });
-                }
-
-            return false;
-        }
 
         function onUnlockFile(swf, fileJson, account, password) {
             var address;
@@ -286,7 +252,7 @@
             }
         }
 
-        function onClickSendTransaction() {
+        function onClickStep3Send() {
             var val = $("#signedoffline").val(), tx;
 
             if (val) try {
@@ -302,6 +268,55 @@
                     size: "large",
                     title: "Error"
                 });
+            }
+        }
+
+        function onClickGenerate() {
+            var fromaddress, toaddress, amount, nonce, gaslimit, gasprice, toaccount, tx;
+
+            if (validateStep2()) {
+                fromaddress = $(".icon-address.from input").val();
+                toaddress = $(".icon-address.to input").val();
+                amount = $("#amount").val();
+                nonce = $("#nonce").val();
+                gaslimit = $("#limit").val();
+                gasprice = $("#price").val();
+
+                if (gLastGenerateInfo.fromaddress != fromaddress ||
+                    gLastGenerateInfo.toaddress != toaddress ||
+                    gLastGenerateInfo.amount != amount ||
+                    gLastGenerateInfo.nonce != nonce ||
+                    gLastGenerateInfo.gaslimit != gaslimit ||
+                    gLastGenerateInfo.gasprice != gasprice) try {
+                        toaccount = Account.fromAddress(toaddress);
+
+                        tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                        tx.signTransaction();
+
+                        $("#raw").val(tx.toString());
+                        $("#signed").val(tx.toProtoString());
+                        $("#signedoffline").val(tx.toProtoString());
+                        // $("#qrcode").qrcode(tx.toProtoString());
+
+                        gLastGenerateInfo.fromaddress = fromaddress;
+                        gLastGenerateInfo.toaddress = toaddress;
+                        gLastGenerateInfo.amount = amount;
+                        gLastGenerateInfo.nonce = nonce;
+                        gLastGenerateInfo.gaslimit = gaslimit;
+                        gLastGenerateInfo.gasprice = gasprice;
+
+                        $("<div id=qrcode style=text-align:center;></div>")
+                            .qrcode(tx.toProtoString())
+                            .replaceAll('#qrcode');
+
+                        $(".transaction").show();
+                    } catch (e) {
+                        bootbox.dialog({
+                            message: e,
+                            size: "large",
+                            title: "Error"
+                        });
+                    }
             }
         }
 
@@ -349,7 +364,7 @@
                 .replaceAll('#qrcode');
         }
 
-        function sendtransaction() {
+        function onClickExampleModalSend() {
             neb.api.sendRawTransaction($("#signedoffline").val())
                 .then(function (resp) {
                     return neb.api.getTransactionReceipt(resp.txhash);
