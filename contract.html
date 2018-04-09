@@ -208,7 +208,7 @@
             word-break: break-all;
         }
 
-        #receipt_call{
+        #receipt_call {
             word-break: break-all;
         }
 
@@ -234,6 +234,10 @@
 
         .next a {
             display: block;
+        }
+
+        .errmsg {
+            color: red;
         }
     </style>
     <title>NEBULAS</title>
@@ -458,6 +462,21 @@
         </div>
     </div>
 
+    <!--  loading  -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                            aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class=footer></div>
 
     <script src=lib/jquery-3.3.1.min.js></script>
@@ -541,6 +560,7 @@
         }
 
         function onClickDeploy() {
+            $("#myModal").modal("show");
             $(".next_right").removeClass("active1");
             innerDeploy(function (params) {
 
@@ -552,8 +572,10 @@
                     $("#deploy_result").text(JSON.stringify(resp));
                     $("#deploy_result_address").val(resp.contract_address);
                     $("#receipt").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
+                    $("#myModal").modal("hide");
                 }).catch(function (err) {
                     $("#deploy_result").text(JSON.stringify(err));
+                    $("#myModal").modal("hide");
                 });
             });
         }
@@ -566,6 +588,7 @@
                     $(".errmsg").addClass("active1");
                 }, 2000);
             } else {
+                $("#myModal").modal("show");
                 neb.api.getTransactionReceipt($("#addr_input").val())
                     .then(function (resp) {
                         var data, s, lang;
@@ -593,6 +616,8 @@
                                     s = "0x0";
 
                                 $(".search_result").html(s);
+
+                                $("#myModal").modal("hide");
                             }
                         }
                     })
@@ -602,6 +627,8 @@
                             size: "large",
                             title: "Error"
                         });
+
+                        $("#myModal").modal("hide");
                     });
             }
         }
@@ -641,6 +668,7 @@
 
 
         function onClickCall() {
+            $("#myModal").modal("show");
             innerCall(function (params) {
                 var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
                     params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
@@ -652,10 +680,12 @@
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
                     $("#receipt_call").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
+                    $("#myModal").modal("hide");
                 }).catch(function (err) {
                     $("#call_result").text(JSON.stringify(err));
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
+                    $("#myModal").modal("hide");
                 });
             });
         }
