@@ -325,14 +325,12 @@
 
             if (validateStep1())
                 try {
-                    gAccount = Account.fromAddress(fromaddress);
-
                     neb.api.gasPrice()
                         .then(function (resp) {
                             $("#fa_gasprice").val(resp.gas_price);
                             $("#price").val(resp.gas_price);
 
-                            return neb.api.getAccountState(gAccount.getAddressString());
+                            return neb.api.getAccountState(fromaddress);
                         })
                         .then(function (resp) {
                             gFromState = {
