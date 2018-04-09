@@ -116,8 +116,7 @@ a.btn-link:hover {
 }
 
 .modal-backdrop.in {
-    opacity: 0.8;
-    filter: alpha(opacity=80)
+    opacity: .8;
 }
 
 /*
@@ -125,10 +124,6 @@ a.btn-link:hover {
     added since moved to https://github.com/nebulasio/web-wallet.git
     ============================================================
     */
-
-[data-i18n] {
-    white-space: pre-line;
-}
 
 input.invalid {
     border-color: red;
@@ -141,6 +136,14 @@ input.validation-guard {
 label > i {
     color: gray;
     font-size: small;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+[data-i18n] {
+    white-space: pre-line;
 }
 
 @media (max-width: 991px) {
