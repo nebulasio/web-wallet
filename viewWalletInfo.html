@@ -40,18 +40,21 @@
                 </div>
                 <div class=form-group>
                     <label for=amount data-i18n=wallet-info/acc-balance>Account Balance : </label>
-                    <input type=text id=amount class=form-control id=address disabled>
+                    <input type=text id=amount class=form-control disabled>
                 </div>
                 <div class=form-group>
-                    <label for=keystore data-i18n=wallet-info/keystore>Keystore File (UTC / JSON · Recommended · Encrypted)</label>
+                    <label for=keystore>
+                        <span data-i18n=keystore-file>Keystore File</span>
+                        (JSON / Recommended / Encrypted)
+                    </label>
                     <button type=submit class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" id=keystore data-i18n=download>Download</button>
                 </div>
                 <div class=form-group>
-                    <label for=Privatekey data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
-                    <input type=password id=password class=form-control id=Privatekey disabled>
+                    <label for=password data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
+                    <input type=password id=password class=form-control disabled>
                     <div>
-                        <input type="checkbox" id="togglePassword">
-                        <label for="togglePassword">visible</label>
+                        <input id=togglePassword type=checkbox>
+                        <label for=togglePassword>visible</label>
                     </div>
                 </div>
             </div>

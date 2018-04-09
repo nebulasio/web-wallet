@@ -54,6 +54,7 @@ var i18n = function () {
             "header/send-offline": "Send Offline",
             "header/view": "View Wallet Info",
             home: "Home",
+            "keystore-file": "Keystore File",
             name: "English",
             "new/comment": "This password encrypts your private key.\n" +
                 "This does not act as a seed to generate your keys.\n" +
@@ -63,7 +64,7 @@ var i18n = function () {
             "new/new": "Create New Wallet",
             "new/placeholder/do-not-forget": "Do NOT forget to save this!",
             "new/save1": "Save your",
-            "new/save3": "File.",
+            "new/save3": ".",
             "placeholder/addr": "fill address here",
             "placeholder/tx#": "fill transaction hash here",
             resources: "Resources",
@@ -104,7 +105,6 @@ var i18n = function () {
             "validate/required": "invalid: required",
             "wallet-info/acc-addr": "Account Address",
             "wallet-info/acc-balance": "Account Balance",
-            "wallet-info/keystore": "Keystore File",
             "wallet-info/private-key": "Private Key (unencrypted)",
             "wallet-info/your-addr": "Your Address"
         },
@@ -151,6 +151,7 @@ var i18n = function () {
             "header/send-offline": "离线发送",
             "header/view": "钱包信息",
             home: "主页",
+            "keystore-file": "密码库文件",
             name: "简体中文",
             "new/comment": "该密码用于加密您的私钥。\n他不做为产生私钥的种子。\n您需要该密码 + 您的私钥以解锁您的钱包。",
             "new/enter-password": "输入密码:（不少于9位数）",
@@ -158,7 +159,7 @@ var i18n = function () {
             "new/new": "新建钱包",
             "new/placeholder/do-not-forget": "别忘了这个！",
             "new/save1": "保存你的",
-            "new/save3": "文件。",
+            "new/save3": "。",
             "placeholder/addr": "地址",
             "placeholder/tx#": "交易哈希",
             resources: "资源",
@@ -199,7 +200,6 @@ var i18n = function () {
             "validate/required": "无效：必填",
             "wallet-info/acc-addr": "钱包地址",
             "wallet-info/acc-balance": "钱包余额",
-            "wallet-info/keystore": "密码库文件",
             "wallet-info/private-key": "私钥（未加密）",
             "wallet-info/your-addr": "你的地址"
         }
