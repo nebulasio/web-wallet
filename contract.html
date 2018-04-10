@@ -12,6 +12,131 @@
     <link rel=stylesheet href=css/contract.css>
     <meta name=viewport content="width=device-width">
     <title>NEBULAS</title>
+    <style>
+        #content {
+            border-top: 1px solid;
+        }
+
+        textarea {
+            width: 100%;
+            font-size: large;
+        }
+
+        input {
+            width: 100%;
+            font-size: large;
+        }
+
+        .bootbox button {
+            width: auto;
+        }
+
+        .deploy_contract span {
+            color: black;
+            display: -webkit-inline-box;
+        }
+
+        .title {
+            text-align: center;
+            color: black;
+            font-size: 30px;
+        }
+
+        .active1 {
+            display: none;
+        }
+
+        #tabs {
+            overflow: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #tabs li {
+            float: left;
+            margin: 0;
+        }
+
+        #tabs li a {
+            position: relative;
+            padding: 10px 50px;
+            float: left;
+            text-decoration: none;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+        }
+
+        .ccc {
+            background-color: black;
+        }
+
+        .ccc a {
+            color: #fff;
+        }
+
+        .current a {
+            outline: 0;
+            z-index: 4;
+        }
+
+        .hoverItem a {
+            background: black;
+            color: #fff;
+        }
+
+        .item {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .lh {
+            line-height: 100px;
+        }
+
+        .stop {
+            background-color: gray;
+        }
+
+        .execution_banner {
+            width: 90%;
+            height: 200px;
+            background-color: #f5f5f5;
+            margin: 0 auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .form-check {
+            display: inline-block;
+        }
+
+        #receipt {
+            word-break: break-all;
+        }
+
+        #receipt_call {
+            word-break: break-all;
+        }
+
+        .code {
+            background-color: #f8f9fa;
+            font-family: consolas, menlo, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
+            overflow: auto;
+            white-space: pre;
+        }
+
+        .errmsg {
+            color: red;
+        }
+
+        .err {
+            border-color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,7 +163,7 @@
                 </div>
                 <input id=addr_input type=text data-i18n=contract/addr_input_msg>
                 <span class="errmsg active1" data-i18n=contract/err_msg_hash>Please enter a valid TX hash</span>
-                <button class=search data-i18n=contract/search></button>
+                <button class="search btn btn-block" data-i18n=contract/search></button>
                 <div class="active1 code search_result"></div>
             </div>
 
@@ -76,7 +201,7 @@
 
                 <!-- select wallet -->
 
-                <div class="select-wallet-file mt20"></div>
+                <div class="select-wallet-file mt14"></div>
 
                 <div class=row>
                     <div class=col-md-6>
@@ -122,10 +247,10 @@
 
                 <div class=row>
                     <div class=col-md-6>
-                        <button id=deploy_test data-i18n=contract/deploy_test></button>
+                        <button id=deploy_test data-i18n=contract/deploy_test class=" btn btn-block"></button>
                     </div>
                     <div class=col-md-6>
-                        <button id=deploy class=stop data-i18n=contract/deploy_submit></button>
+                        <button id=deploy class="stop btn btn-block" data-i18n=contract/deploy_submit></button>
                     </div>
                 </div>
 
@@ -208,10 +333,10 @@
                 <div class="result active1" id=result></div>
                 <div class=row>
                     <div class=col-md-6>
-                        <button id=call_test data-i18n=contract/call_test></button>
+                        <button id=call_test data-i18n=contract/call_test class=" btn btn-block"></button>
                     </div>
                     <div class=col-md-6>
-                        <button id=call class=stop data-i18n=contract/call_submit></button>
+                        <button id=call class="stop btn btn-block" data-i18n=contract/call_submit></button>
                     </div>
                 </div>
 
@@ -524,7 +649,6 @@
             }
             if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#gas_limit").addClass("err");
-                $(".deploy_errmsg").removeClass("active1");
                 setTimeout(function () {
                     $("#gas_limit").removeClass("err");
                 }, 5000);
@@ -541,7 +665,6 @@
             }
             if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#gas_price").addClass("err");
-                $(".deploy_errmsg").removeClass("active1");
                 setTimeout(function () {
                     $("#gas_price").removeClass("err");
                 }, 5000);
@@ -581,7 +704,6 @@
             let toAddr = $("#run_to_addr").val().trim();
             if (!Account.isValidAddress(toAddr)) {
                 $("#run_to_addr").addClass("err");
-                $(".run_errmsg").removeClass("active1");
                 setTimeout(function () {
                     $("#run_to_addr").removeClass("err");
                 }, 5000);
@@ -598,7 +720,6 @@
             }
             if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#run_gas_limit").addClass("err");
-                $(".run_errmsg").removeClass("active1");
                 setTimeout(function () {
                     $("#run_gas_limit").removeClass("err");
                 }, 5000);
@@ -615,7 +736,6 @@
             }
             if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#run_gas_price").addClass("err");
-                $(".run_errmsg").removeClass("active1");
                 setTimeout(function () {
                     $("#run_gas_price").removeClass("err");
                 }, 5000);
