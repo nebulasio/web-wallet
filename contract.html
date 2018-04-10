@@ -154,24 +154,21 @@
                 <div class=title>
                     <span data-i18n=contract/search_contract></span>
                 </div>
-                <input id=addr_input type=text data-i18n=contract/addr_input_msg>
-                <span class="errmsg active1" data-i18n=contract/err_msg_hash>Please enter a valid TX hash</span>
+                <input id=addr_input class=form-control data-i18n=contract/addr_input_msg>
+                <span class="active1 errmsg" data-i18n=contract/err_msg_hash>Please enter a valid TX hash</span>
                 <button class="search btn btn-block" data-i18n=contract/search></button>
                 <div class="active1 code search_result"></div>
             </div>
 
             <div class="deploy_contract item" id=tab2>
-                <div class=title>
-                    <span data-i18n=contract/deploy_contract></span>
-                </div>
+                <div class=title data-i18n=contract/deploy_contract></div>
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea class=form-control id=source cols=30 rows=10></textarea>
-                <br>
-                <br>
-                <!-- select codetype -->
+                <textarea class=form-control id=source cols=30 rows=10 data-validate-order-matters=required></textarea>
 
+                <!-- select codetype -->
+                <br>
                 <div class=codetype>
                     <span data-i18n=contract/contract_codetype></span>
                     <div class=form-check>
@@ -184,49 +181,43 @@
                     </div>
                     <span data-i18n=contract/contract_codetype_banner></span>
                 </div>
-                <br>
 
                 <!-- function args -->
-
+                <br>
                 <label data-i18n=contract/contract_fun></label>
-                <input class=form-control type=text id=deploy_args>
+                <input class=form-control id=deploy_args>
 
                 <!-- select wallet -->
-
                 <div class="select-wallet-file mt14"></div>
 
                 <div class=row>
-                    <div class=col-md-6>
-                        <label for=fromaddress data-i18n=send-nas/from-address></label>
-                        <input type=text class=form-control id=from_addr disabled>
+                    <div class=col>
+                        <label data-i18n=send-nas/from-address></label>
+                        <div class=icon-address data-id=from_addr data-disabled></div>
                     </div>
-                    <div class=col-md-6>
-                        <label for=toaddress data-i18n=send-nas/to-address></label>
-                        <input type=text class=form-control id=to_addr disabled>
+                    <div class=col>
+                        <label data-i18n=send-nas/to-address></label>
+                        <div class=icon-address data-id=to_addr data-disabled></div>
                     </div>
                 </div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=send-nas/amount></label>
                         <input class=form-control type=text id=value value=0 disabled>
                     </div>
-                    <div class="col-md-6 lh">
+                    <div class="col lh">
                         <span data-i18n=send-nas/balance></span>
                         <span id=balance></span>
                     </div>
-                    <!-- <div class="col-md-4 lh">
-                            <span>Nonce : </span>
-                            <span id=nonce></span>
-                        </div> -->
                 </div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=gas-limit></label>
                         <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000 data-disabled></div>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=gas-price></label>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
@@ -237,20 +228,20 @@
                 <div class="result active1" id=result></div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <button id=deploy_test data-i18n=contract/deploy_test class=" btn btn-block"></button>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col>
                         <button id=deploy class="stop btn btn-block" data-i18n=contract/deploy_submit></button>
                     </div>
                 </div>
 
-                <div class="next  active1 row">
-                    <div class=col-md-6>
+                <div class="active1 next row">
+                    <div class=col-6>
                         <span class=execution data-i18n=contract/test_result></span>
-                        <textarea class=execution_banner id=deploy_test_result></textarea>
+                        <textarea class="execution_banner form-control" id=deploy_test_result></textarea>
                     </div>
-                    <div class="col-md-6 next_right active1">
+                    <div class="active1 col-6 next_right">
                         <span class=execution data-i18n=contract/result></span>
                         <br>
                         <span data-i18n=contract/txhash></span>
@@ -262,17 +253,17 @@
                 </div>
             </div>
 
-            <div class="run_contract item " id=tab3>
+            <div class="run_contract item" id=tab3>
                 <div class=title>
                     <span data-i18n=contract/call_contract></span>
                 </div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=contract/contract_funtion></label>
                         <input class=form-control type=text id=call_function>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=contract/contract_fun></label>
                         <input class=form-control type=text id=call_args>
                     </div>
@@ -281,37 +272,33 @@
                 <div class=select-wallet-file></div>
 
                 <div class=row>
-                    <div class=col-md-6>
-                        <label for=fromaddress data-i18n=send-nas/from-address></label>
-                        <input type=text class=form-control id=run_from_addr disabled>
+                    <div class=col>
+                        <label data-i18n=send-nas/from-address></label>
+                        <div class=icon-address data-id=run_from_addr data-disabled></div>
                     </div>
-                    <div class=col-md-6>
-                        <label for=toaddress data-i18n=send-nas/to-address></label>
-                        <input type=text class=form-control id=run_to_addr>
+                    <div class=col>
+                        <label data-i18n=send-nas/to-address></label>
+                        <div class=icon-address data-id=run_to_addr></div>
                     </div>
                 </div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=send-nas/amount></label>
-                        <input class=form-control type=text id=run_value value=0>
+                        <input class=form-control id=run_value value=0 data-validate-order-matters="required number">
                     </div>
-                    <div class="col-md-6 lh">
+                    <div class="col lh">
                         <span data-i18n=send-nas/balance></span>
                         <span id=run_balance></span>
                     </div>
-                    <!-- <div class="col-md-4 lh">
-                        <span>Nonce : </span>
-                        <span id=nonce></span>
-                    </div> -->
                 </div>
 
                 <div class=row>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=gas-limit></label>
                         <input class=form-control type=text id=run_gas_limit value=200000>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col>
                         <label data-i18n=gas-price></label>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
@@ -319,28 +306,27 @@
                     </div>
                 </div>
 
-                <div class="result active1" id=result></div>
+                <div class="active1 result" id=result></div>
                 <div class=row>
-                    <div class=col-md-6>
-                        <button id=call_test data-i18n=contract/call_test class=" btn btn-block"></button>
+                    <div class=col>
+                        <button id=call_test data-i18n=contract/call_test class="btn btn-block"></button>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col>
                         <button id=call class="stop btn btn-block" data-i18n=contract/call_submit></button>
                     </div>
                 </div>
 
-                <div class="next  active1 row">
-                    <div class=col-md-6>
+                <div class="active1 next row">
+                    <div class=col-6>
                         <span class=execution data-i18n=contract/test_result></span>
-                        <textarea class=execution_banner id=call_test_result></textarea>
+                        <textarea class="execution_banner form-control" id=call_test_result></textarea>
                     </div>
-                    <div class=col-md-6>
+                    <div class=col-6>
                         <span class=execution data-i18n=contract/result></span>
                         <br>
                         <span data-i18n=contract/txhash></span>
                         <i data-i18n=contract/clickToCheck></i>&darr;
                         <a class="form-control mt14" id=receipt_call></a>
-                        <!-- <textarea class=execution_banner id=call_result style=height:172px;></textarea> -->
                     </div>
                 </div>
             </div>
@@ -366,6 +352,7 @@
     <script src=lib/jquery-3.3.1.min.js></script>
     <script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=lib/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
+    <script src=lib/blockies.min.js></script>
     <script src=lib/js-beautify-1.7.5/beautify.js></script>
     <script src=lib/prismjs-1.13.0/prism.js></script>
     <script src=lib/nebulas.js></script>
@@ -382,13 +369,16 @@
             neb = new nebulas.Neb(),
             globalParams = {
                 account: null
-            };
+            },
+            validateTab2 = uiBlock.validate("#tab2"),
+            validateTab3 = uiBlock.validate("#tab3");
 
         neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
 
         uiBlock.insert({
             footer: ".footer",
             header: ".header",
+            iconAddress: ".icon-address",
             logoMain: ".logo-main",
             numberComma: ".number-comma",
             selectWalletFile: [".select-wallet-file", onUnlockFile]
@@ -418,7 +408,7 @@
         $("#call").on("click", onClickCall);
 
         function onClickDeployTest() {
-            innerDeploy(function (params) {
+            validateTab2() && innerDeploy(function (params) {
                 neb.api.call({
                     from: params.from,
                     to: params.to,
@@ -446,8 +436,8 @@
         function onClickDeploy() {
             $("#myModal").modal("show");
             $(".next_right").removeClass("active1");
-            innerDeploy(function (params) {
 
+            innerDeploy(function (params) {
                 var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
                     params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                 gTx.signTransaction();
@@ -518,7 +508,7 @@
         }
 
         function onClickCallTest() {
-            innerCall(function (params) {
+            validateTab3() && innerCall(function (params) {
                 neb.api.call({
                     from: params.from,
                     to: params.to,
@@ -550,7 +540,6 @@
             });
         }
 
-
         function onClickCall() {
             $("#myModal").modal("show");
             innerCall(function (params) {
@@ -581,10 +570,14 @@
                 account.fromKey(fileJson, password);
                 globalParams.account = account;
                 $("#from_addr").val(account.getAddressString());
-                $("#to_addr").val(account.getAddressString());
                 $("#run_from_addr").val(account.getAddressString());
+                $("#to_addr").val(account.getAddressString());
                 $("#unlock").hide();
                 $("#send").show();
+
+                $("#from_addr").trigger("input");
+                $("#run_from_addr").trigger("input");
+                $("#to_addr").trigger("input");
 
                 neb.api.gasPrice()
                     .then(function (resp) {

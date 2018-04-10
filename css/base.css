@@ -125,7 +125,8 @@ a.btn-link:hover {
     ============================================================
     */
 
-input.invalid {
+input.invalid,
+textarea.invalid {
     border-color: red;
 }
 
