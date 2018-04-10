@@ -265,12 +265,12 @@ var uiBlock = function () {
                         mAccount = Account.fromAddress(mFileJson.address)
                         $this.closest(".select-wallet-file").find("label.pass").removeClass("hide");
                         $this.closest(".select-wallet-file").find("label.file").removeClass("empty");
-                    } catch (err) {
+                    } catch (e) {
                         $this.closest(".select-wallet-file").find("label.file").addClass("empty");
                         bootbox.dialog({
                             backdrop: true,
                             onEscape: true,
-                            message: err,
+                            message: e.message,
                             size: "large",
                             title: "Error"
                         });
