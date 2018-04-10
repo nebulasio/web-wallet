@@ -87,10 +87,6 @@
             display: block;
         }
 
-        .lh {
-            line-height: 100px;
-        }
-
         .stop {
             background-color: gray;
         }
@@ -128,6 +124,10 @@
 
         .err {
             border-color: red;
+        }
+
+        #tab2 .show-balance {
+            padding-top: .5rem;
         }
     </style>
 </head>
@@ -190,7 +190,7 @@
                 <!-- select wallet -->
                 <div class="select-wallet-file mt14"></div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=send-nas/from-address></label>
                         <div class=icon-address data-id=from_addr data-disabled></div>
@@ -201,18 +201,21 @@
                     </div>
                 </div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=send-nas/amount></label>
                         <input class=form-control type=text id=value value=0 disabled>
                     </div>
-                    <div class="col lh">
-                        <span data-i18n=send-nas/balance></span>
-                        <span id=balance></span>
+                    <div class=col>
+                        <label>&nbsp;</label>
+                        <div class=show-balance>
+                            <span data-i18n=send-nas/balance></span>
+                            <span id=balance></span>
+                        </div>
                     </div>
                 </div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=gas-limit></label>
                         <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000 data-disabled></div>
@@ -227,7 +230,7 @@
 
                 <div class="result active1" id=result></div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <button id=deploy_test data-i18n=contract/deploy_test class=" btn btn-block"></button>
                     </div>
@@ -258,7 +261,7 @@
                     <span data-i18n=contract/call_contract></span>
                 </div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=contract/contract_funtion></label>
                         <input class=form-control type=text id=call_function>
@@ -271,7 +274,7 @@
 
                 <div class=select-wallet-file></div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=send-nas/from-address></label>
                         <div class=icon-address data-id=run_from_addr data-disabled></div>
@@ -282,18 +285,21 @@
                     </div>
                 </div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=send-nas/amount></label>
                         <input class=form-control id=run_value value=0 data-validate-order-matters="required number">
                     </div>
-                    <div class="col lh">
-                        <span data-i18n=send-nas/balance></span>
-                        <span id=run_balance></span>
+                    <div class=col>
+                        <label>&nbsp;</label>
+                        <div class=show-balance>
+                            <span data-i18n=send-nas/balance></span>
+                            <span id=run_balance></span>
+                        </div>
                     </div>
                 </div>
 
-                <div class=row>
+                <div class="form-group row">
                     <div class=col>
                         <label data-i18n=gas-limit></label>
                         <input class=form-control type=text id=run_gas_limit value=200000>
@@ -307,7 +313,8 @@
                 </div>
 
                 <div class="active1 result" id=result></div>
-                <div class=row>
+
+                <div class="form-group row">
                     <div class=col>
                         <button id=call_test data-i18n=contract/call_test class="btn btn-block"></button>
                     </div>

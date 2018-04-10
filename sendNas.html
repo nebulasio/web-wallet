@@ -47,36 +47,34 @@
     <div class="container select-wallet-file"></div>
 
     <div id=send class="container send">
-        <div class=form-group>
-            <div class=row>
-                <div class=col-md-6>
-                    <label data-i18n=send-nas/from-address>From Address</label>
-                    <div class="from icon-address" data-disabled></div>
-                </div>
-                <div class=col-md-6>
-                    <label data-i18n=send-nas/balance>Balance</label>
-                    <div class=number-comma data-disabled data-id=balance data-unit=nas></div>
-                </div>
+        <div class="form-group row">
+            <div class=col-md-6>
+                <label data-i18n=send-nas/from-address>From Address</label>
+                <div class="from icon-address" data-disabled></div>
+            </div>
+            <div class=col-md-6>
+                <label data-i18n=send-nas/balance>Balance</label>
+                <div class=number-comma data-disabled data-id=balance data-unit=nas></div>
             </div>
         </div>
-        <div class=row>
-            <div class="form-group col-md-6">
+        <div class="form-group row">
+            <div class=col>
                 <label data-i18n=send-nas/to-address>To Address</label>
                 <div class="icon-address to"></div>
             </div>
-            <div class="form-group col-md-6">
+            <div class=col>
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
                 <div class=number-comma data-data-i18n=amount data-id=amount data-unit=nas data-validate="required number eqgt0"></div>
             </div>
         </div>
-        <div class=row>
-            <div class="form-group col-md-6">
+        <div class="form-group row">
+            <div class=col>
                 <label for=limit>
                     <span data-i18n=gas-limit>Gas Limit</span>
                 </label>
                 <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=200000></div>
             </div>
-            <div class="form-group col-md-6">
+            <div class=col>
                 <label for=price>
                     <span data-i18n=gas-price>Gas Price</span>
                     <i>( 1 NAS = 1EWei = 10
