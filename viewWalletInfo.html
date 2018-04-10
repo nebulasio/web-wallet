@@ -135,7 +135,9 @@
                         // this catches e thrown by nebulas.js!neb
 
                         bootbox.dialog({
-                            message: i18n.apiErrorToText(e.error),
+                            backdrop: true,
+                            onEscape: true,
+                            message: i18n.apiErrorToText(e.message),
                             size: "large",
                             title: "Error"
                         });
@@ -144,6 +146,8 @@
                 // this catches e thrown by nebulas.js!account
 
                 bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
                     message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"

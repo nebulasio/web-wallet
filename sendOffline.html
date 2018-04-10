@@ -241,11 +241,12 @@
                 address = account.getAddressString();
                 gAccount = account;
 
-                $("#step2 .icon-address.from input").val(address);
-                $("#step2 .icon-address.from input").trigger("input");
+                $("#step2 .icon-address.from input").val(address).trigger("input");
                 $(".transaction").show();
             } catch (e) {
                 bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
                     message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"
@@ -260,11 +261,12 @@
                 tx = Transaction.prototype.fromProto(val);
                 $("#for_addr").val(tx.from.getAddressString());
                 $("#to_addr").val(tx.to.getAddressString());
-                $("#value").val(unit.fromBasic(tx.value, "nas"));
-                $("#value").trigger("input");
+                $("#value").val(unit.fromBasic(tx.value, "nas")).trigger("input");
                 // $("#value").val(unit.nasToBasic(tx.value).c);
             } catch (err) {
                 bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
                     message: localSave.getItem("lang") == "en" ? err.message : "无效的签名交易",
                     size: "large",
                     title: "Error"
@@ -299,20 +301,22 @@
                         $("#signedoffline").val(tx.toProtoString());
                         // $("#qrcode").qrcode(tx.toProtoString());
 
+                        $("<div id=qrcode style=text-align:center;></div>")
+                            .qrcode(tx.toProtoString())
+                            .replaceAll('#qrcode');
+
+                        $(".transaction").show();
+
                         gLastGenerateInfo.fromaddress = fromaddress;
                         gLastGenerateInfo.toaddress = toaddress;
                         gLastGenerateInfo.amount = amount;
                         gLastGenerateInfo.nonce = nonce;
                         gLastGenerateInfo.gaslimit = gaslimit;
                         gLastGenerateInfo.gasprice = gasprice;
-
-                        $("<div id=qrcode style=text-align:center;></div>")
-                            .qrcode(tx.toProtoString())
-                            .replaceAll('#qrcode');
-
-                        $(".transaction").show();
                     } catch (e) {
                         bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
                             message: e,
                             size: "large",
                             title: "Error"
@@ -346,6 +350,8 @@
                         .catch(function (e) {
                             // https://stackoverflow.com/questions/30715367/why-can-i-not-throw-inside-a-promise-catch-handler
                             bootbox.dialog({
+                                backdrop: true,
+                                onEscape: true,
                                 message: e,
                                 size: "large",
                                 title: "Error"
@@ -353,6 +359,8 @@
                         });
                 } catch (e) {
                     bootbox.dialog({
+                        backdrop: true,
+                        onEscape: true,
                         message: e,
                         size: "large",
                         title: "Error"
@@ -380,7 +388,9 @@
                     $("#receipt_div").show();
                 }).catch(function (o) {
                     bootbox.dialog({
-                        message: i18n.apiErrorToText(o.error),
+                        backdrop: true,
+                        onEscape: true,
+                        message: i18n.apiErrorToText(o.message),
                         size: "large",
                         title: "Error"
                     });

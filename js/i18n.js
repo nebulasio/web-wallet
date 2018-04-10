@@ -41,7 +41,7 @@ var i18n = function () {
             "contract/search_contract": "Search Contract",
             "contract/txhash": "txhash :",
             "contract/contract_address": "contract_address :",
-            "contract/clickToCheck":"(Click to view transaction details)",
+            "contract/clickToCheck": "(Click to view transaction details)",
             data: "Data",
             download: "Download",
             "gas-limit": "Gas Limit",
@@ -138,7 +138,7 @@ var i18n = function () {
             "contract/search_contract": "搜索合约",
             "contract/txhash": "交易哈希 :",
             "contract/contract_address": "合约地址 :",
-            "contract/clickToCheck":"(点击产看交易详情)",
+            "contract/clickToCheck": "(点击产看交易详情)",
             data: "数据",
             download: "下载",
             "gas-limit": "Gas 限制",
@@ -218,6 +218,10 @@ var i18n = function () {
                 unknown: {
                     en: "unknown error",
                     zh: "未知错误"
+                },
+                "Network Error": {
+                    en: s,
+                    zh: "网络错误"
                 },
                 // GetTransactionReceipt
                 "invalid argument(s)": {

@@ -87,7 +87,7 @@
             <label for=nonce>Nonce</label>
             <input class=form-control id=nonce data-validate-order-matters="required number gt0">
         </div>
-        <button id=generate type=submit class="btn btn-block" data-i18n=send-nas/button/generate>Generate Transaction</button>
+        <button id=generate class="btn btn-block" data-i18n=send-nas/button/generate>Generate Transaction</button>
     </div>
 
     <!-- send -->
@@ -151,8 +151,8 @@
                     </div> -->
                 </div>
                 <div class=modal-footer>
-                    <button type=button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
-                    <button id=sendtransaction type=button class="btn btn-primary" data-dismiss=modal data-i18n=send-nas/check></button>
+                    <button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
+                    <button class="btn btn-primary s" data-dismiss=modal data-i18n=send-nas/check></button>
                 </div>
             </div>
         </div>
@@ -179,11 +179,13 @@
             Unit = nebulas.Unit,
             neb = new nebulas.Neb(),
             validateAll = uiBlock.validate(),
+            gLastGenerateInfo = {},
             gAccount, gTx;
 
         neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
         $("#generate").on("click", onClickGenerate);
-        $("#sendtransaction").on("click", onClickSendTransaction);
+        $("#modal-confirm .s").on("click", onClickModalConfirmS);
+        $("#send_transaction").on("click", onClickSendTransaction);
 
         uiBlock.insert({
             footer: ".footer",
@@ -201,9 +203,7 @@
                 address = account.getAddressString();
                 gAccount = account;
 
-                $(".icon-address.from input").val(address);
-                $(".icon-address.from input").trigger("input"); // gen icon from addr, needs trigger 'input' event if via set o.value
-
+                $(".icon-address.from input").val(address).trigger("input"); // gen icon from addr, needs trigger 'input' event if via set o.value
                 $("#unlock").hide();
                 $("#send").show();
 
@@ -211,14 +211,16 @@
                     .then(function (resp) {
                         var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
 
-                        $("#balance").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value, 
+                        $("#balance").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
                         $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                     })
                     .catch(function (e) {
                         // this catches e thrown by nebulas.js!neb
 
                         bootbox.dialog({
-                            message: i18n.apiErrorToText(e.error),
+                            backdrop: true,
+                            onEscape: true,
+                            message: i18n.apiErrorToText(e.message),
                             size: "large",
                             title: "Error"
                         });
@@ -227,6 +229,8 @@
                 // this catches e thrown by nebulas.js!account
 
                 bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
                     message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
                     size: "large",
                     title: "Error"
@@ -235,58 +239,71 @@
         }
 
         function onClickGenerate() {
-            var amount = $("#amount").val(),
-                balance = $("#balance").val(),
-                fromAddress = $(".icon-address.from input").val(),
-                gaslimit = $("#limit").val(),
-                gasprice = $("#price").val(),
-                nonce = $("#nonce").val(),
+            var fromAddress, toAddress, balance, amount, gaslimit, gasprice, nonce, bnAmount;
+
+            if (validateAll()) {
+                fromAddress = $(".icon-address.from input").val();
                 toAddress = $(".icon-address.to input").val();
+                balance = $("#balance").val();
+                amount = $("#amount").val();
+                gaslimit = $("#limit").val();
+                gasprice = $("#price").val();
+                nonce = $("#nonce").val();
 
-            if (validateAll())
-                try {
-                    var tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
-                        .times(Utils.toBigNumber(gasprice)), "nas");
+                if (gLastGenerateInfo.fromAddress != fromAddress ||
+                    gLastGenerateInfo.toAddress != toAddress ||
+                    gLastGenerateInfo.balance != balance ||
+                    gLastGenerateInfo.amount != amount ||
+                    gLastGenerateInfo.gaslimit != gaslimit ||
+                    gLastGenerateInfo.gasprice != gasprice ||
+                    gLastGenerateInfo.nonce != nonce) try {
+                        var tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
+                            .times(Utils.toBigNumber(gasprice)), "nas");
 
-                    if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
-                        if (Utils.toBigNumber(balance).lt(tmp))
-                            amount = Utils.toBigNumber(0);
-                        else
-                            amount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
+                        if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
+                            if (Utils.toBigNumber(balance).lt(tmp))
+                                bnAmount = Utils.toBigNumber(0);
+                            else
+                                bnAmount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
 
-                    // console.log(Utils.toBigNumber(balance).toNumber(), Utils.toBigNumber(amount).toNumber(), tmp.toNumber());
+                        gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                        gTx.signTransaction();
 
-                    gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
-                    gTx.signTransaction();
+                        $("#raw").val(gTx.toString());
+                        $("#signed").val(gTx.toProtoString());
 
-                    $("#raw").val(gTx.toString());
-                    $("#signed").val(gTx.toProtoString());
+                        $("<div id=addressqr></div>")
+                            .qrcode(gTx.toProtoString())
+                            .replaceAll('#addressqr');
 
-                    $("<div id=addressqr></div>")
-                        .qrcode(gTx.toProtoString())
-                        .replaceAll('#addressqr');
+                        $("#transaction").show();
 
-                    $("#transaction").show();
-                } catch (e) {
-                    bootbox.dialog({
-                        message: e,
-                        size: "large",
-                        title: "Error"
-                    });
-                }
-
-            return false;
+                        gLastGenerateInfo.fromAddress = fromAddress;
+                        gLastGenerateInfo.toAddress = toAddress;
+                        gLastGenerateInfo.balance = balance;
+                        gLastGenerateInfo.amount = amount;
+                        gLastGenerateInfo.gaslimit = gaslimit;
+                        gLastGenerateInfo.gasprice = gasprice;
+                        gLastGenerateInfo.nonce = nonce;
+                    } catch (e) {
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: e,
+                            size: "large",
+                            title: "Error"
+                        });
+                    }
+            }
         }
 
-        $("#send_transaction").click(function () {
+        function onClickSendTransaction() {
             $("#for_addr").val($(".icon-address.from input").val());
             $("#to_addr").val($(".icon-address.to input").val());
-            $("#value").val($("#amount").val());
-            $("#value").trigger("input");
+            $("#value").val($("#amount").val()).trigger("input");
+        }
 
-        });
-
-        function onClickSendTransaction() {
+        function onClickModalConfirmS() {
             var mTxHash;
 
             gTx && neb.api.sendRawTransaction(gTx.toProtoString())
@@ -313,7 +330,9 @@
                     }, 60 * 1000);
                 }).catch(function (o) {
                     bootbox.dialog({
-                        message: i18n.apiErrorToText(o.error),
+                        backdrop: true,
+                        onEscape: true,
+                        message: i18n.apiErrorToText(o.message),
                         size: "large",
                         title: "Error"
                     });
@@ -321,5 +340,4 @@
         }
     </script>
 </body>
-
 </html>

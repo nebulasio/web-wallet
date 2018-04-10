@@ -193,7 +193,9 @@
                         $("#myModal").modal("hide");
 
                         bootbox.dialog({
-                            message: i18n.apiErrorToText(o.error),
+                            backdrop: true,
+                            message: i18n.apiErrorToText(o.message),
+                            onEscape: true,
                             size: "large",
                             title: "Error"
                         });

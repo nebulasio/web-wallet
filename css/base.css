@@ -139,6 +139,10 @@ label > i {
     font-size: small;
 }
 
+.mt14 {
+    margin-top: 14px;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -159,7 +163,7 @@ label > i {
     */
 
 .btn-primary {
-    border: 0;
+    border-color: black;
 }
 
 .dropdown-item.active,
@@ -183,9 +187,6 @@ label > i {
 
 .bootbox .btn {
     line-height: 1;
-    margin: 0;
-}
-
-.mt14{
-    margin-top: 14px;
+    margin-bottom: 0;
+    margin-top: 0;
 }

@@ -268,6 +268,8 @@ var uiBlock = function () {
                     } catch (err) {
                         $this.closest(".select-wallet-file").find("label.file").addClass("empty");
                         bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
                             message: err,
                             size: "large",
                             title: "Error"
@@ -296,6 +298,8 @@ var uiBlock = function () {
                         console.log("uiBlock/selectWalletFile - 'callback' parameter not specified, cannot pass result");
                 else {
                     bootbox.dialog({
+                        backdrop: true,
+                        onEscape: true,
                         message: "<span data-i18n=swf/modal/select/message></span>",
                         size: "large",
                         title: "<span data-i18n=swf/modal/select/title></span>"
