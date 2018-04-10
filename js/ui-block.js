@@ -227,11 +227,12 @@ var uiBlock = function () {
             }
         }
 
+        // this block should not add 'container' class by it self, should let user add it
         function selectWalletFile(selector, callback) {
             var mAccount, mFileJson;
 
             i18n.run($(selector)
-                .addClass("container select-wallet-file")
+                .addClass("select-wallet-file")
                 .html(
                     "<p data-i18n=swf/name></p>" +
                     '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
