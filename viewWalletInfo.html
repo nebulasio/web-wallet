@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset=utf-8>
     <link rel="icon shortcut" href=img/logo.png type=image/png>
@@ -25,7 +24,6 @@
         display: none;
     }
 </style>
-
 <body>
     <div class=logo-main></div>
     <div class=header></div>
@@ -61,13 +59,11 @@
             <div class="col qr_code">
                 <div class=text-center>
                     <label for=addressqr data-i18n=wallet-info/your-addr>Your Address</label>
-                    <div class=form-group id=addressqr>
-                    </div>
+                    <div class=form-group id=addressqr></div>
                 </div>
                 <div class="display-none key_qr text-center">
                     <label for=privateqr data-i18n=wallet-info/private-key>Private Key (unencrypted)</label>
-                    <div class=form-group id=privateqr>
-                    </div>
+                    <div class=form-group id=privateqr></div>
                 </div>
             </div>
         </div>
@@ -117,6 +113,9 @@
                 $("#address").val(account.getAddressString());
                 $("#sideaddress").text(account.getAddressString());
                 $("#password").val(account.getPrivateKeyString());
+                $("#addressqr").qrcode(account.getAddressString());
+                $("#privateqr").qrcode(account.getPrivateKeyString());
+                $("#walletinfo").show();
 
                 neb.api.getAccountState(account.getAddressString())
                     .then(function (resp) {
@@ -124,11 +123,6 @@
                             throw new Error(resp.error);
                         } else {
                             $("#amount").val(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
-                            $("#addressqr").text("");
-                            $("#privateqr").text("");
-                            $("#addressqr").qrcode(account.getAddressString());
-                            $("#privateqr").qrcode(account.getPrivateKeyString());
-                            $("#walletinfo").show();
                         }
                     })
                     .catch(function (e) {
@@ -171,5 +165,4 @@
         }
     </script>
 </body>
-
 </html>

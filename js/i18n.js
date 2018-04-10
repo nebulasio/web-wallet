@@ -223,6 +223,11 @@ var i18n = function () {
                     en: s,
                     zh: "网络错误"
                 },
+                // getAccountState
+                "address: invalid address format": {
+                    en: s,
+                    zh: "地址格式无效"
+                },
                 // GetTransactionReceipt
                 "invalid argument(s)": {
                     en: "invalid transaction hash",
