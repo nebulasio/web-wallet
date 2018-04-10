@@ -7,7 +7,6 @@ Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/n
 
 ### TODO list
 
-- api server testnet.nebulas.io returns access-control-allow-origin: (origin in request header), when open index.html through file: it's origin is null and in this case chrome disallows js from accessing ajax content, so this api setting needs change
 - generate nebulas address/account [done]
 - send transaction (NAS & NRC20) [send NAS has done.]
 - send offine transaction [done]
