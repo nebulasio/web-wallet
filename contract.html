@@ -9,7 +9,6 @@
     <link rel=stylesheet href=lib/prismjs-1.13.0/prism.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/ui-block.css>
-    <link rel=stylesheet href=css/contract.css>
     <meta name=viewport content="width=device-width">
     <title>NEBULAS</title>
     <style>
@@ -33,7 +32,6 @@
 
         .deploy_contract span {
             color: black;
-            display: -webkit-inline-box;
         }
 
         .title {
@@ -102,7 +100,6 @@
         }
 
         .execution_banner {
-            width: 90%;
             height: 200px;
             background-color: #f5f5f5;
             margin: 0 auto;
@@ -174,7 +171,7 @@
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea name="" id=source cols=30 rows=10></textarea>
+                <textarea class=form-control id=source cols=30 rows=10></textarea>
                 <br>
                 <br>
                 <!-- select codetype -->
@@ -189,15 +186,14 @@
                         <input class=form-check-input type=radio name=sourceType id=exampleRadios2 value=ts>
                         <label class=form-check-label for=exampleRadios2>ts</label>
                     </div>
-                    <span data-i18n=contract/contract_codetype_banner>(请选择代码类型！ )</span>
-
+                    <span data-i18n=contract/contract_codetype_banner></span>
                 </div>
                 <br>
 
                 <!-- function args -->
 
-                <span data-i18n=contract/contract_fun></span>
-                <input type=text id=deploy_args>
+                <label data-i18n=contract/contract_fun></label>
+                <input class=form-control type=text id=deploy_args>
 
                 <!-- select wallet -->
 
@@ -212,13 +208,12 @@
                         <label for=toaddress data-i18n=send-nas/to-address></label>
                         <input type=text class=form-control id=to_addr disabled>
                     </div>
-
                 </div>
 
                 <div class=row>
                     <div class=col-md-6>
                         <label data-i18n=send-nas/amount></label>
-                        <input type=text id=value value=0 disabled>
+                        <input class=form-control type=text id=value value=0 disabled>
                     </div>
                     <div class="col-md-6 lh">
                         <span data-i18n=send-nas/balance></span>
@@ -232,11 +227,11 @@
 
                 <div class=row>
                     <div class=col-md-6>
-                        <span data-i18n=gas-limit></span>
-                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
+                        <label data-i18n=gas-limit></label>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000 data-disabled></div>
                     </div>
                     <div class=col-md-6>
-                        <span data-i18n=gas-price></span>
+                        <label data-i18n=gas-price></label>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
                         <div class=number-comma data-data-i18n=amount data-id=gas_price data-unit=wei data-validate="required number gt0" data-value=200000></div>
@@ -278,12 +273,12 @@
 
                 <div class=row>
                     <div class=col-md-6>
-                        <span data-i18n=contract/contract_funtion></span>
-                        <input type=text id=call_function>
+                        <label data-i18n=contract/contract_funtion></label>
+                        <input class=form-control type=text id=call_function>
                     </div>
                     <div class=col-md-6>
-                        <span data-i18n=contract/contract_fun></span>
-                        <input type=text id=call_args>
+                        <label data-i18n=contract/contract_fun></label>
+                        <input class=form-control type=text id=call_args>
                     </div>
                 </div>
 
@@ -303,7 +298,7 @@
                 <div class=row>
                     <div class=col-md-6>
                         <label data-i18n=send-nas/amount></label>
-                        <input type=text id=run_value value=0>
+                        <input class=form-control type=text id=run_value value=0>
                     </div>
                     <div class="col-md-6 lh">
                         <span data-i18n=send-nas/balance></span>
@@ -317,16 +312,14 @@
 
                 <div class=row>
                     <div class=col-md-6>
-                        <span data-i18n=gas-limit></span>
-                        <!-- <span id=gas_limit></span> -->
-                        <input type=text id=run_gas_limit value=200000>
+                        <label data-i18n=gas-limit></label>
+                        <input class=form-control type=text id=run_gas_limit value=200000>
                     </div>
                     <div class=col-md-6>
-                        <span data-i18n=gas-price></span>
+                        <label data-i18n=gas-price></label>
                         <i>( 1 NAS = 1EWei = 10
                             <sup>18</sup> Wei )</i>
-                        <!-- <span id=gas_price></span> -->
-                        <input type=text id=run_gas_price>
+                        <input class=form-control type=text id=run_gas_price>
                     </div>
                 </div>
 
