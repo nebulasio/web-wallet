@@ -30,11 +30,6 @@
             width: auto;
         }
 
-        .deploy_contract span {
-            color: black;
-            display: -webkit-inline-box;
-        }
-
         .title {
             text-align: center;
             color: black;
@@ -101,7 +96,6 @@
         }
 
         .execution_banner {
-            width: 90%;
             height: 200px;
             background-color: #f5f5f5;
             margin: 0 auto;
@@ -259,7 +253,7 @@
                         <textarea class=execution_banner id=deploy_test_result></textarea>
                     </div>
                     <div class="col-md-6 next_right active1">
-                        <span class="execution" data-i18n=contract/result></span>
+                        <span class=execution data-i18n=contract/result></span>
                         <br>
                         <span data-i18n=contract/txhash></span>
                         <i data-i18n=contract/clickToCheck></i>&darr;
@@ -350,7 +344,7 @@
                         <span data-i18n=contract/txhash></span>
                         <i data-i18n=contract/clickToCheck></i>&darr;
                         <a class="form-control mt14" id=receipt_call></a>
-                        <!-- <textarea class=execution_banner id=call_result style="height:172px;"></textarea> -->
+                        <!-- <textarea class=execution_banner id=call_result style=height:172px;></textarea> -->
                     </div>
                 </div>
             </div>
@@ -358,14 +352,13 @@
     </div>
 
     <!--  loading  -->
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div id=myModal class="modal fade">
+        <div class=modal-dialog>
+            <div class=modal-content>
                 <!-- dialog body -->
-                <div class="modal-body">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                            aria-valuemax="100" style="width: 100%"></div>
+                <div class=modal-body>
+                    <div class=progress>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar aria-valuenow=75 aria-valuemin=0 aria-valuemax=100 style="width: 100%"></div>
                     </div>
                 </div>
             </div>
