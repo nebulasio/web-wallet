@@ -107,46 +107,46 @@ var uiBlock = function () {
         }
 
         function logoMain(selector) {
-            var i, len, list,
+            var i, len, apiList, langList,
                 apiPrefix, sApiButtons, sApiText,
                 lang, sLangButtons;
 
             //
             // apiPrefix
 
-            list = [
-                { chainId: 1, name: "mainnet.nebulas.io", url: "https://mainnet.nebulas.io" },
-                { chainId: 1001, name: "testnet.nebulas.io", url: "https://testnet.nebulas.io" }
+            apiList = [
+                { chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io" },
+                { chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io" }
             ];
             apiPrefix = (localSave.getItem("apiPrefix") || "").toLowerCase();
             sApiButtons = "";
 
-            for (i = 0, len = list.length; i < len && list[i].url != apiPrefix; ++i);
+            for (i = 0, len = apiList.length; i < len && apiList[i].url != apiPrefix; ++i);
 
             i == len && (i = 0);
-            localSave.setItem("apiPrefix", apiPrefix = list[i].url);
-            localSave.setItem("chainId", list[i].chainId);
-            sApiText = list[i].name;
+            localSave.setItem("apiPrefix", apiPrefix = apiList[i].url);
+            localSave.setItem("chainId", apiList[i].chainId);
+            sApiText = apiList[i].name;
 
-            for (i = 0, len = list.length; i < len; ++i)
+            for (i = 0, len = apiList.length; i < len; ++i)
                 sApiButtons += '<button class="' +
-                    (apiPrefix == list[i].url ? "active " : "") + 'dropdown-item" data-i=' + i + ">" +
-                    list[i].name + "</button>";
+                    (apiPrefix == apiList[i].url ? "active " : "") + 'dropdown-item" data-i=' + i + ">" +
+                    apiList[i].name + "</button>";
 
             //
             // lang
 
-            list = i18n.supports();
+            langList = i18n.supports();
             lang = (localSave.getItem("lang") || "").toLowerCase();
             sLangButtons = "";
 
-            for (i = 0, len = list.length; i < len && list[i] != lang; ++i);
+            for (i = 0, len = langList.length; i < len && langList[i] != lang; ++i);
 
             i == len && (i = 0);
-            localSave.setItem("lang", lang = list[i]);
+            localSave.setItem("lang", lang = langList[i]);
 
-            for (i = 0, len = list.length; i < len; ++i)
-                sLangButtons += '<button class="' + (list[i] == lang ? "active " : "") + 'dropdown-item" data-lang=' + list[i] + ">" + i18n.langName(list[i]) + "</button>"
+            for (i = 0, len = langList.length; i < len; ++i)
+                sLangButtons += '<button class="' + (langList[i] == lang ? "active " : "") + 'dropdown-item" data-lang=' + langList[i] + ">" + i18n.langName(langList[i]) + "</button>"
 
             //
             // $.html
@@ -177,7 +177,7 @@ var uiBlock = function () {
                 var $this = $(this);
 
                 if (!$this.hasClass("active")) {
-                    localSave.setItem("apiPrefix", list[$this.data("i")].url);
+                    localSave.setItem("apiPrefix", apiList[$this.data("i")].url);
                     location.reload();
                 }
             }
