@@ -210,7 +210,7 @@ var uiBlock = function () {
                     attrValue = $o.attr("data-value");
 
                 $o.addClass("number-comma")
-                    .html('<input class="form-control"' +
+                    .html("<input class=form-control" +
                         (attrDisabled ? " disabled" : "") +
                         (attrI18n ? " data-i18n=" + attrI18n : "") +
                         (attrId ? " id=" + attrId : "") +

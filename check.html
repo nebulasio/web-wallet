@@ -131,14 +131,12 @@
         </table>
     </section>
 
-    <!--  loading  -->
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- dialog body -->
-                <div class="modal-body">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    <div class="fade loading modal">
+        <div class=modal-dialog>
+            <div class=modal-content>
+                <div class=modal-body>
+                    <div class=progress>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar style=width:100%></div>
                     </div>
                 </div>
             </div>
@@ -172,7 +170,7 @@
 
         neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
         $("#btn").on("click", onClickBtn);
-        $("#myModal").on("shown.bs.modal", onMyModalShown);
+        $(".modal.loading").on("shown.bs.modal", onMyModalShown);
 
         if (hash) {
             $("#input").val(hash);
@@ -184,13 +182,13 @@
 
             if (validateAll()) {
                 ajaxLoaded = false;
-                $("#myModal").modal("show");
+                $(".modal.loading").modal("show");
 
                 neb.api.getTransactionReceipt(addr)
                     .then(doneGetTransactionReceipt)
                     .catch(function (o) {
                         ajaxLoaded = true;
-                        $("#myModal").modal("hide");
+                        $(".modal.loading").modal("hide");
 
                         bootbox.dialog({
                             backdrop: true,
@@ -209,12 +207,12 @@
         }
 
         function onMyModalShown() {
-            ajaxLoaded && $("#myModal").modal("hide");
+            ajaxLoaded && $(".modal.loading").modal("hide");
         }
 
         function doneGetTransactionReceipt(o) {
             ajaxLoaded = true;
-            $("#myModal").modal("hide");
+            $(".modal.loading").modal("hide");
 
             $("#info").removeClass("active1");
             $("#code").text(o.data);
