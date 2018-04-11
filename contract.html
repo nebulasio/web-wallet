@@ -360,7 +360,6 @@
             globalParams = {
                 account: null
             },
-            ajaxLoaded = true,
             validateTab2 = uiBlock.validate("#tab2"),
             validateTab3 = uiBlock.validate("#tab3");
 
@@ -397,7 +396,6 @@
         $("#deploy").on("click", onClickDeploy);
         $("#call_test").on("click", onClickCallTest);
         $("#call").on("click", onClickCall);
-        $(".modal.loading").on("shown.bs.modal", onMyModalShown);
 
         function onClickDeployTest() {
             validateTab2() && innerDeploy(function (params) {
@@ -661,7 +659,6 @@
             };
 
             // prepare nonce
-            ajaxLoaded = false;
             neb.api.getAccountState(params.from).then(function (resp) {
                 params.nonce = parseInt(resp.nonce) + 1;
                 var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
@@ -670,7 +667,6 @@
                 console.log("prepared params: " + JSON.stringify(params));
                 callback(params);
             }).catch(function (err) {
-                ajaxLoaded = true;
                 $(".modal.loading").modal("hide");
 
                 bootbox.dialog({
@@ -682,9 +678,7 @@
                 });
             });
         }
-        function onMyModalShown() {
-            ajaxLoaded && $(".modal.loading").modal("hide");
-        }
+
         function innerCall(callback) {
             let params = {};
 

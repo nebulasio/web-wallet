@@ -157,7 +157,6 @@
         var nebulas = require("nebulas"),
             Account = nebulas.Account,
             neb = new nebulas.Neb(),
-            ajaxLoaded,
             hash = location.search.slice(1),
             validateAll = uiBlock.validate();
 
@@ -170,7 +169,6 @@
 
         neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
         $("#btn").on("click", onClickBtn);
-        $(".modal.loading").on("shown.bs.modal", onMyModalShown);
 
         if (hash) {
             $("#input").val(hash);
@@ -181,13 +179,11 @@
             var addr = $("#input").val();
 
             if (validateAll()) {
-                ajaxLoaded = false;
                 $(".modal.loading").modal("show");
 
                 neb.api.getTransactionReceipt(addr)
                     .then(doneGetTransactionReceipt)
                     .catch(function (o) {
-                        ajaxLoaded = true;
                         $(".modal.loading").modal("hide");
 
                         bootbox.dialog({
@@ -206,12 +202,7 @@
             }
         }
 
-        function onMyModalShown() {
-            ajaxLoaded && $(".modal.loading").modal("hide");
-        }
-
         function doneGetTransactionReceipt(o) {
-            ajaxLoaded = true;
             $(".modal.loading").modal("hide");
 
             $("#info").removeClass("active1");

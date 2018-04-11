@@ -3,12 +3,39 @@
 // because this project already uses them
 
 var uiBlock = function () {
+    var old$fnModal = $.fn.modal;
+
+    $.fn.modal = $fnModal;
+
     return {
         insert: insert,
         numberAddComma: numberAddComma,
         toSi: toSi,
         validate: validate
     };
+
+    function $fnModal(s) {
+        if (!this.hasClass("listen-to-bs-shown")) {
+            this.addClass("listen-to-bs-shown");
+            this.on("shown.bs.modal", onShownBsModal);
+        }
+
+        if (s == "show")
+            this.removeClass("marked-for-close");
+        else if (s == "hide")
+            // when modal is animating, you can not close it, it's important to set this flag;
+            // when animating is over, you can close modal, this flag is not used
+            this.addClass("marked-for-close");
+
+        old$fnModal.apply(this, arguments);
+    }
+
+    function onShownBsModal() {
+        var $this = $(this);
+
+        if ($this.hasClass("marked-for-close"))
+            $this.modal("hide");
+    }
 
     function insert(dic) {
         // f({ header: ".header-1, .abc" })
