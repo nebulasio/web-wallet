@@ -332,7 +332,8 @@
                 <!-- dialog body -->
                 <div class=modal-body>
                     <div class=progress>
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar aria-valuenow=75 aria-valuemin=0 aria-valuemax=100 style="width: 100%"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar aria-valuenow=75 aria-valuemin=0 aria-valuemax=100
+                            style="width: 100%"></div>
                     </div>
                 </div>
             </div>
@@ -362,6 +363,7 @@
             globalParams = {
                 account: null
             },
+            ajaxLoaded = true,
             validateTab2 = uiBlock.validate("#tab2"),
             validateTab3 = uiBlock.validate("#tab3");
 
@@ -398,6 +400,7 @@
         $("#deploy").on("click", onClickDeploy);
         $("#call_test").on("click", onClickCallTest);
         $("#call").on("click", onClickCall);
+        $("#myModal").on("shown.bs.modal", onMyModalShown);
 
         function onClickDeployTest() {
             validateTab2() && innerDeploy(function (params) {
@@ -659,8 +662,9 @@
                 "sourceType": $("input[name=sourceType]:checked").val(),
                 "args": $("#deploy_args").val().trim()
             };
-
+     
             // prepare nonce
+            ajaxLoaded = false;
             neb.api.getAccountState(params.from).then(function (resp) {
                 params.nonce = parseInt(resp.nonce) + 1;
                 var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
@@ -669,10 +673,21 @@
                 console.log("prepared params: " + JSON.stringify(params));
                 callback(params);
             }).catch(function (err) {
-                console.log("prepare nonce error: " + err);
+                ajaxLoaded = true;
+                $("#myModal").modal("hide");
+
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: i18n.apiErrorToText(err.message),
+                    size: "large",
+                    title: "Error"
+                });
             });
         }
-
+        function onMyModalShown() {
+            ajaxLoaded && $("#myModal").modal("hide");
+        }
         function innerCall(callback) {
             let params = {};
 
@@ -754,7 +769,14 @@
                 console.log("prepared params: " + JSON.stringify(params));
                 callback(params);
             }).catch(function (err) {
-                console.log("prepare nonce error: " + err);
+                // console.log("prepare nonce error: " + err);
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: i18n.apiErrorToText(err.message),
+                    size: "large",
+                    title: "Error"
+                });
             });
         }
     </script>
