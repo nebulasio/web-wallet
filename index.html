@@ -46,7 +46,7 @@
                 <code data-i18n=keystore-file></code>
                 <span data-i18n=new/save3>File.</span>
             </h1>
-            <button id=genNewWallet class="btn btn-block" data-i18n=new/gen>Download Keystore File</button>
+            <button class="btn btn-block" data-i18n=new/gen>Download Keystore File</button>
         </div>
         <p class=wallet_help data-i18n=new/comment>
             This password encrypts your private key.
@@ -82,19 +82,20 @@
             logoMain: ".logo-main"
         });
 
-        $("#creat").click(function () {
-            if (validateAll())
-                $(".download").removeClass("active1");
-        });
+        $("#creat").on("click", onClickCreate);
+        $(".download button").on("click", onClickDownloadButton);
 
-        $("#genNewWallet").click(function () {
-            var password = $("#password").val(),
-                address, keyStr, blob;
+        function onClickCreate() {
+            validateAll() && $(".download").removeClass("active1");
+        }
+
+        function onClickDownloadButton() {
+            var password = $("#password").val(), address, keyStr, blob;
 
             if (validateAll()) {
                 bootbox.alert({
-                    title: "info",
-                    message: "waiting..."
+                    message: "waiting...",
+                    title: "info"
                 });
 
                 // window.open('tokey.html?password=' + password, '_blank');
@@ -103,17 +104,9 @@
                 keyStr = account.toKeyString(password);
                 blob = new Blob([keyStr], { type: "application/json; charset=utf-8" });
                 saveAs(blob, address);
-
-                // i can't close bootstrap modal when it's animating, tried below to no avail
-                // https://stackoverflow.com/questions/16493280/close-bootstrap-modal
-                setTimeout(function () {
-                    bootbox.hideAll();
-                    // $(".bootbox.modal .close").click();
-                }, 500);
+                bootbox.hideAll();
             }
-
-            return false;
-        });
+        }
     </script>
 </body>
 </html>
