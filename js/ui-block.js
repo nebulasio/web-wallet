@@ -264,8 +264,8 @@ var uiBlock = function () {
                     "<p data-i18n=swf/name></p>" +
                     '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
                     '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
-                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' +
-                    "<p class=comment data-i18n=swf/comment></p>")
+                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' 
+                    )
                 .on("click", "button", onClickUnlock)
                 .on("keyup", "input[type=password]", onKeyUpPassword)
                 .on({
