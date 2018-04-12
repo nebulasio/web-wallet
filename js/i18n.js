@@ -87,8 +87,7 @@ var i18n = function () {
             "send-offline/step2": "Step 2: Generate Transaction (Offline Computer)",
             "send-offline/step3": "Step 3: Send / Publish Transaction (Online Computer)",
             "swf/button": "SELECT WALLET FILE...",
-            "swf/comment": "This is not a recommended way to access your wallet.\n" +
-                "Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.",
+            
             "swf/good": "Your wallet is encrypted. Good! Please enter the password.",
             "swf/modal/select/message": "please upload your wallet file, thanks",
             "swf/modal/select/title": "please select your wallet",
