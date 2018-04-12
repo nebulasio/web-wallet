@@ -29,7 +29,7 @@ var i18n = function () {
             "contract/deploy_test": "Test",
             "contract/deploy_submit": "Submit",
             "contract/contract_code": "code : ",
-            "contract/contract_codetype": "codetype :",
+            "contract/contract_codetype": "Programming Language :",
             "contract/contract_codetype_banner": "（ Please select the code type ！）",
             "contract/contract_fun": "arguments  (for example : [\"x\"] )",
             "contract/contract_funtion": "function",
@@ -87,8 +87,7 @@ var i18n = function () {
             "send-offline/step2": "Step 2: Generate Transaction (Offline Computer)",
             "send-offline/step3": "Step 3: Send / Publish Transaction (Online Computer)",
             "swf/button": "SELECT WALLET FILE...",
-            "swf/comment": "This is not a recommended way to access your wallet.\n" +
-                "Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen.",
+
             "swf/good": "Your wallet is encrypted. Good! Please enter the password.",
             "swf/modal/select/message": "please upload your wallet file, thanks",
             "swf/modal/select/title": "please select your wallet",
@@ -126,7 +125,7 @@ var i18n = function () {
             "contract/deploy_test": "测试",
             "contract/deploy_submit": "提交",
             "contract/contract_code": "合约代码 :",
-            "contract/contract_codetype": "代码类型 :",
+            "contract/contract_codetype": "编程语言 :",
             "contract/contract_codetype_banner": "（ 请选择代码类型 ！）",
             "contract/contract_fun": "参数  ( 例如：[\"x\"]）",
             "contract/contract_funtion": "函数",
