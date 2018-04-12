@@ -325,15 +325,12 @@
         </div>
     </div>
 
-    <!--  loading  -->
-    <div id=myModal class="modal fade">
+    <div class="fade loading modal" data-backdrop=static>
         <div class=modal-dialog>
             <div class=modal-content>
-                <!-- dialog body -->
                 <div class=modal-body>
                     <div class=progress>
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar aria-valuenow=75 aria-valuemin=0 aria-valuemax=100
-                            style="width: 100%"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role=progressbar style="width: 100%"></div>
                     </div>
                 </div>
             </div>
@@ -363,7 +360,6 @@
             globalParams = {
                 account: null
             },
-            ajaxLoaded = true,
             validateTab2 = uiBlock.validate("#tab2"),
             validateTab3 = uiBlock.validate("#tab3");
 
@@ -400,7 +396,6 @@
         $("#deploy").on("click", onClickDeploy);
         $("#call_test").on("click", onClickCallTest);
         $("#call").on("click", onClickCall);
-        $("#myModal").on("shown.bs.modal", onMyModalShown);
 
         function onClickDeployTest() {
             validateTab2() && innerDeploy(function (params) {
@@ -429,7 +424,7 @@
         }
 
         function onClickDeploy() {
-            $("#myModal").modal("show");
+            $(".modal.loading").modal("show");
             $(".next_right").removeClass("active1");
 
             innerDeploy(function (params) {
@@ -441,10 +436,10 @@
                     $("#deploy_result").text(JSON.stringify(resp));
                     $("#deploy_result_address").val(resp.contract_address);
                     $("#receipt").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
-                    $("#myModal").modal("hide");
+                    $(".modal.loading").modal("hide");
                 }).catch(function (err) {
                     $("#deploy_result").text(JSON.stringify(err));
-                    $("#myModal").modal("hide");
+                    $(".modal.loading").modal("hide");
                 });
             });
         }
@@ -457,7 +452,7 @@
                     $(".errmsg").addClass("active1");
                 }, 2000);
             } else {
-                $("#myModal").modal("show");
+                $(".modal.loading").modal("show");
                 neb.api.getTransactionReceipt($("#addr_input").val())
                     .then(function (resp) {
                         var data, s, lang;
@@ -487,8 +482,7 @@
                                     s = "0x0";
 
                                 $(".search_result").html(s);
-
-                                $("#myModal").modal("hide");
+                                $(".modal.loading").modal("hide");
                             }
                         }
                     })
@@ -501,7 +495,7 @@
                             title: "Error"
                         });
 
-                        $("#myModal").modal("hide");
+                        $(".modal.loading").modal("hide");
                     });
             }
         }
@@ -540,7 +534,8 @@
         }
 
         function onClickCall() {
-            $("#myModal").modal("show");
+            $(".modal.loading").modal("show");
+
             innerCall(function (params) {
                 var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
                     params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
@@ -552,19 +547,19 @@
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
                     $("#receipt_call").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
-                    $("#myModal").modal("hide");
+                    $(".modal.loading").modal("hide");
                 }).catch(function (err) {
                     $("#call_result").text(JSON.stringify(err));
                     $(".result").removeClass("active1");
                     $(".next").removeClass("active1");
-                    $("#myModal").modal("hide");
+                    $(".modal.loading").modal("hide");
                 });
             });
         }
 
         function onUnlockFile(swf, fileJson, account, password) {
             var state, balance_nas;
-            $("#myModal").modal("show");
+            $(".modal.loading").modal("show");
 
             try {
                 account.fromKey(fileJson, password);
@@ -580,13 +575,13 @@
                         $("#gas_price").val(resp.gas_price);
                         $("#run_gas_price").val(resp.gas_price);
                         return neb.api.getAccountState($("#from_addr").val());
-                        $("#myModal").modal("hide");
+                        $(".modal.loading").modal("hide");
                     })
                     .then(function (resp) {
                         var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
                         $("#balance").text(balance + ' NAS');
                         $("#run_balance").text(balance + ' NAS');
-                        $("#myModal").modal("hide");
+                        $(".modal.loading").modal("hide");
                     })
                     .catch(function (e) {
                         // this catches e thrown by nebulas.js!neb
@@ -598,7 +593,7 @@
                             size: "large",
                             title: "Error"
                         });
-                        $("#myModal").modal("hide");
+                        $(".modal.loading").modal("hide");
                     });
 
             } catch (e) {
@@ -611,7 +606,7 @@
                     size: "large",
                     title: "Error"
                 });
-                $("#myModal").modal("hide");
+                $(".modal.loading").modal("hide");
             }
         }
 
@@ -662,9 +657,8 @@
                 "sourceType": $("input[name=sourceType]:checked").val(),
                 "args": $("#deploy_args").val().trim()
             };
-     
+
             // prepare nonce
-            ajaxLoaded = false;
             neb.api.getAccountState(params.from).then(function (resp) {
                 params.nonce = parseInt(resp.nonce) + 1;
                 var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
@@ -673,8 +667,7 @@
                 console.log("prepared params: " + JSON.stringify(params));
                 callback(params);
             }).catch(function (err) {
-                ajaxLoaded = true;
-                $("#myModal").modal("hide");
+                $(".modal.loading").modal("hide");
 
                 bootbox.dialog({
                     backdrop: true,
@@ -685,9 +678,7 @@
                 });
             });
         }
-        function onMyModalShown() {
-            ajaxLoaded && $("#myModal").modal("hide");
-        }
+
         function innerCall(callback) {
             let params = {};
 

@@ -3,12 +3,39 @@
 // because this project already uses them
 
 var uiBlock = function () {
+    var old$fnModal = $.fn.modal;
+
+    $.fn.modal = $fnModal;
+
     return {
         insert: insert,
         numberAddComma: numberAddComma,
         toSi: toSi,
         validate: validate
     };
+
+    function $fnModal(s) {
+        if (!this.hasClass("listen-to-bs-shown")) {
+            this.addClass("listen-to-bs-shown");
+            this.on("shown.bs.modal", onShownBsModal);
+        }
+
+        if (s == "show")
+            this.removeClass("marked-for-close");
+        else if (s == "hide")
+            // when modal is animating, you can not close it, it's important to set this flag;
+            // when animating is over, you can close modal, this flag is not used
+            this.addClass("marked-for-close");
+
+        old$fnModal.apply(this, arguments);
+    }
+
+    function onShownBsModal() {
+        var $this = $(this);
+
+        if ($this.hasClass("marked-for-close"))
+            $this.modal("hide");
+    }
 
     function insert(dic) {
         // f({ header: ".header-1, .abc" })
@@ -210,7 +237,7 @@ var uiBlock = function () {
                     attrValue = $o.attr("data-value");
 
                 $o.addClass("number-comma")
-                    .html('<input class="form-control"' +
+                    .html("<input class=form-control" +
                         (attrDisabled ? " disabled" : "") +
                         (attrI18n ? " data-i18n=" + attrI18n : "") +
                         (attrId ? " id=" + attrId : "") +
@@ -237,8 +264,8 @@ var uiBlock = function () {
                     "<p data-i18n=swf/name></p>" +
                     '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
                     '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
-                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' +
-                    "<p class=comment data-i18n=swf/comment></p>")
+                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' 
+                    )
                 .on("click", "button", onClickUnlock)
                 .on("keyup", "input[type=password]", onKeyUpPassword)
                 .on({

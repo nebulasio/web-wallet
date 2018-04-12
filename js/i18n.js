@@ -87,7 +87,6 @@ var i18n = function () {
             "send-offline/step2": "Step 2: Generate Transaction (Offline Computer)",
             "send-offline/step3": "Step 3: Send / Publish Transaction (Online Computer)",
             "swf/button": "SELECT WALLET FILE...",
-
             "swf/good": "Your wallet is encrypted. Good! Please enter the password.",
             "swf/modal/select/message": "please upload your wallet file, thanks",
             "swf/modal/select/title": "please select your wallet",
@@ -181,8 +180,6 @@ var i18n = function () {
             "send-offline/step2": "第 2 步：生成信息（单机）",
             "send-offline/step3": "第 3 步：发送 / 发布交易（联网）",
             "swf/button": "选择钱包文件...",
-            "swf/comment": "不推荐用此方法访问钱包。\n" +
-                "在网站输入你的私钥很危险，如果网站不安全或访问了不同的网站，你的资金会失窃。",
             "swf/good": "你的钱包加密了，好！请输入密码。",
             "swf/modal/select/message": "请上传您的钱包文件，谢谢",
             "swf/modal/select/title": "请选择您的钱包",
