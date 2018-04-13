@@ -360,16 +360,16 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
-        $('#tabs a').click(function (e) {
+        $("#tabs a").click(function (e) {
             e.preventDefault();
-            $('#tabs li').removeClass("ccc");
+            $("#tabs li").removeClass("ccc");
             $(this).parent().addClass("ccc");
             $("#content div").removeClass("show");
-            $('#' + $(this).attr('title')).addClass('show');
-            $(this).addClass('current');
+            $("#" + $(this).attr("title")).addClass("show");
+            $(this).addClass("current");
         });
 
-        $('#tabs a').hover(function () {
+        $("#tabs a").hover(function () {
             if (!$(this).parent().hasClass("current")) {
                 $(this).parent().addClass("hoverItem");
             }
@@ -395,12 +395,12 @@
                     contract: params.contract
                 }).then(function (resp) {
                     $("#deploy_test_result").text(JSON.stringify(resp));
-                    $('#deploy').attr("disabled", false); // = $('#deploy').removeAttr("disabled")
+                    $("#deploy").attr("disabled", false); // = $('#deploy').removeAttr("disabled")
                     $("#deploy_result").text("");
                     $("#deploy_test_result").parents(".next").removeClass("active1");
                 }).catch(function (err) {
                     $("#deploy_test_result").text(JSON.stringify(err));
-                    $('#deploy').attr("disabled", true);
+                    $("#deploy").attr("disabled", true);
                     $("#deploy_result").text("");
                     $("#deploy_test_result").parents(".next").removeClass("active1");
                 });
@@ -412,19 +412,24 @@
             $(".next_right").removeClass("active1");
 
             innerDeploy(function (params) {
-                var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
-                    params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")),
+                    globalParams.account,
+                    params.to, params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+
                 gTx.signTransaction();
 
-                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                    $("#deploy_result").text(JSON.stringify(resp));
-                    $("#deploy_result_address").val(resp.contract_address);
-                    $("#receipt").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
-                    $(".modal.loading").modal("hide");
-                }).catch(function (err) {
-                    $("#deploy_result").text(JSON.stringify(err));
-                    $(".modal.loading").modal("hide");
-                });
+                neb.api
+                    .sendRawTransaction(gTx.toProtoString())
+                    .then(function (resp) {
+                        $("#deploy_result").text(JSON.stringify(resp));
+                        $("#deploy_result_address").val(resp.contract_address);
+                        $("#receipt").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
+                        $(".modal.loading").modal("hide");
+                    })
+                    .catch(function (err) {
+                        $("#deploy_result").text(JSON.stringify(err));
+                        $(".modal.loading").modal("hide");
+                    });
             });
         }
 
@@ -437,7 +442,9 @@
                 }, 2000);
             } else {
                 $(".modal.loading").modal("show");
-                neb.api.getTransactionReceipt($("#addr_input").val())
+
+                neb.api
+                    .getTransactionReceipt($("#addr_input").val())
                     .then(function (resp) {
                         var data, s, lang;
 
@@ -499,19 +506,19 @@
                     .then(function (resp) {
                         $("#call_test_result").text(JSON.stringify(resp));
 
-                        if (resp.execute_err && resp.execute_err !== '') {
-                            $('#call').attr("disabled", true);
+                        if (resp.execute_err && resp.execute_err !== "") {
+                            $("#call").attr("disabled", true);
                             $("#call_result").text("");
                             $(".next").removeClass("active1");
                         } else {
-                            $('#call').attr("disabled", false);
+                            $("#call").attr("disabled", false);
                             $("#call_result").text("");
                             $(".next").removeClass("active1");
                         }
                     })
                     .catch(function (err) {
                         $("#call_test_result").text(JSON.stringify(err));
-                        $('#call').attr("disabled", true);
+                        $("#call").attr("disabled", true);
                         $("#call_result").text("");
                         $(".next").removeClass("active1");
                     });
@@ -522,8 +529,10 @@
             $(".modal.loading").modal("show");
 
             innerCall(function (params) {
-                var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")), globalParams.account, params.to,
-                    params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+                var gTx = new nebulas.Transaction(parseInt(localSave.getItem("chainId")),
+                    globalParams.account,
+                    params.to, params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
+
                 gTx.signTransaction();
 
                 neb.api
@@ -575,9 +584,9 @@
                         var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
 
                         if ($tab.prop("id") == "tab2")
-                            $("#balance").val(balance + ' NAS');
+                            $("#balance").val(balance + " NAS");
                         else if ($tab.prop("id") == "tab3")
-                            $("#run_balance").val(balance + ' NAS');
+                            $("#run_balance").val(balance + " NAS");
 
                         $(".modal.loading").modal("hide");
                     })
@@ -616,16 +625,19 @@
                 // TODO 提示钱包信息不正确
                 return;
             }
+
             params.from = globalParams.account.getAddressString();
             params.to = params.from;
 
             // prepare gasLimit
             let gasLimit = Utils.toBigNumber(0);
+
             try {
                 gasLimit = Utils.toBigNumber($("#gas_limit").val());
             } catch (err) {
                 console.log(err);
             }
+
             if (gasLimit.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#gas_limit").addClass("err");
                 setTimeout(function () {
@@ -633,6 +645,7 @@
                 }, 5000);
                 return;
             }
+
             params.gasLimit = gasLimit.toNumber();
 
             // prepare gasPrice
@@ -651,6 +664,7 @@
                 }, 5000);
                 return;
             }
+
             params.gasPrice = gasPrice.toNumber();
             params.value = "0";
             params.contract = {
@@ -660,29 +674,31 @@
             };
 
             // prepare nonce
-            neb.api.getAccountState(params.from).then(function (resp) {
-                var balance = nebulas.Unit.fromBasic(resp.balance, "nas"),
-                    $tab = $(swf).closest(".tab");
+            neb.api.getAccountState(params.from)
+                .then(function (resp) {
+                    var balance = nebulas.Unit.fromBasic(resp.balance, "nas"),
+                        $tab = $(".show.tab");
 
-                params.nonce = parseInt(resp.nonce) + 1;
+                    params.nonce = parseInt(resp.nonce) + 1;
 
-                if ($tab.prop("id") == "tab2")
-                    $("#balance").val(balance + ' NAS');
-                else if ($tab.prop("id") == "tab3")
-                    $("#run_balance").val(balance + ' NAS');
+                    if ($tab.prop("id") == "tab2")
+                        $("#balance").val(balance + " NAS");
+                    else if ($tab.prop("id") == "tab3")
+                        $("#run_balance").val(balance + " NAS");
 
-                callback(params);
-            }).catch(function (err) {
-                $(".modal.loading").modal("hide");
+                    callback(params);
+                })
+                .catch(function (err) {
+                    $(".modal.loading").modal("hide");
 
-                bootbox.dialog({
-                    backdrop: true,
-                    onEscape: true,
-                    message: i18n.apiErrorToText(err.message),
-                    size: "large",
-                    title: "Error"
+                    bootbox.dialog({
+                        backdrop: true,
+                        onEscape: true,
+                        message: i18n.apiErrorToText(err.message),
+                        size: "large",
+                        title: "Error"
+                    });
                 });
-            });
         }
 
         function innerCall(callback) {
@@ -762,14 +778,14 @@
             // you can get different result by hit 'test' multiple times
             neb.api.getAccountState(params.from).then(function (resp) {
                 var balance = nebulas.Unit.fromBasic(resp.balance, "nas"),
-                    $tab = $(swf).closest(".tab");
+                    $tab = $(".show.tab");
 
                 params.nonce = parseInt(resp.nonce) + 1;
 
                 if ($tab.prop("id") == "tab2")
-                    $("#balance").val(balance + ' NAS');
+                    $("#balance").val(balance + " NAS");
                 else if ($tab.prop("id") == "tab3")
-                    $("#run_balance").val(balance + ' NAS');
+                    $("#run_balance").val(balance + " NAS");
 
                 callback(params);
             }).catch(function (err) {
@@ -785,5 +801,4 @@
         }
     </script>
 </body>
-
 </html>
