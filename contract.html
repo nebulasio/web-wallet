@@ -72,10 +72,6 @@
             display: block;
         }
 
-        .stop {
-            background-color: gray;
-        }
-
         .execution_banner {
             height: 200px;
             background-color: #f5f5f5;
@@ -158,11 +154,11 @@
                     <span data-i18n=contract/contract_codetype></span>
                     <div class=form-check>
                         <input class=form-check-input type=radio name=sourceType id=exampleRadios1 value=js checked>
-                        <label class=form-check-label for=exampleRadios1>js</label>
+                        <label class=form-check-label for=exampleRadios1>JavaScript</label>
                     </div>
                     <div class=form-check>
                         <input class=form-check-input type=radio name=sourceType id=exampleRadios2 value=ts>
-                        <label class=form-check-label for=exampleRadios2>ts</label>
+                        <label class=form-check-label for=exampleRadios2>TypeScript</label>
                     </div>
                     <span data-i18n=contract/contract_codetype_banner></span>
                 </div>
@@ -220,7 +216,7 @@
                         <button id=deploy_test data-i18n=contract/deploy_test class=" btn btn-block"></button>
                     </div>
                     <div class=col>
-                        <button id=deploy class="stop btn btn-block" data-i18n=contract/deploy_submit></button>
+                        <button class="btn btn-block" data-i18n=contract/deploy_submit disabled id=deploy></button>
                     </div>
                 </div>
 
@@ -304,7 +300,7 @@
                         <button id=call_test data-i18n=contract/call_test class="btn btn-block"></button>
                     </div>
                     <div class=col>
-                        <button id=call class="stop btn btn-block" data-i18n=contract/call_submit></button>
+                        <button class="btn btn-block" data-i18n=contract/call_submit disabled id=call></button>
                     </div>
                 </div>
 
@@ -409,14 +405,12 @@
                     contract: params.contract
                 }).then(function (resp) {
                     $("#deploy_test_result").text(JSON.stringify(resp));
-                    $('#deploy').attr("disabled", false);
-                    $('#deploy').removeClass("stop");
+                    $('#deploy').attr("disabled", false); // = $('#deploy').removeAttr("disabled")
                     $("#deploy_result").text("");
                     $("#deploy_test_result").parents(".next").removeClass("active1");
                 }).catch(function (err) {
                     $("#deploy_test_result").text(JSON.stringify(err));
                     $('#deploy').attr("disabled", true);
-                    $('#deploy').addClass("stop");
                     $("#deploy_result").text("");
                     $("#deploy_test_result").parents(".next").removeClass("active1");
                 });
@@ -502,34 +496,35 @@
 
         function onClickCallTest() {
             validateTab3() && innerCall(function (params) {
-                neb.api.call({
-                    from: params.from,
-                    to: params.to,
-                    value: params.value,
-                    nonce: params.nonce,
-                    gasPrice: params.gasPrice,
-                    gasLimit: params.gasLimit,
-                    contract: params.contract
-                }).then(function (resp) {
-                    $("#call_test_result").text(JSON.stringify(resp));
-                    $('#call').removeClass("stop");
-                    if (resp.execute_err && resp.execute_err !== '') {
+                neb.api
+                    .call({
+                        from: params.from,
+                        to: params.to,
+                        value: params.value,
+                        nonce: params.nonce,
+                        gasPrice: params.gasPrice,
+                        gasLimit: params.gasLimit,
+                        contract: params.contract
+                    })
+                    .then(function (resp) {
+                        $("#call_test_result").text(JSON.stringify(resp));
+
+                        if (resp.execute_err && resp.execute_err !== '') {
+                            $('#call').attr("disabled", true);
+                            $("#call_result").text("");
+                            $(".next").removeClass("active1");
+                        } else {
+                            $('#call').attr("disabled", false);
+                            $("#call_result").text("");
+                            $(".next").removeClass("active1");
+                        }
+                    })
+                    .catch(function (err) {
+                        $("#call_test_result").text(JSON.stringify(err));
                         $('#call').attr("disabled", true);
                         $("#call_result").text("");
                         $(".next").removeClass("active1");
-                    } else {
-                        $('#call').attr("disabled", false);
-                        $('#call').removeClass("stop");
-                        $("#call_result").text("");
-                        $(".next").removeClass("active1");
-                    }
-                }).catch(function (err) {
-                    $("#call_test_result").text(JSON.stringify(err));
-                    $('#call').attr("disabled", true);
-                    $("#call_result").text("");
-                    $('#call').addClass("stop");
-                    $(".next").removeClass("active1");
-                });
+                    });
             });
         }
 
@@ -541,19 +536,22 @@
                     params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
                 gTx.signTransaction();
 
-                neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
-                    console.log(JSON.stringify(resp));
-                    $("#call_result").text(JSON.stringify(resp));
-                    $(".result").removeClass("active1");
-                    $(".next").removeClass("active1");
-                    $("#receipt_call").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
-                    $(".modal.loading").modal("hide");
-                }).catch(function (err) {
-                    $("#call_result").text(JSON.stringify(err));
-                    $(".result").removeClass("active1");
-                    $(".next").removeClass("active1");
-                    $(".modal.loading").modal("hide");
-                });
+                neb.api
+                    .sendRawTransaction(gTx.toProtoString())
+                    .then(function (resp) {
+                        console.log(JSON.stringify(resp));
+                        $("#call_result").text(JSON.stringify(resp));
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
+                        $("#receipt_call").text(resp.txhash).prop("href", "check.html?" + resp.txhash);
+                        $(".modal.loading").modal("hide");
+                    })
+                    .catch(function (err) {
+                        $("#call_result").text(JSON.stringify(err));
+                        $(".result").removeClass("active1");
+                        $(".next").removeClass("active1");
+                        $(".modal.loading").modal("hide");
+                    });
             });
         }
 
