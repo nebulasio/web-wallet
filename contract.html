@@ -64,7 +64,7 @@
             color: #fff;
         }
 
-        .item {
+        .tab {
             display: none;
         }
 
@@ -106,10 +106,6 @@
         .err {
             border-color: red;
         }
-
-        .show-balance {
-            padding-top: .5rem;
-        }
     </style>
 </head>
 
@@ -131,7 +127,7 @@
         </ul>
         <div id=content>
             <!-- search contract -->
-            <div class="search_contract item show" id=tab1>
+            <div class="search_contract show tab" id=tab1>
                 <div class=title>
                     <span data-i18n=contract/search_contract></span>
                 </div>
@@ -141,7 +137,7 @@
                 <div class="active1 code search_result"></div>
             </div>
 
-            <div class="deploy_contract item" id=tab2>
+            <div class="deploy_contract tab" id=tab2>
                 <div class=title data-i18n=contract/deploy_contract></div>
                 <!-- contract code -->
 
@@ -184,15 +180,12 @@
 
                 <div class="form-group row">
                     <div class=col>
-                        <label data-i18n=send-nas/amount></label>
-                        <input class=form-control type=text id=value value=0 disabled>
+                        <label data-i18n=send-nas/balance></label>
+                        <input class=form-control disabled id=balance>
                     </div>
                     <div class=col>
-                        <label>&nbsp;</label>
-                        <div class=show-balance>
-                            <span data-i18n=send-nas/balance></span>
-                            <span id=balance></span>
-                        </div>
+                        <label data-i18n=send-nas/amount></label>
+                        <input class=form-control type=text id=value value=0 disabled>
                     </div>
                 </div>
 
@@ -237,7 +230,7 @@
                 </div>
             </div>
 
-            <div class="run_contract item" id=tab3>
+            <div class="run_contract tab" id=tab3>
                 <div class=title>
                     <span data-i18n=contract/call_contract></span>
                 </div>
@@ -268,15 +261,12 @@
 
                 <div class="form-group row">
                     <div class=col>
-                        <label data-i18n=send-nas/amount></label>
-                        <input class=form-control id=run_value value=0 data-validate-order-matters="required number">
+                        <label data-i18n=send-nas/balance></label>
+                        <input class=form-control disabled id=run_balance>
                     </div>
                     <div class=col>
-                        <label>&nbsp;</label>
-                        <div class=show-balance>
-                            <span data-i18n=send-nas/balance></span>
-                            <span id=run_balance></span>
-                        </div>
+                        <label data-i18n=send-nas/amount></label>
+                        <input class=form-control id=run_value value=0 data-validate-order-matters="required number">
                     </div>
                 </div>
 
@@ -556,15 +546,21 @@
         }
 
         function onUnlockFile(swf, fileJson, account, password) {
-            var state, balance_nas;
+            var balance_nas, state,
+                fromAddr = account.getAddressString(),
+                $tab = $(swf).closest(".tab");
+
             $(".modal.loading").modal("show");
+
+            if ($tab.prop("id") == "tab2") {
+                $("#from_addr").val(fromAddr).trigger("input");
+                $("#to_addr").val(account.getAddressString()).trigger("input");
+            } else if ($tab.prop("id") == "tab3")
+                $("#run_from_addr").val(fromAddr).trigger("input");
 
             try {
                 account.fromKey(fileJson, password);
                 globalParams.account = account;
-                $("#from_addr").val(account.getAddressString()).trigger("input");
-                $("#run_from_addr").val(account.getAddressString()).trigger("input");
-                $("#to_addr").val(account.getAddressString()).trigger("input");
                 $("#unlock").hide();
                 $("#send").show();
 
@@ -572,13 +568,17 @@
                     .then(function (resp) {
                         $("#gas_price").val(resp.gas_price);
                         $("#run_gas_price").val(resp.gas_price);
-                        return neb.api.getAccountState($("#from_addr").val());
-                        $(".modal.loading").modal("hide");
+
+                        return neb.api.getAccountState(fromAddr);
                     })
                     .then(function (resp) {
                         var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                        $("#balance").text(balance + ' NAS');
-                        $("#run_balance").text(balance + ' NAS');
+
+                        if ($tab.prop("id") == "tab2")
+                            $("#balance").val(balance + ' NAS');
+                        else if ($tab.prop("id") == "tab3")
+                            $("#run_balance").val(balance + ' NAS');
+
                         $(".modal.loading").modal("hide");
                     })
                     .catch(function (e) {
@@ -591,9 +591,9 @@
                             size: "large",
                             title: "Error"
                         });
+
                         $(".modal.loading").modal("hide");
                     });
-
             } catch (e) {
                 // this catches e thrown by nebulas.js!account
 
@@ -604,6 +604,7 @@
                     size: "large",
                     title: "Error"
                 });
+
                 $(".modal.loading").modal("hide");
             }
         }
@@ -636,11 +637,13 @@
 
             // prepare gasPrice
             let gasPrice = Utils.toBigNumber(0);
+
             try {
                 gasPrice = Utils.toBigNumber($("#gas_price").val());
             } catch (err) {
                 console.log(err);
             }
+
             if (gasPrice.cmp(Utils.toBigNumber(0)) <= 0) {
                 $("#gas_price").addClass("err");
                 setTimeout(function () {
@@ -658,11 +661,16 @@
 
             // prepare nonce
             neb.api.getAccountState(params.from).then(function (resp) {
+                var balance = nebulas.Unit.fromBasic(resp.balance, "nas"),
+                    $tab = $(swf).closest(".tab");
+
                 params.nonce = parseInt(resp.nonce) + 1;
-                var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                $("#balance").text(balance + ' NAS');
-                $("#run_balance").text(balance + ' NAS');
-                console.log("prepared params: " + JSON.stringify(params));
+
+                if ($tab.prop("id") == "tab2")
+                    $("#balance").val(balance + ' NAS');
+                else if ($tab.prop("id") == "tab3")
+                    $("#run_balance").val(balance + ' NAS');
+
                 callback(params);
             }).catch(function (err) {
                 $(".modal.loading").modal("hide");
@@ -750,12 +758,19 @@
             };
 
             // prepare nonce
+            // needs refresh data on every 'test' and 'commit' call, because data update may slow,
+            // you can get different result by hit 'test' multiple times
             neb.api.getAccountState(params.from).then(function (resp) {
+                var balance = nebulas.Unit.fromBasic(resp.balance, "nas"),
+                    $tab = $(swf).closest(".tab");
+
                 params.nonce = parseInt(resp.nonce) + 1;
-                var balance = nebulas.Unit.fromBasic(resp.balance, "nas");
-                $("#balance").text(balance + ' NAS');
-                $("#run_balance").text(balance + ' NAS');
-                console.log("prepared params: " + JSON.stringify(params));
+
+                if ($tab.prop("id") == "tab2")
+                    $("#balance").val(balance + ' NAS');
+                else if ($tab.prop("id") == "tab3")
+                    $("#run_balance").val(balance + ' NAS');
+
                 callback(params);
             }).catch(function (err) {
                 // console.log("prepare nonce error: " + err);
