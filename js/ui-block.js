@@ -114,7 +114,7 @@ var uiBlock = function () {
                     .html(
                         '<input class="address form-control"' +
                         // do not validate when disabled
-                        (attrDisabled ? " disabled" : ' data-i18n=placeholder/addr data-validate-order-matters="required lengthEq35"') +
+                        (attrDisabled ? " disabled" : ' data-i18n=placeholder/addr data-validate-order-matters="required trimLenEq35"') +
                         (attrId ? " id=" + attrId : "") +
                         "><canvas class=placeholder></canvas>")
                     .on("input", "input", onInput);
@@ -264,8 +264,8 @@ var uiBlock = function () {
                     "<p data-i18n=swf/name></p>" +
                     '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
                     '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
-                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' 
-                    )
+                    '<button class="btn btn-block" data-i18n=swf/unlock></button>'
+                )
                 .on("click", "button", onClickUnlock)
                 .on("keyup", "input[type=password]", onKeyUpPassword)
                 .on({
@@ -400,8 +400,6 @@ var uiBlock = function () {
             mRules = {
                 eqgt0: function (s) { return s > -1; },
                 gt0: function (s) { return s > 0; },
-                lengthEq35: function (s) { return s.length == 35; },
-                lengthEq64: function (s) { return s.length == 64; },
                 lengthGt8: function (s) { return s.length > 8; },
                 number: function (s) {
                     try {
@@ -411,7 +409,9 @@ var uiBlock = function () {
                         return false;
                     }
                 },
-                required: function (s) { return s.length != 0; }
+                required: function (s) { return s.length != 0; },
+                trimLenEq35: function (s) { return s.trim().length == 35; },
+                trimLenEq64: function (s) { return s.trim().length == 64; }
             };
 
         selector || (selector = "body");
