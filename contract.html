@@ -9,6 +9,7 @@
     <link rel=stylesheet href=lib/prismjs-1.13.0/prism.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/ui-block.css>
+    <link rel=stylesheet href=css/codemirror.css>
     <meta name=viewport content="width=device-width">
     <title>NEBULAS</title>
     <style>
@@ -106,6 +107,8 @@
         .err {
             border-color: red;
         }
+
+        .CodeMirror {border: 1px solid black; font-size:13px;border-radius: 5px}
     </style>
 </head>
 
@@ -142,7 +145,7 @@
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea class=form-control id=source cols=30 rows=10 data-validate-order-matters=required></textarea>
+                <textarea class=form-control id=source  name=code cols=30 rows=10 data-validate-order-matters=required></textarea>
 
                 <!-- select codetype -->
                 <br>
@@ -336,6 +339,8 @@
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
+    <script src=lib/codemirror/codemirror.js></script>
+    <script src=lib/codemirror/javascript.js></script>
     <script>
         "use strict";
 
@@ -799,6 +804,14 @@
                 });
             });
         }
+        // CodeMirror
+        var editor = CodeMirror.fromTextArea(document.getElementById("source"), {
+            // lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true
+        });
+
+        onChange(instance,changeObj),codeMirror;
     </script>
 </body>
 </html>
