@@ -108,6 +108,42 @@
             border-color: red;
         }
 
+        .prompt{
+            width: 20px;
+            height: 20px;
+            display: inline-table;
+        }
+        
+        .prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 16%;
+            margin-top: -6%;
+            box-shadow:2px 2px 17px #333333;
+        }
+
+        .call_prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 28%;
+            margin-top: -14%;
+            box-shadow:2px 2px 17px #333333;
+        }
+
+         .function_prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 24%;
+            margin-top: -14%;
+            box-shadow:2px 2px 17px #333333;
+        }
+
         .CodeMirror {border: 1px solid black; font-size:13px;border-radius: 5px}
     </style>
 </head>
@@ -165,7 +201,10 @@
                 <!-- function args -->
                 <br>
                 <label data-i18n=contract/contract_fun></label>
+                <span id=prompt class=prompt><img src=img/prompt.png></span>
+                <div id=prompt_contenner class="active1 prompt_contenner"> <b data-i18n=contract/contract_fun_prompt></b></div>
                 <input class=form-control id=deploy_args>
+
 
                 <!-- select wallet -->
                 <div class="select-wallet-file mt14"></div>
@@ -241,10 +280,14 @@
                 <div class="form-group row">
                     <div class=col>
                         <label data-i18n=contract/contract_funtion></label>
+                        <span id=function_prompt class=prompt><img src=img/prompt.png></span>
+                        <div id=function_prompt_contenner class="active1 function_prompt_contenner"> <b data-i18n=contract/contract_fn_prompt></b></div>
                         <input class=form-control type=text id=call_function>
                     </div>
                     <div class=col>
                         <label data-i18n=contract/contract_fun></label>
+                        <span id=call_prompt class=prompt><img src=img/prompt.png></span>
+                        <div id=call_prompt_contenner class="active1 call_prompt_contenner"> <b  data-i18n=contract/contract_fun_prompt></b></div>
                         <input class=form-control type=text id=call_args>
                     </div>
                 </div>
@@ -381,6 +424,31 @@
         }, function () {
             $(this).parent().removeClass("hoverItem");
         });
+
+
+        // prompt（function，args） 
+        $("#prompt").mouseover(function(){
+            $("#prompt_contenner").removeClass("active1");
+        })
+        $("#prompt").mouseout(function(){
+            $("#prompt_contenner").addClass("active1");
+        })
+
+        $("#call_prompt").mouseover(function(){
+            $("#call_prompt_contenner").removeClass("active1");
+        })
+
+        $("#call_prompt").mouseout(function(){
+            $("#call_prompt_contenner").addClass("active1");
+        })
+
+         $("#function_prompt").mouseover(function(){
+            $("#function_prompt_contenner").removeClass("active1");
+        })
+
+        $("#function_prompt").mouseout(function(){
+            $("#function_prompt_contenner").addClass("active1");
+        })
 
         $(".search").on("click", onClickSearch);
         $("#deploy_test").on("click", onClickDeployTest);
@@ -810,8 +878,6 @@
             styleActiveLine: true,
             matchBrackets: true
         });
-
-        onChange(instance,changeObj),codeMirror;
     </script>
 </body>
 </html>
