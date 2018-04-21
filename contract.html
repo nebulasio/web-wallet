@@ -144,7 +144,7 @@
             box-shadow:2px 2px 17px #333333;
         }
 
-        .CodeMirror {border: 1px solid black; font-size:13px;border-radius: 5px}
+        .CodeMirror {border: 1px solid black; font-size:13px;}
     </style>
 </head>
 
@@ -429,26 +429,27 @@
         // prompt（function，args） 
         $("#prompt").mouseover(function(){
             $("#prompt_contenner").removeClass("active1");
-        })
+        });
+
         $("#prompt").mouseout(function(){
             $("#prompt_contenner").addClass("active1");
-        })
+        });
 
         $("#call_prompt").mouseover(function(){
             $("#call_prompt_contenner").removeClass("active1");
-        })
+        });
 
         $("#call_prompt").mouseout(function(){
             $("#call_prompt_contenner").addClass("active1");
-        })
+        });
 
          $("#function_prompt").mouseover(function(){
             $("#function_prompt_contenner").removeClass("active1");
-        })
+        });
 
         $("#function_prompt").mouseout(function(){
             $("#function_prompt_contenner").addClass("active1");
-        })
+        });
 
         $(".search").on("click", onClickSearch);
         $("#deploy_test").on("click", onClickDeployTest);
@@ -873,11 +874,12 @@
             });
         }
         // CodeMirror
-        var editor = CodeMirror.fromTextArea(document.getElementById("source"), {
-            // lineNumbers: true,
-            styleActiveLine: true,
-            matchBrackets: true
-        });
+        // var editor = CodeMirror.fromTextArea(document.getElementById("source"), {
+        //     lineNumbers: true,
+        //     styleActiveLine: true,
+        //     matchBrackets: true
+        // });
+
     </script>
 </body>
 </html>
