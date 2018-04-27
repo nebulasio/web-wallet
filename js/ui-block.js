@@ -144,7 +144,7 @@ var uiBlock = function () {
             apiList = [
                 { chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io" },
                 { chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io" },
-                { chainId: 100, name: "http://127.0.0.1", url: "http://127.0.0.1:8685"}
+                { chainId: 100, name: "Local Nodes", url: "http://127.0.0.1:8685"}
             ];
             apiPrefix = (localSave.getItem("apiPrefix") || "").toLowerCase();
             sApiButtons = "";
@@ -448,7 +448,7 @@ var uiBlock = function () {
                 var $o = $(o), arr, i, len,
                     s = $o.data("validate-order-matters");
 
-                if (s) for (arr = s.match(/\S+/g) || [], i = 0, len = arr.length; i < len; ++i)
+                if (s) for (arr = s.match(/\S+/g) || [], i = 0, len = arr.length; i < len; ++i) //TODO: 加上if，for括号
                     if (mRules[arr[i]]) {
                         if (!mRules[arr[i]](o.value)) {
                             $o.addClass("invalid");

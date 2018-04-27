@@ -96,6 +96,7 @@
             <div class=col-6>
                 <div class=form-group>
                     <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
+                    <!-- TODO: TRX -->
                     <textarea class=form-control rows=8 id=raw disabled></textarea>
                 </div>
                 <div class=form-group>
@@ -196,7 +197,7 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
-        function onUnlockFile(swf, fileJson, account, password) {
+        function onUnlockFile(swf, fileJson, account, password) {  //TODO: 对外函数不要用简称
             var address;
             try {
                 account.fromKey(fileJson, password);
@@ -256,13 +257,13 @@
                     gLastGenerateInfo.amount != amount ||
                     gLastGenerateInfo.gaslimit != gaslimit ||
                     gLastGenerateInfo.gasprice != gasprice ||
-                    gLastGenerateInfo.nonce != nonce) try {
+                    gLastGenerateInfo.nonce != nonce) try {  //TODO: 加括号
                         var tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
                             .times(Utils.toBigNumber(gasprice)), "nas");
 
-                        if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
+                        if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) //TODO: 加括号； tmp-->max gas used
                             if (Utils.toBigNumber(balance).lt(tmp))
-                                bnAmount = Utils.toBigNumber(0);
+                                bnAmount = Utils.toBigNumber(0); //TODO: 逻辑是否必须有
                             else
                                 bnAmount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
 
@@ -306,7 +307,7 @@
         function onClickModalConfirmS() {
             var mTxHash;
 
-            gTx && neb.api.sendRawTransaction(gTx.toProtoString())
+            gTx && neb.api.sendRawTransaction(gTx.toProtoString()) //TODO: GTX为空是 抛异常
                 .then(function (resp) {
                     // console.log("sendRawTransaction resp: " + JSON.stringify(resp));
                     mTxHash = resp.txhash;
@@ -316,7 +317,7 @@
                     $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt_div").show();
 
-                    // TODO 重新点击需要reset页面状态，清理setTimeout
+                    // TODO: 重新点击需要reset页面状态，清理setTimeout    （ 是否需要 ，如果需要的话给用户认知 ）
                     setTimeout(function () {
                         neb.api.getAccountState($(".icon-address.from input").val())
                             .then(function (resp) {
