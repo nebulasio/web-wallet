@@ -113,8 +113,8 @@
                 $("#address").val(account.getAddressString());
                 $("#sideaddress").text(account.getAddressString());
                 $("#password").val(account.getPrivateKeyString());
-                $("#addressqr").qrcode(account.getAddressString());
-                $("#privateqr").qrcode(account.getPrivateKeyString());
+                $("#addressqr").html('').qrcode(account.getAddressString());
+                $("#privateqr").html('').qrcode(account.getPrivateKeyString());
                 $("#walletinfo").show();
 
                 neb.api.getAccountState(account.getAddressString())
