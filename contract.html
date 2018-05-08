@@ -203,7 +203,7 @@
                 <label data-i18n=contract/contract_fun></label>
                 <span id=prompt class=prompt><img src=img/prompt.png></span>
                 <div id=prompt_contenner class="active1 prompt_contenner"> <b data-i18n=contract/contract_fun_prompt></b></div>
-                <input class=form-control id=deploy_args>
+                <input class=form-control id=deploy_args placeholder="[' arg-1 ',' arg-2 ',...]">
 
 
                 <!-- select wallet -->
@@ -288,7 +288,7 @@
                         <label data-i18n=contract/contract_fun></label>
                         <span id=call_prompt class=prompt><img src=img/prompt.png></span>
                         <div id=call_prompt_contenner class="active1 call_prompt_contenner"> <b  data-i18n=contract/contract_fun_prompt></b></div>
-                        <input class=form-control type=text id=call_args>
+                        <input class=form-control type=text id=call_args placeholder="[' arg-1 ',' arg-2 ',...]">
                     </div>
                 </div>
 
@@ -426,7 +426,7 @@
         });
 
 
-        // prompt（function，args） 
+        // prompt（function，args）  TODO: 函数封装
         $("#prompt").mouseover(function(){
             $("#prompt_contenner").removeClass("active1");
         });
@@ -518,7 +518,7 @@
                 $(".modal.loading").modal("show");
 
                 neb.api
-                    .getTransactionReceipt($("#addr_input").val())
+                    .getTransactionReceipt($("#addr_input").val())//TODO: 代码提示
                     .then(function (resp) {
                         var data, s, lang;
 
