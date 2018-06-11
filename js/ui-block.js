@@ -117,21 +117,21 @@ var uiBlock = function () {
                         (attrDisabled ? " disabled" : ' data-i18n=placeholder/addr data-validate-order-matters="required lengthEq35"') +
                         (attrId ? " id=" + attrId : "") +
                         "><canvas class=placeholder></canvas>")
-                    .on("input", "input", onInput);
+                    .on("input", "input", onInput)
             }
 
             function onInput(e) {
                 var val = e.target.value,
                     $canvas = $(this).closest(".icon-address").find("canvas");
 
-                if (val.length == 35)
+                if (val.length == 35)    
                     $canvas.replaceWith(blockies.create({
-                        seed: val.toLowerCase(),
+                        seed: val,      // 不采用eth转化为小写的方法了
                     }));
-                else if (!$canvas.hasClass("placeholder"))
-                    $canvas.replaceWith("<canvas class=placeholder></canvas>");
+                    if (!$canvas.hasClass("placeholder"))
+                        $canvas.replaceWith("<canvas class=placeholder></canvas>");
+                }
             }
-        }
 
         function logoMain(selector) {
             var i, len, apiList, langList,
