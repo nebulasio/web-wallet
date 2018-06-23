@@ -122,6 +122,8 @@
             left: 16%;
             margin-top: -6%;
             box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
         }
 
         .call_prompt_contenner{
@@ -132,6 +134,8 @@
             left: 28%;
             margin-top: -14%;
             box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
         }
 
          .function_prompt_contenner{
@@ -142,6 +146,8 @@
             left: 24%;
             margin-top: -14%;
             box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
         }
 
         .CodeMirror {border: 1px solid black; font-size:13px;}
@@ -287,7 +293,7 @@
                     <div class=col>
                         <label data-i18n=contract/contract_fun></label>
                         <span id=call_prompt class=prompt><img src=img/prompt.png></span>
-                        <div id=call_prompt_contenner class="active1 call_prompt_contenner"> <b  data-i18n=contract/contract_fun_prompt></b></div>
+                        <div id=call_prompt_contenner class="active1 call_prompt_contenner"> <b data-i18n=contract/contract_fun_prompt></b></div>
                         <input class=form-control type=text id=call_args placeholder='["arg-1", "arg-2", ...]'>
                     </div>
                 </div>
