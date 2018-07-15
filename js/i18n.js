@@ -241,7 +241,7 @@ var i18n = function () {
             "gas-limit": "가스 한도",
             "gas-price": "가스 가격",
             "gas-used": "사용된 가스",
-            "header/check": "TX 상태 확인",
+            "header/check": "트랜잭션 확인",
             "header/contract": "컨트랙트",
             "header/new-wallet": "새 지갑 생성",
             "header/send": "NAS 전송",
