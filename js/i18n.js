@@ -206,8 +206,8 @@ var i18n = function () {
         ko: {
             amount: "양",
             blog: "블로그",
-            "check/anchor": "Please, read about this tool here.",
-            "check/blah": "Trading hash can query transaction information, including pending and packaged transactions. You need to refresh the package status change of the query transaction several times when the transaction is packaged and validated.",
+            "check/anchor": "여기서 이 도구에 대해서 읽으세요.",
+            "check/blah": "거래 해쉬는 보류 및 패키지 트랜잭션을 포함하여 트랜잭션 정보를 쿼리할 수 ​​있습니다. 트랜잭션이 패키징되고 유효성이 확인되면 쿼리 트랜잭션의 패키지 상태 변경을 여러 번 새로고침해야합니다.",
             "check/comment1": "유효한 TX hash를 입력해주세요",
             "check/tx-details": "트랜잭션 상세",
             community: "커뮤니티",
@@ -227,7 +227,7 @@ var i18n = function () {
             "contract/contract_fun_prompt":" （타입: JSON）예시 : [\"arg-1\", \"arg-2\", ...] ",
             "contract/contract_fn_prompt":"function (x) { } ",
             "contract/contract_funtion": "함수",
-            "contract/err_msg": "Red part information is wrong，Please enter a valid msg",
+            "contract/err_msg": "빨간 부분의 정보는 틀린 것입니다, 유효한 msg를 입력해주세요.",
             "contract/err_msg_hash": "유효한 TX hash를 입력해주세요",
             "contract/test_result": "테스트 결과",
             "contract/result": "제출 결과",
@@ -235,7 +235,7 @@ var i18n = function () {
             "contract/search_contract": "컨트랙트 검색",
             "contract/txhash": "txhash :",
             "contract/contract_address": "contract_address :",
-            "contract/clickToCheck": "(Click to view transaction details)",
+            "contract/clickToCheck": "(트랜잭션 세부정보를 보려면 클릭하세요)",
             data: "데이터",
             download: "다운로드",
             "gas-limit": "가스 한도",
@@ -315,79 +315,85 @@ var i18n = function () {
                 unknown: {
                     en: "unknown error",
                     zh: "未知错误",
-                    ko: "알려지지 않은 에러"
+                    ko: "알려지지 않은 에러",
                 },
                 "Network Error": {
                     en: s,
                     zh: "网络错误",
-                    ko: "네트워크 에러"
+                    ko: "네트워크 에러",
                 },
                 // getAccountState
                 "address: invalid address format": {
                     en: s,
                     zh: "地址格式无效",
-                    ko: "주소: 유효하지 않은 주소 포맷입니다"
+                    ko: "주소: 유효하지 않은 주소 포맷입니다",
                 },
                 // GetTransactionReceipt
                 "invalid argument(s)": {
                     en: "invalid transaction hash",
                     zh: "无效的交易哈希",
-                    ko: "유효하지 않은 트랜잭션 해쉬입니다"
+                    ko: "유효하지 않은 트랜잭션 해쉬입니다",
                 },
                 "params eror/system error": {
                     en: "transaction hash or system error",
                     zh: "交易哈希或者系统错误",
-                    ko: "트랜잭션 해쉬 혹은 시스템 에러입니다"
+                    ko: "트랜잭션 해쉬 혹은 시스템 에러입니다",
                 },
                 "transaction not found": {
                     en: "transaction not found",
                     zh: "交易未找到",
-                    ko: "트랜잭션이 존재하지 않습니다"
+                    ko: "트랜잭션이 존재하지 않습니다",
                 },
                 // senRawTransaction
                 "transaction's nonce is invalid, should bigger than the from's nonce": {
                     en: s,
                     zh: "交易的 nonce 无效，应该大于发送方的 nonce",
-                    ko: "트랜잭션의 nonce가 유효하지 않습니다, 보내는 주소의 nonce보다 커야 합니다"
+                    ko: "트랜잭션의 nonce가 유효하지 않습니다, 보내는 주소의 nonce보다 커야 합니다",
                 },
                 "contract transaction from-address not equal to to-address": {
                     en: s,
                     zh: "发布合约的 from / to 地址不一致",
-                    ko: "보내는 주소의 컨트랙트 트랜잭션이 받는 주소의 것과 같지 않습니다"
+                    ko: "보내는 주소의 컨트랙트 트랜잭션이 받는 주소의 것과 같지 않습니다",
                 },
                 "contract check failed": {
                     en: s,
                     zh: "合约地址无效",
-                    ko: "컨트랙트 확인이 실패했습니다"
+                    ko: "컨트랙트 확인이 실패했습니다",
                 },
                 "duplicated transaction": {
                     en: s,
                     zh: "不能重复提交相同的交易",
-                    ko: "중복된 트랜잭션입니다"
+                    ko: "중복된 트랜잭션입니다",
                 },
                 "below the gas price gas": {
                     en: s,
-                    zh: "价格太低"
+                    zh: "价格太低",
+                    ko: "가스 가격이 너무 낮습니다",
                 },
-                "gas limit less or equal to 0 ": {
+                "gas limit less or equal to 0": {
                     en: s,
-                    zh: "gas 限制应该大于 0"
+                    zh: "gas 限制应该大于 0",
+                    ko: "가스 한도가 0보다 작거나 같습니다",
                 },
                 "out of gas limit": {
                     en: s,
-                    zh: "gas 限制过大"
+                    zh: "gas 限制过大",
+                    ko: "가스가 부족합니다",
                 },
                 "invalid transaction chainID": {
                     en: s,
-                    zh: "无效的 chain id"
+                    zh: "无效的 chain id",
+                    ko: "유효하지 않은 트랜잭션 chainID입니다",
                 },
                 "invalid transaction hash": {
                     en: s,
-                    zh: "交易哈希无效"
+                    zh: "交易哈希无效",
+                    ko: "유효하지 않은 트랜잭션 해쉬입니다",
                 },
                 "invalid transaction signer": {
                     en: s,
-                    zh: "无效的交易签名"
+                    zh: "无效的交易签名",
+                    ko: "유효하지 않은 트랜잭션 서명입니다",
                 }
             };
 
