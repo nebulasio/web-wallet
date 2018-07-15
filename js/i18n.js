@@ -209,7 +209,7 @@ var i18n = function () {
             "check/anchor": "여기서 이 도구에 대해서 읽으세요.",
             "check/blah": "거래 해쉬는 보류 및 패키지 트랜잭션을 포함하여 트랜잭션 정보를 쿼리할 수 ​​있습니다. 트랜잭션이 패키징되고 유효성이 확인되면 쿼리 트랜잭션의 패키지 상태 변경을 여러 번 새로고침해야합니다.",
             "check/comment1": "유효한 TX hash를 입력해주세요",
-            "check/tx-details": "트랜잭션 상세",
+            "check/tx-details": "트랜잭션 세부정보",
             community: "커뮤니티",
             "contract/addr_input_msg": "TXhash를 입력해주세요",
             "contract/call": "호출",
