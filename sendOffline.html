@@ -62,7 +62,7 @@
             <div class="form-group row">
                 <div class=col>
                     <label data-i18n=send-nas/amount>Value / Amount to Send</label>
-                    <div class=number-comma data-data-i18n=amount data-id=amount data-unit=nas data-validate="required number eqgt0"></div>
+                    <div class=number-comma data-data-i18n=amount data-id=amount data-unit=currency data-validate="required number eqgt0" data-currency-selector></div>
                 </div>
                 <div class=col>
                     <label>Nonce</label>
@@ -155,7 +155,7 @@
                     </div>
                     <div>
                         <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
-                        <div class=number-comma data-data-i18n=amount data-id=value data-unit=nas data-disabled></div>
+                        <div id=value_container class=number-comma data-data-i18n=amount data-id=value data-unit=currency data-disabled></div>
                     </div>
                     <!-- <div class=data>
                         <label>data</label>
@@ -235,7 +235,7 @@
 
         function onUnlockFile(swf, fileJson, account, password) {
             var address;
-
+            // test11
             try {
                 account.fromKey(fileJson, password);
                 address = account.getAddressString();
@@ -259,10 +259,20 @@
 
             if (val) try {
                 tx = Transaction.prototype.fromProto(val);
+                var to = tx.to.getAddressString();
+                var value = tx.value;
+                var currency = "NAS"
+                if (tx.data.payload) {
+                    var data = eval("var d = " + nebulas.CryptoUtils.toBuffer(tx.data.payload).toString() + "; d");
+                    var args = eval("var args = " + data["Args"]+"; args");
+                    currency = uiBlock.getCurrencyByContractAddr(tx.to.getAddressString());
+                    to = args[0];
+                    value = args[1]
+                }
+                $("#value_container").attr("data-unit", currency);
                 $("#for_addr").val(tx.from.getAddressString());
-                $("#to_addr").val(tx.to.getAddressString());
-                $("#value").val(unit.fromBasic(tx.value, "nas")).trigger("input");
-                // $("#value").val(unit.nasToBasic(tx.value).c);
+                $("#to_addr").val(to);
+                $("#value").val(unit.fromBasic(value, "nas")).trigger("input");
             } catch (err) {
                 bootbox.dialog({
                     backdrop: true,
@@ -279,21 +289,30 @@
 
             if (validateStep2()) {
                 fromaddress = $(".icon-address.from input").val();
-                toaddress = $(".icon-address.to input").val();
+                toaddress = $(".icon-address.to input").val().trim();
                 amount = $("#amount").val();
                 nonce = $("#nonce").val();
                 gaslimit = $("#limit").val();
                 gasprice = $("#price").val();
+                var contract = null;
+
+                toaccount = Account.fromAddress(toaddress);
+                if (uiBlock.currency != "NAS") {
+                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + unit.nasToBasic(amount) + "\"]", "binary": "", "type": "call"};
+                }
 
                 if (gLastGenerateInfo.fromaddress != fromaddress ||
                     gLastGenerateInfo.toaddress != toaddress ||
                     gLastGenerateInfo.amount != amount ||
                     gLastGenerateInfo.nonce != nonce ||
                     gLastGenerateInfo.gaslimit != gaslimit ||
-                    gLastGenerateInfo.gasprice != gasprice) try {
-                        toaccount = Account.fromAddress(toaddress);
-
-                        tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                    gLastGenerateInfo.gasprice != gasprice ||
+                    gLastGenerateInfo.contract != contract) try {
+                        if (uiBlock.currency == "NAS") {
+                            tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                        } else {
+                            tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), unit.nasToBasic("0"), parseInt(nonce), gasprice, gaslimit, contract);
+                        }
                         tx.signTransaction();
 
                         $("#raw").val(tx.toString());
@@ -313,6 +332,7 @@
                         gLastGenerateInfo.nonce = nonce;
                         gLastGenerateInfo.gaslimit = gaslimit;
                         gLastGenerateInfo.gasprice = gasprice;
+                        gLastGenerateInfo.contract = contract;
                     } catch (e) {
                         bootbox.dialog({
                             backdrop: true,

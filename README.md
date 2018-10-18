@@ -3,7 +3,7 @@
 
 How to use the Web Wallet
 Part 1 - [Create a NAS Wallet](https://medium.com/nebulasio/creating-a-nas-wallet-9d01b5fa2df6)
-Part 2 - [Sending NAS from your Wallet](https://medium.com/nebulasio/sending-nas-from-your-wallet-be1b958c4e5d)
+Part 2 - [Sending NAS and ATP from your Wallet](https://medium.com/nebulasio/sending-nas-from-your-wallet-be1b958c4e5d)
 Part 3 - [Signing a Transaction Offline](https://medium.com/nebulasio/signing-a-transaction-offline-ae8278f45201)
 Part 4 - [View Wallet Information](https://medium.com/nebulasio/view-wallet-information-fcea3ea35d94)
 Part 5 - [Check TX Status](https://medium.com/nebulasio/check-tx-status-8dc7dd9b79de)
@@ -18,7 +18,7 @@ Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/n
 
 - generate nebulas address/keystore;
 - send transaction;
-- send offine transaction;
+- send offline transaction;
 - view address/keystore info;
 - view transaction status & info;
 - deploy/call smart contract;
@@ -26,7 +26,7 @@ Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/n
 
 ### TODO list
 - Multiple wallet address import methods.
-- Send transaction (NRC20) [send NAS has done.]
+- Send transaction (NRC20) [send transaction for NAS and ATP is finished.]
 
 
 Thanks to @luoman for implementing a pre-version [naswallet](https://github.com/nebulasio/explorer/tree/master/nasWallet) for us.
