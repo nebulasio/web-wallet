@@ -130,7 +130,20 @@ body {
     line-height: 3em;
     pointer-events: none;
     position: absolute;
-    right: 3px;
+    right: 6px;
+    top: 0;
+}
+
+.number-comma > span {
+    line-height: 2.8em;
+    position: absolute;
+    right: 6px;
+    top: 0;
+}
+
+.number-comma .currency {
+    height: 2.5em;
+    line-height: 2em;
     top: 0;
 }
 

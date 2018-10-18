@@ -73,7 +73,7 @@
         // replace ="([^ =]+)" with =$1
 
         var nebulas = require("nebulas"),
-            account = nebulas.Account.NewAccount(),
+            account = nebulas.Account.NewAccount(), //TODO：流程位置 应该在创建之后 。创建密码应该删除 
             validateAll = uiBlock.validate();
 
         uiBlock.insert({

@@ -37,8 +37,8 @@
                     <input type=text class=form-control id=address disabled>
                 </div>
                 <div class=form-group>
-                    <label for=amount data-i18n=wallet-info/acc-balance>Account Balance : </label>
-                    <input type=text id=amount class=form-control disabled>
+                    <label for=amount_container data-i18n=wallet-info/acc-balance>Account Balance : </label>
+                    <div id=amount_container class=number-comma data-disabled data-id=amount data-unit=currency data-currency-selector></div>
                 </div>
                 <div class=form-group>
                     <label for=keystore>
@@ -101,8 +101,14 @@
             footer: ".footer",
             header: ".header",
             logoMain: ".logo-main",
+            numberComma: ".number-comma",
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
+
+        function onCurrencyChanged() {
+            updateBalance()
+        }
+        uiBlock.addCurrencyChangedListener(onCurrencyChanged);
 
         function onUnlockFile(swf, fileJson, account, password) {
             try {
@@ -113,29 +119,11 @@
                 $("#address").val(account.getAddressString());
                 $("#sideaddress").text(account.getAddressString());
                 $("#password").val(account.getPrivateKeyString());
-                $("#addressqr").qrcode(account.getAddressString());
-                $("#privateqr").qrcode(account.getPrivateKeyString());
+                $("#addressqr").html('').qrcode(account.getAddressString());
+                $("#privateqr").html('').qrcode(account.getPrivateKeyString());
                 $("#walletinfo").show();
 
-                neb.api.getAccountState(account.getAddressString())
-                    .then(function (resp) {
-                        if (resp.error) {
-                            throw new Error(resp.error);
-                        } else {
-                            $("#amount").val(nebulas.Unit.fromBasic(Utils.toBigNumber(resp.balance), "nas").toNumber() + " NAS");
-                        }
-                    })
-                    .catch(function (e) {
-                        // this catches e thrown by nebulas.js!neb
-
-                        bootbox.dialog({
-                            backdrop: true,
-                            onEscape: true,
-                            message: i18n.apiErrorToText(e.message),
-                            size: "large",
-                            title: "Error"
-                        });
-                    });
+                updateBalance();
             } catch (e) {
                 // this catches e thrown by nebulas.js!account
 
@@ -146,6 +134,69 @@
                     size: "large",
                     title: "Error"
                 });
+            }
+        }
+
+        function updateBalance() {
+            if (!gAccount) {
+                return;
+            }
+            var addr = gAccount.getAddressString();
+            var currency = uiBlock.currency;
+            var contractAddr = uiBlock.getContractAddr(uiBlock.currency);
+            $("#amount").val("").trigger("input");
+            if (currency == "NAS") {
+                neb.api.getAccountState(addr)
+                    .then(function (resp) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        if (resp.error) {
+                            throw new Error(resp.error);
+                        }
+                        var nas = nebulas.Unit.fromBasic(resp.balance, "nas").toNumber();
+                        $("#amount").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
+                    })
+                    .catch(function (e) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        // this catches e thrown by nebulas.js!neb
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: i18n.apiErrorToText(e.message),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
+            } else {
+                var contract = {"function": "balanceOf", "args": "[\"" + addr + "\"]"};
+                neb.api.call({"from": addr, "to": uiBlock.getContractAddr(uiBlock.currency), "gasLimit": 200000, "gasPrice":1000000, "value": 0, "contract": contract})
+                    .then(function (resp) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        if (resp.error) {
+                            throw new Error(resp.error);
+                        }
+                        var b = resp.result.replace(/"/ig, "");
+                        var balance = nebulas.Unit.fromBasic(b, "nas").toNumber()
+                        $("#amount").val(balance).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
+                    })
+                    .catch(function (e) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        // this catches e thrown by nebulas.js!neb
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: i18n.apiErrorToText(e.message),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
             }
         }
 

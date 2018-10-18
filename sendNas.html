@@ -54,7 +54,7 @@
             </div>
             <div class=col-md-6>
                 <label data-i18n=send-nas/balance>Balance</label>
-                <div class=number-comma data-disabled data-id=balance data-unit=nas></div>
+                <div class=number-comma data-disabled data-id=balance data-unit=currency data-currency-selector></div>
             </div>
         </div>
         <div class="form-group row">
@@ -64,7 +64,7 @@
             </div>
             <div class=col>
                 <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
-                <div class=number-comma data-data-i18n=amount data-id=amount data-unit=nas data-validate="required number eqgt0"></div>
+                <div class=number-comma data-data-i18n=amount data-id=amount data-unit=currency data-validate="required number eqgt0"></div>
             </div>
         </div>
         <div class="form-group row">
@@ -96,6 +96,7 @@
             <div class=col-6>
                 <div class=form-group>
                     <label for=raw data-i18n=send-nas/raw>Raw Transaction</label>
+                    <!-- TODO: TRX -->
                     <textarea class=form-control rows=8 id=raw disabled></textarea>
                 </div>
                 <div class=form-group>
@@ -143,7 +144,7 @@
                     </div>
                     <div>
                         <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
-                        <div class=number-comma data-data-i18n=amount data-id=value data-unit=nas data-disabled></div>
+                        <div class=number-comma data-data-i18n=amount data-id=value data-unit=currency data-disabled></div>
                     </div>
                     <!-- <div class=data>
                         <label>data</label>
@@ -196,7 +197,12 @@
             selectWalletFile: [".select-wallet-file", onUnlockFile]
         });
 
-        function onUnlockFile(swf, fileJson, account, password) {
+        function onCurrencyChanged() {
+            updateBalance()
+        }
+        uiBlock.addCurrencyChangedListener(onCurrencyChanged);
+
+        function onUnlockFile(swf, fileJson, account, password) {  //TODO: 对外函数不要用简称
             var address;
             try {
                 account.fromKey(fileJson, password);
@@ -207,16 +213,45 @@
                 $("#unlock").hide();
                 $("#send").show();
 
-                neb.api.getAccountState(address)
-                    .then(function (resp) {
-                        var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
+                updateBalance();
+            } catch (e) {
+                // this catches e thrown by nebulas.js!account
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
+                    size: "large",
+                    title: "Error"
+                });
+            }
+        }
 
+        function updateBalance() {
+            if (!gAccount) {
+                return;
+            }
+            var addr = gAccount.getAddressString();
+            var currency = uiBlock.currency;
+            var contractAddr = uiBlock.getContractAddr(uiBlock.currency);
+            $("#balance").val("").trigger("input");
+            if (currency == "NAS") {
+                neb.api.getAccountState(addr)
+                    .then(function (resp) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        if (resp.error) {
+                            throw new Error(resp.error);
+                        }
+                        var nas = Unit.fromBasic(resp.balance, "nas").toNumber();
                         $("#balance").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
                         $("#nonce").val(parseInt(resp.nonce || 0) + 1);
                     })
                     .catch(function (e) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
                         // this catches e thrown by nebulas.js!neb
-
                         bootbox.dialog({
                             backdrop: true,
                             onEscape: true,
@@ -225,16 +260,42 @@
                             title: "Error"
                         });
                     });
-            } catch (e) {
-                // this catches e thrown by nebulas.js!account
+            } else {
+                var contract = {"function": "balanceOf", "args": "[\"" + addr + "\"]"};
+                neb.api.call({"from": addr, "to": uiBlock.getContractAddr(uiBlock.currency), "gasLimit": 200000, "gasPrice":1000000, "value": 0, "contract": contract})
+                    .then(function (resp) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        if (resp.error) {
+                            throw new Error(resp.error);
+                        }
+                        var b = resp.result.replace(/"/ig, "");
+                        var balance = Unit.fromBasic(b, "nas").toNumber()
+                        $("#balance").val(balance).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
+                    })
+                    .catch(function (e) {
+                        if (currency != uiBlock.currency) {
+                            return;
+                        }
+                        // this catches e thrown by nebulas.js!neb
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: i18n.apiErrorToText(e.message),
+                            size: "large",
+                            title: "Error"
+                        });
+                    });
 
-                bootbox.dialog({
-                    backdrop: true,
-                    onEscape: true,
-                    message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
-                    size: "large",
-                    title: "Error"
-                });
+                neb.api.getAccountState(addr)
+                    .then(function (resp) {
+                        if (!resp.error) {
+                            $("#nonce").val(parseInt(resp.nonce || 0) + 1);
+                        }
+                    })
+                    .catch(function (e) {
+                    });
             }
         }
 
@@ -256,17 +317,22 @@
                     gLastGenerateInfo.amount != amount ||
                     gLastGenerateInfo.gaslimit != gaslimit ||
                     gLastGenerateInfo.gasprice != gasprice ||
-                    gLastGenerateInfo.nonce != nonce) try {
+                    gLastGenerateInfo.nonce != nonce) try {  //TODO: 加括号
                         var tmp = Unit.fromBasic(Utils.toBigNumber(gaslimit)
                             .times(Utils.toBigNumber(gasprice)), "nas");
 
-                        if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp)))
+                        if (Utils.toBigNumber(balance).lt(Utils.toBigNumber(amount).plus(tmp))) //TODO: 加括号； tmp-->max gas used
                             if (Utils.toBigNumber(balance).lt(tmp))
-                                bnAmount = Utils.toBigNumber(0);
+                                bnAmount = Utils.toBigNumber(0); //TODO: 逻辑是否必须有
                             else
                                 bnAmount = Utils.toBigNumber(balance).minus(Utils.toBigNumber(tmp));
 
-                        gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                        if (uiBlock.currency == "NAS") {
+                            gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
+                        } else {
+                            var contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toAddress + "\", \"" + Unit.nasToBasic(Utils.toBigNumber(amount)) + "\"]", "binary": "", "type": "call"};
+                            gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), Unit.nasToBasic(Utils.toBigNumber("0")), parseInt(nonce), gasprice, gaslimit, contract);
+                        }
                         gTx.signTransaction();
 
                         $("#raw").val(gTx.toString());
@@ -306,7 +372,7 @@
         function onClickModalConfirmS() {
             var mTxHash;
 
-            gTx && neb.api.sendRawTransaction(gTx.toProtoString())
+            gTx && neb.api.sendRawTransaction(gTx.toProtoString()) //TODO: GTX为空是 抛异常
                 .then(function (resp) {
                     // console.log("sendRawTransaction resp: " + JSON.stringify(resp));
                     mTxHash = resp.txhash;
@@ -316,7 +382,7 @@
                     $("#receipt_state").val(JSON.stringify(resp));
                     $("#receipt_div").show();
 
-                    // TODO 重新点击需要reset页面状态，清理setTimeout
+                    // TODO: 重新点击需要reset页面状态，清理setTimeout    （ 是否需要 ，如果需要的话给用户认知 ）
                     setTimeout(function () {
                         neb.api.getAccountState($(".icon-address.from input").val())
                             .then(function (resp) {

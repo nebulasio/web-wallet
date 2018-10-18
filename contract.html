@@ -9,6 +9,7 @@
     <link rel=stylesheet href=lib/prismjs-1.13.0/prism.css>
     <link rel=stylesheet href=css/base.css>
     <link rel=stylesheet href=css/ui-block.css>
+    <link rel=stylesheet href=css/codemirror.css>
     <meta name=viewport content="width=device-width">
     <title>NEBULAS</title>
     <style>
@@ -106,6 +107,50 @@
         .err {
             border-color: red;
         }
+
+        .prompt{
+            width: 20px;
+            height: 20px;
+            display: inline-table;
+        }
+        
+        .prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 16%;
+            margin-top: -6%;
+            box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
+        }
+
+        .call_prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 28%;
+            margin-top: -14%;
+            box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
+        }
+
+         .function_prompt_contenner{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+            position: absolute;
+            left: 24%;
+            margin-top: -14%;
+            box-shadow:2px 2px 17px #333333;
+            background-color: #fff;
+            pointer-events: none;
+        }
+
+        .CodeMirror {border: 1px solid black; font-size:13px;}
     </style>
 </head>
 
@@ -142,7 +187,7 @@
                 <!-- contract code -->
 
                 <span data-i18n=contract/contract_code></span>
-                <textarea class=form-control id=source cols=30 rows=10 data-validate-order-matters=required></textarea>
+                <textarea class=form-control id=source  name=code cols=30 rows=10 data-validate-order-matters=required></textarea>
 
                 <!-- select codetype -->
                 <br>
@@ -162,7 +207,10 @@
                 <!-- function args -->
                 <br>
                 <label data-i18n=contract/contract_fun></label>
-                <input class=form-control id=deploy_args>
+                <span id=prompt class=prompt><img src=img/prompt.png></span>
+                <div id=prompt_contenner class="active1 prompt_contenner"> <b data-i18n=contract/contract_fun_prompt></b></div>
+                <input class=form-control id=deploy_args placeholder='["arg-1", "arg-2", ...]'>
+
 
                 <!-- select wallet -->
                 <div class="select-wallet-file mt14"></div>
@@ -192,7 +240,7 @@
                 <div class="form-group row">
                     <div class=col>
                         <label data-i18n=gas-limit></label>
-                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000 data-disabled></div>
+                        <div class=number-comma data-data-i18n=amount data-id=gas_limit data-validate="required number gt0" data-value=200000></div>
                     </div>
                     <div class=col>
                         <label data-i18n=gas-price></label>
@@ -238,11 +286,15 @@
                 <div class="form-group row">
                     <div class=col>
                         <label data-i18n=contract/contract_funtion></label>
+                        <span id=function_prompt class=prompt><img src=img/prompt.png></span>
+                        <div id=function_prompt_contenner class="active1 function_prompt_contenner"> <b data-i18n=contract/contract_fn_prompt></b></div>
                         <input class=form-control type=text id=call_function>
                     </div>
                     <div class=col>
                         <label data-i18n=contract/contract_fun></label>
-                        <input class=form-control type=text id=call_args>
+                        <span id=call_prompt class=prompt><img src=img/prompt.png></span>
+                        <div id=call_prompt_contenner class="active1 call_prompt_contenner"> <b data-i18n=contract/contract_fun_prompt></b></div>
+                        <input class=form-control type=text id=call_args placeholder='["arg-1", "arg-2", ...]'>
                     </div>
                 </div>
 
@@ -336,6 +388,8 @@
     <script src=js/home.v1.js></script>
     <script src=js/i18n.js data-depends=jquery.slim></script>
     <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
+    <script src=lib/codemirror/codemirror.js></script>
+    <script src=lib/codemirror/javascript.js></script>
     <script>
         "use strict";
 
@@ -375,6 +429,32 @@
             }
         }, function () {
             $(this).parent().removeClass("hoverItem");
+        });
+
+
+        // prompt（function，args）  TODO: 函数封装
+        $("#prompt").mouseover(function(){
+            $("#prompt_contenner").removeClass("active1");
+        });
+
+        $("#prompt").mouseout(function(){
+            $("#prompt_contenner").addClass("active1");
+        });
+
+        $("#call_prompt").mouseover(function(){
+            $("#call_prompt_contenner").removeClass("active1");
+        });
+
+        $("#call_prompt").mouseout(function(){
+            $("#call_prompt_contenner").addClass("active1");
+        });
+
+         $("#function_prompt").mouseover(function(){
+            $("#function_prompt_contenner").removeClass("active1");
+        });
+
+        $("#function_prompt").mouseout(function(){
+            $("#function_prompt_contenner").addClass("active1");
         });
 
         $(".search").on("click", onClickSearch);
@@ -444,7 +524,7 @@
                 $(".modal.loading").modal("show");
 
                 neb.api
-                    .getTransactionReceipt($("#addr_input").val())
+                    .getTransactionReceipt($("#addr_input").val())//TODO: 代码提示
                     .then(function (resp) {
                         var data, s, lang;
 
@@ -799,6 +879,16 @@
                 });
             });
         }
+        // CodeMirror
+        // var editor = CodeMirror.fromTextArea(document.getElementById("source"), {
+        //     lineNumbers: true,
+        //     styleActiveLine: true,
+        //     matchBrackets: true,
+        //     // mode:' javascript ',
+        //     // indentUnit: ' 2 ',
+        //     smartIndent: true
+        // });
+
     </script>
 </body>
 </html>

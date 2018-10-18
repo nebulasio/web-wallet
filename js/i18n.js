@@ -31,7 +31,9 @@ var i18n = function () {
             "contract/contract_code": "code : ",
             "contract/contract_codetype": "Programming Language :",
             "contract/contract_codetype_banner": "（ Please select the code type ！）",
-            "contract/contract_fun": "arguments  (for example : [\"x\"] )",
+            "contract/contract_fun": "arguments",
+            "contract/contract_fun_prompt":" （Type：JSON）for example : [\"arg-1\", \"arg-2\", ...] ",
+            "contract/contract_fn_prompt":"function (x) { } ",
             "contract/contract_funtion": "function",
             "contract/err_msg": "Red part information is wrong，Please enter a valid msg",
             "contract/err_msg_hash": "Please enter a valid TX hash",
@@ -50,7 +52,7 @@ var i18n = function () {
             "header/check": "Check TX Status",
             "header/contract": "Contract",
             "header/new-wallet": "Create New Wallet",
-            "header/send": "Send NAS",
+            "header/send": "Send",
             "header/send-offline": "Send Offline",
             "header/view": "View Wallet Info",
             home: "Home",
@@ -96,8 +98,8 @@ var i18n = function () {
             technology: "Technology",
             "validate/eqgt0": "invalid: must equal to or greater than 0",
             "validate/gt0": "invalid: must greater than 0",
-            "validate/lengthEq35": "invalid: length should be 35. Have leading/tailing spaces?",
-            "validate/lengthEq64": "invalid: length should be 64. Have leading/tailing spaces?",
+            "validate/lengthEq35": "invalid: length should be 35",
+            "validate/lengthEq64": "invalid: length should be 64",
             "validate/lengthGt8": "invalid: length should at least be 9",
             "validate/number": "invalid: must be number",
             "validate/required": "invalid: required",
@@ -126,7 +128,9 @@ var i18n = function () {
             "contract/contract_code": "合约代码 :",
             "contract/contract_codetype": "编程语言 :",
             "contract/contract_codetype_banner": "（ 请选择代码类型 ！）",
-            "contract/contract_fun": "参数  ( 例如：[\"x\"]）",
+            "contract/contract_fun": "参数 ",
+            "contract/contract_fun_prompt": " （json格式）例如 ：[\"arg-1\", \"arg-2\",...] ",
+            "contract/contract_fn_prompt":"例如 ：function (x) { } ",
             "contract/contract_funtion": "函数",
             "contract/err_msg": "红色部分信息错误，请输入有效信息",
             "contract/err_msg_hash": "请输入有效的交易哈希",
@@ -145,8 +149,8 @@ var i18n = function () {
             "header/check": "交易状态",
             "header/contract": "合约",
             "header/new-wallet": "新建钱包",
-            "header/send": "发送星云币",
-            "header/send-offline": "离线发送",
+            "header/send": "转账",
+            "header/send-offline": "离线转账",
             "header/view": "钱包信息",
             home: "主页",
             "keystore-file": "密码库文件",
@@ -189,8 +193,8 @@ var i18n = function () {
             technology: "技术",
             "validate/eqgt0": "无效：必须等于或大于 0",
             "validate/gt0": "无效：必须大于 0",
-            "validate/lengthEq35": "无效：长度应等于 35。前后有空格？",
-            "validate/lengthEq64": "无效：长度应等于 64。前后有空格？",
+            "validate/lengthEq35": "无效：长度应等于 35",
+            "validate/lengthEq64": "无效：长度应等于 64",
             "validate/lengthGt8": "无效：长度至少是 9",
             "validate/number": "无效：必须是数字",
             "validate/required": "无效：必填",
@@ -198,7 +202,104 @@ var i18n = function () {
             "wallet-info/acc-balance": "钱包余额",
             "wallet-info/private-key": "私钥（未加密）",
             "wallet-info/your-addr": "你的地址"
-        }
+        },
+        ko: {
+            amount: "양",
+            blog: "블로그",
+            "check/anchor": "여기서 이 도구에 대해서 읽으세요.",
+            "check/blah": "거래 해쉬는 보류 및 패키지 트랜잭션을 포함하여 트랜잭션 정보를 쿼리할 수 ​​있습니다. 트랜잭션이 패키징되고 유효성이 확인되면 쿼리 트랜잭션의 패키지 상태 변경을 여러 번 새로고침해야합니다.",
+            "check/comment1": "유효한 TX hash를 입력해주세요",
+            "check/tx-details": "트랜잭션 세부정보",
+            community: "커뮤니티",
+            "contract/addr_input_msg": "TXhash를 입력해주세요",
+            "contract/call": "호출",
+            "contract/call_contract": "컨트랙트 호출",
+            "contract/call_test": "테스트",
+            "contract/call_submit": "제출",
+            "contract/deploy": "배포",
+            "contract/deploy_contract": "컨트랙트 배포",
+            "contract/deploy_test": "테스트",
+            "contract/deploy_submit": "제출",
+            "contract/contract_code": "코드 : ",
+            "contract/contract_codetype": "프로그래밍 언어 :",
+            "contract/contract_codetype_banner": "（ 코드의 타입을 선택해주세요! ）",
+            "contract/contract_fun": "인자",
+            "contract/contract_fun_prompt":" （타입: JSON）예시 : [\"arg-1\", \"arg-2\", ...] ",
+            "contract/contract_fn_prompt":"function (x) { } ",
+            "contract/contract_funtion": "함수",
+            "contract/err_msg": "빨간 부분의 정보는 틀린 것입니다, 유효한 msg를 입력해주세요.",
+            "contract/err_msg_hash": "유효한 TX hash를 입력해주세요",
+            "contract/test_result": "테스트 결과",
+            "contract/result": "제출 결과",
+            "contract/search": "검색",
+            "contract/search_contract": "컨트랙트 검색",
+            "contract/txhash": "txhash :",
+            "contract/contract_address": "contract_address :",
+            "contract/clickToCheck": "(트랜잭션 세부정보를 보려면 클릭하세요)",
+            data: "데이터",
+            download: "다운로드",
+            "gas-limit": "가스 한도",
+            "gas-price": "가스 가격",
+            "gas-used": "사용된 가스",
+            "header/check": "트랜잭션 확인",
+            "header/contract": "컨트랙트",
+            "header/new-wallet": "새 지갑 생성",
+            "header/send": "출금",
+            "header/send-offline": "오프라인 출금",
+            "header/view": "지갑 정보 조회",
+            home: "홈",
+            "keystore-file": "키스토어 파일",
+            name: "한글",
+            "new/comment": "이 암호는 프라이빗 키로 암호화됩니다.\n" +
+                "키를 생성하는 시드로 작동하지 않습니다.\n" +
+                "지갑을 언락하기 위해 이 비밀번호와 프라이빗 키가 필요합니다.",
+            "new/enter-password": "비밀번호를 입력해주세요:（길이가 9 이상이어야 합니다）",
+            "new/gen": "키스토어 파일을 다운로드하세요",
+            "new/new": "새 지갑 생성",
+            "new/placeholder/do-not-forget": "비밀번호를 잊지 말아주세요!",
+            "new/save1": " ",
+            "new/save3": "을 저장하세요.",
+            "placeholder/addr": "주소를 입력해주세요",
+            "placeholder/tx#": "트랜잭션 해쉬를 입력해주세요",
+            resources: "리소스",
+            "send-nas/amount": "전송할 값 / 양",
+            "send-nas/balance": "잔액",
+            "send-nas/button/generate": "트랜잭션 생성",
+            "send-nas/check": "제출",
+            "send-nas/close": "닫기",
+            "send-nas/from-address": "보내는 주소",
+            "send-nas/raw": "원시 트랜잭션",
+            "send-nas/receipt": "영수증 :",
+            "send-nas/send": "트랜잭션 전송",
+            "send-nas/signed": "서명된 트랜잭션",
+            "send-nas/signed_qr": "서명된 트랜잭션 QR",
+            "send-nas/to-address": "받는 주소",
+            "send-nas/transfer_msg": "메세지 전송",
+            "send-offline/gen-info": "정보 조회",
+            "send-offline/nonce": "nonce : (다음 트랜잭션 nonce)",
+            "send-offline/step1": "1단계: 정보 조회 (온라인 컴퓨터)",
+            "send-offline/step2": "2단계: 트랜잭션 생성 (오프라인 컴퓨터)",
+            "send-offline/step3": "3단계: 트랜잭션 전송 / 게재 (온라인 컴퓨터)",
+            "swf/button": "지갑 파일을 선택해주세요...",
+            "swf/good": "지갑은 암호화됩니다. 비밀번호를 입력해주세요.",
+            "swf/modal/select/message": "지갑 파일을 업로드해주세요.",
+            "swf/modal/select/title": "지갑을 선택하세요",
+            "swf/name": "지갑 파일을 선택하세요:",
+            "swf/unlock": "언락",
+            team: "팀",
+            technology: "기술",
+            "validate/eqgt0": "유효하지 않음: 0보다 크거나 같아야 합니다",
+            "validate/gt0": "유효하지 않음: 0보다 커야 합니다",
+            "validate/lengthEq35": "유효하지 않음: 길이가 35가 되어야 합니다",
+            "validate/lengthEq64": "유효하지 않음: 길이가 64가 되어야 합니다",
+            "validate/lengthGt8": "유효하지 않음: 길이가 최소한 9는 되어야 합니다",
+            "validate/number": "유효하지 않음: 숫자여야 합니다",
+            "validate/required": "유효하지 않음: 필수입니다",
+            "wallet-info/acc-addr": "지갑 주소",
+            "wallet-info/acc-balance": "지갑 잔액",
+            "wallet-info/private-key": "프라이빗 키 (암호화되지 않음)",
+            "wallet-info/your-addr": "당신의 주소"
+        },
     };
 
     return {
@@ -213,70 +314,86 @@ var i18n = function () {
             table = {
                 unknown: {
                     en: "unknown error",
-                    zh: "未知错误"
+                    zh: "未知错误",
+                    ko: "알려지지 않은 에러",
                 },
                 "Network Error": {
                     en: s,
-                    zh: "网络错误"
+                    zh: "网络错误",
+                    ko: "네트워크 에러",
                 },
                 // getAccountState
                 "address: invalid address format": {
                     en: s,
-                    zh: "地址格式无效"
+                    zh: "地址格式无效",
+                    ko: "주소: 유효하지 않은 주소 포맷입니다",
                 },
                 // GetTransactionReceipt
                 "invalid argument(s)": {
                     en: "invalid transaction hash",
-                    zh: "无效的交易哈希"
+                    zh: "无效的交易哈希",
+                    ko: "유효하지 않은 트랜잭션 해쉬입니다",
                 },
                 "params eror/system error": {
                     en: "transaction hash or system error",
-                    zh: "交易哈希或者系统错误"
+                    zh: "交易哈希或者系统错误",
+                    ko: "트랜잭션 해쉬 혹은 시스템 에러입니다",
                 },
                 "transaction not found": {
                     en: "transaction not found",
-                    zh: "交易未找到"
+                    zh: "交易未找到",
+                    ko: "트랜잭션이 존재하지 않습니다",
                 },
                 // senRawTransaction
                 "transaction's nonce is invalid, should bigger than the from's nonce": {
                     en: s,
-                    zh: "交易的 nonce 无效，应该大于发送方的 nonce"
+                    zh: "交易的 nonce 无效，应该大于发送方的 nonce",
+                    ko: "트랜잭션의 nonce가 유효하지 않습니다, 보내는 주소의 nonce보다 커야 합니다",
                 },
                 "contract transaction from-address not equal to to-address": {
                     en: s,
-                    zh: "发布合约的 from / to 地址不一致"
+                    zh: "发布合约的 from / to 地址不一致",
+                    ko: "보내는 주소의 컨트랙트 트랜잭션이 받는 주소의 것과 같지 않습니다",
                 },
                 "contract check failed": {
                     en: s,
-                    zh: "合约地址无效"
+                    zh: "合约地址无效",
+                    ko: "컨트랙트 확인이 실패했습니다",
                 },
                 "duplicated transaction": {
                     en: s,
-                    zh: "不能重复提交相同的交易"
+                    zh: "不能重复提交相同的交易",
+                    ko: "중복된 트랜잭션입니다",
                 },
                 "below the gas price gas": {
                     en: s,
-                    zh: "价格太低"
+                    zh: "价格太低",
+                    ko: "가스 가격이 너무 낮습니다",
                 },
-                "gas limit less or equal to 0 ": {
+                "gas limit less or equal to 0": {
                     en: s,
-                    zh: "gas 限制应该大于 0"
+                    zh: "gas 限制应该大于 0",
+                    ko: "가스 한도가 0보다 작거나 같습니다",
                 },
                 "out of gas limit": {
                     en: s,
-                    zh: "gas 限制过大"
+                    zh: "gas 限制过大",
+                    ko: "가스가 부족합니다",
                 },
                 "invalid transaction chainID": {
                     en: s,
-                    zh: "无效的 chain id"
+                    zh: "无效的 chain id",
+                    ko: "유효하지 않은 트랜잭션 chainID입니다",
                 },
                 "invalid transaction hash": {
                     en: s,
-                    zh: "交易哈希无效"
+                    zh: "交易哈希无效",
+                    ko: "유효하지 않은 트랜잭션 해쉬입니다",
                 },
                 "invalid transaction signer": {
                     en: s,
-                    zh: "无效的交易签名"
+                    zh: "无效的交易签名",
+                    ko: "유효하지 않은 트랜잭션 서명입니다",
                 }
             };
 
