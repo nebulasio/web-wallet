@@ -154,7 +154,7 @@
                         if (resp.error) {
                             throw new Error(resp.error);
                         }
-                        var nas = nebulas.Unit.fromBasic(resp.balance, "nas").toNumber();
+                        var nas = nebulas.Unit.fromBasic(resp.balance, "nas").toString(10);
                         $("#amount").val(nas).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
                     })
                     .catch(function (e) {
@@ -181,7 +181,7 @@
                             throw new Error(resp.error);
                         }
                         var b = resp.result.replace(/"/ig, "");
-                        var balance = nebulas.Unit.fromBasic(b, "nas").toNumber()
+                        var balance = nebulas.Unit.fromBasic(b, "nas").toString(10)
                         $("#amount").val(balance).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
                     })
                     .catch(function (e) {
