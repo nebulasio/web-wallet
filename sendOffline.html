@@ -272,7 +272,7 @@
                 $("#value_container").attr("data-unit", currency);
                 $("#for_addr").val(tx.from.getAddressString());
                 $("#to_addr").val(to);
-                $("#value").val(unit.fromBasic(value, "nas")).trigger("input");
+                $("#value").val(unit.fromBasic(value, "nas").toString(10)).trigger("input");
             } catch (err) {
                 bootbox.dialog({
                     backdrop: true,
@@ -298,7 +298,7 @@
 
                 toaccount = Account.fromAddress(toaddress);
                 if (uiBlock.currency != "NAS") {
-                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + unit.nasToBasic(amount) + "\"]", "binary": "", "type": "call"};
+                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + unit.nasToBasic(amount).toString(10) + "\"]", "binary": "", "type": "call"};
                 }
 
                 if (gLastGenerateInfo.fromaddress != fromaddress ||
@@ -308,9 +308,13 @@
                     gLastGenerateInfo.gaslimit != gaslimit ||
                     gLastGenerateInfo.gasprice != gasprice ||
                     gLastGenerateInfo.contract != contract) try {
+                        var a = amount.split(".");
+                        var amountValid = a.length == 1 || a[1].length <= 18;
                         if (uiBlock.currency == "NAS") {
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18nas) ");
                             tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                         } else {
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18atp) ");
                             tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), unit.nasToBasic("0"), parseInt(nonce), gasprice, gaslimit, contract);
                         }
                         tx.signTransaction();
