@@ -365,7 +365,7 @@ var uiBlock = function () {
 
                 // https://stackoverflow.com/questions/857618/javascript-how-to-extract-filename-from-a-file-input-control
                 // this.value.split(/[\\|/]/).pop()
-                $("<span>" + file.name + "</span>").replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
+                $("<span />").text(file.name).replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
                 fr.onload = onload;
                 fr.readAsText(file);
 
