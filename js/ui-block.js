@@ -5,7 +5,7 @@
 var uiBlock = function () {
 
     var MAIN_NET_ATP_CONTRACT_ADDR = "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39";
-    var TEST_NET_ATP_CONTRACT_ADDR = "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6";
+    var TEST_NET_ATP_CONTRACT_ADDR = "n1nkoSJVLQnaKnDKH56mtKtdjbgLKoHZhtD";
 
     var old$fnModal = $.fn.modal;
 
