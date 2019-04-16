@@ -110,16 +110,8 @@ var uiBlock = function () {
             i18n.run($(selector)
                 .addClass("container footer")
                 .html(
-                    "<div class=logo></div>" +
-                    "<nav class=text-center>" +
-                    "    <a href=https://nebulas.io/ data-i18n=home></a>" +
-                    "    <a href=https://nebulas.io/technology.html data-i18n=technology></a>" +
-                    "    <a href=https://nebulas.io/community.html data-i18n=community></a>" +
-                    "    <a href=https://nebulas.io/team.html data-i18n=team></a>" +
-                    "    <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
-                    "    <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
-                    "</nav>" +
-                    '<div class="copyright text-center">Copyright &copy; 2018 Nebulas.io, 645 Howard Street, San Francisco</div>'));
+                    "<a href='https://nebulas.io/' target='_blank'><div class=logo></div></a>" +
+                    '<div class="copyright text-center">Copyright &copy; 2019 Nebulas.io</div>'));
         }
 
         function header(selector) {
