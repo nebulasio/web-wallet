@@ -5,7 +5,7 @@
 var uiBlock = function () {
 
     var MAIN_NET_ATP_CONTRACT_ADDR = "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39";
-    var TEST_NET_ATP_CONTRACT_ADDR = "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6";
+    var TEST_NET_ATP_CONTRACT_ADDR = "n1nkoSJVLQnaKnDKH56mtKtdjbgLKoHZhtD";
 
     var old$fnModal = $.fn.modal;
 
@@ -110,16 +110,8 @@ var uiBlock = function () {
             i18n.run($(selector)
                 .addClass("container footer")
                 .html(
-                    "<div class=logo></div>" +
-                    "<nav class=text-center>" +
-                    "    <a href=https://nebulas.io/ data-i18n=home></a>" +
-                    "    <a href=https://nebulas.io/technology.html data-i18n=technology></a>" +
-                    "    <a href=https://nebulas.io/community.html data-i18n=community></a>" +
-                    "    <a href=https://nebulas.io/team.html data-i18n=team></a>" +
-                    "    <a href=https://nebulas.io/resources.html data-i18n=resources></a>" +
-                    "    <a href=https://medium.com/nebulasio data-i18n=blog target=_blank></a>" +
-                    "</nav>" +
-                    '<div class="copyright text-center">Copyright &copy; 2018 Nebulas.io, 645 Howard Street, San Francisco</div>'));
+                    "<a href='https://nebulas.io/' target='_blank'><div class=logo></div></a>" +
+                    '<div class="copyright text-center">Copyright &copy; 2019 Nebulas.io</div>'));
         }
 
         function header(selector) {
@@ -365,7 +357,7 @@ var uiBlock = function () {
 
                 // https://stackoverflow.com/questions/857618/javascript-how-to-extract-filename-from-a-file-input-control
                 // this.value.split(/[\\|/]/).pop()
-                $("<span>" + file.name + "</span>").replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
+                $("<span />").text(file.name).replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
                 fr.onload = onload;
                 fr.readAsText(file);
 
