@@ -6,6 +6,8 @@ var uiBlock = function () {
 
     var MAIN_NET_ATP_CONTRACT_ADDR = "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39";
     var TEST_NET_ATP_CONTRACT_ADDR = "n1nkoSJVLQnaKnDKH56mtKtdjbgLKoHZhtD";
+    var MAIN_NET_NAT_CONTRACT_ADDR = "n1mpgNi6KKdSzr7i5Ma7JsG5yPY9knf9He7";
+    var TEST_NET_NAT_CONTRACT_ADDR = "n22PdtQepev7rcQgy3zqfdAkNPN2pSpywZ8";
 
     var old$fnModal = $.fn.modal;
 
@@ -77,7 +79,7 @@ var uiBlock = function () {
     function getCurrencies() {
         currencies = localSave.getItem("currencies");
         if (!currencies) {
-            currencies = { "NAS": "",  "ATP": MAIN_NET_ATP_CONTRACT_ADDR };
+            currencies = { "NAS": "",  "ATP": MAIN_NET_ATP_CONTRACT_ADDR,  "NAT": MAIN_NET_NAT_CONTRACT_ADDR };
         } else {
             currencies = JSON.parse(currencies);
         }
@@ -186,8 +188,8 @@ var uiBlock = function () {
             // apiPrefix
 
             apiList = [
-                { chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io", currencies: { "NAS": "",  "ATP": MAIN_NET_ATP_CONTRACT_ADDR } },
-                { chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io", currencies: { "NAS": "",  "ATP": TEST_NET_ATP_CONTRACT_ADDR } },
+                { chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io", currencies: { "NAS": "",  "ATP": MAIN_NET_ATP_CONTRACT_ADDR, "NAT": MAIN_NET_NAT_CONTRACT_ADDR } },
+                { chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io", currencies: { "NAS": "",  "ATP": TEST_NET_ATP_CONTRACT_ADDR, "NAT": TEST_NET_NAT_CONTRACT_ADDR } },
                 { chainId: 100, name: "Local Nodes", url: "http://127.0.0.1:8685", currencies: { "NAS": "" } }
             ];
             apiPrefix = (localSave.getItem("apiPrefix") || "").toLowerCase();

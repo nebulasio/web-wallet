@@ -333,7 +333,7 @@
                             if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18nas) ");
                             gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                         } else {
-                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18atp) ");
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18" + uiBlock.currency.toLowerCase() + ") ");
                             var contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toAddress + "\", \"" + Unit.nasToBasic(Utils.toBigNumber(amount)).toString(10) + "\"]", "binary": "", "type": "call"};
                             gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), Unit.nasToBasic(Utils.toBigNumber("0")), parseInt(nonce), gasprice, gaslimit, contract);
                         }
