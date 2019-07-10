@@ -23,7 +23,7 @@ var uiBlock = function () {
         addCurrencyChangedListener: addCurrencyChangedListener,
         getContractAddr: getContractAddr,
         getCurrencyByContractAddr: getCurrencyByContractAddr,
-        isAtpContractAddr: isAtpContractAddr,
+        isNRC20ContractAddr: isNRC20ContractAddr,
     };
 
     function $fnModal(s) {
@@ -72,8 +72,14 @@ var uiBlock = function () {
         return null;
     }
 
-    function isAtpContractAddr(addr) {
-        return addr == MAIN_NET_ATP_CONTRACT_ADDR || addr == TEST_NET_ATP_CONTRACT_ADDR;
+    function isNRC20ContractAddr(addr) {
+        var currencies = getCurrencies();
+        for (var c in currencies) {
+            if (c != "NAS" && currencies[c] == addr) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function getCurrencies() {
