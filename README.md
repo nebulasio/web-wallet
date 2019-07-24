@@ -17,7 +17,7 @@ Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/n
 ### Feature list
 
 - generate nebulas address/keystore;
-- send transaction;
+- send transaction (suport NAS, ATP, NAT);
 - send offline transaction;
 - view address/keystore info;
 - view transaction status & info;
