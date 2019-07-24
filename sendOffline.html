@@ -314,7 +314,7 @@
                             if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18nas) ");
                             tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
                         } else {
-                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18atp) ");
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18" + uiBlock.currency.toLowerCase() + ") ");
                             tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), unit.nasToBasic("0"), parseInt(nonce), gasprice, gaslimit, contract);
                         }
                         tx.signTransaction();
