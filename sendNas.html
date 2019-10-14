@@ -271,7 +271,15 @@
                             throw new Error(resp.error);
                         }
                         var b = resp.result.replace(/"/ig, "");
-                        var balance = Unit.fromBasic(b, "nas").toString(10)
+                        
+                        var balance;
+
+                        if(uiBlock.currency === "NAX") {
+                            balance = Unit.fromBasic(b, "gwei").toString();
+                        } else {
+                            balance = Unit.fromBasic(b, "nas").toString(10);
+                        }
+                        
                         $("#balance").val(balance).trigger("input"); // add comma & unit from value, needs trigger 'input' event if via set o.value
                     })
                     .catch(function (e) {
@@ -334,7 +342,15 @@
                             gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toAddress, Unit.nasToBasic(Utils.toBigNumber(amount)), parseInt(nonce), gasprice, gaslimit);
                         } else {
                             if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18" + uiBlock.currency.toLowerCase() + ") ");
-                            var contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toAddress + "\", \"" + Unit.nasToBasic(Utils.toBigNumber(amount)).toString(10) + "\"]", "binary": "", "type": "call"};
+
+                            var transfer_amount;
+                            if(uiBlock.currency === "NAX") {
+                                transfer_amount = Unit.toBasic(Utils.toBigNumber(amount), "gwei").toString();
+                            } else {
+                                transfer_amount = Unit.nasToBasic(Utils.toBigNumber(amount)).toString(10);
+                            }
+
+                            var contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toAddress + "\", \"" + transfer_amount + "\"]", "binary": "", "type": "call"};
                             gTx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), Unit.nasToBasic(Utils.toBigNumber("0")), parseInt(nonce), gasprice, gaslimit, contract);
                         }
                         gTx.signTransaction();
