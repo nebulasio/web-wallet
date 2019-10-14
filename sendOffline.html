@@ -272,7 +272,15 @@
                 $("#value_container").attr("data-unit", currency);
                 $("#for_addr").val(tx.from.getAddressString());
                 $("#to_addr").val(to);
-                $("#value").val(unit.fromBasic(value, "nas").toString(10)).trigger("input");
+
+                var balance;
+                if(uiBlock.currency === "NAX") {
+                    balance = unit.fromBasic(value, "gwei").toString();
+                } else {
+                    balance = unit.fromBasic(value, "nas").toString(10);
+                }
+
+                $("#value").val(balance).trigger("input");
             } catch (err) {
                 bootbox.dialog({
                     backdrop: true,
@@ -298,7 +306,14 @@
 
                 toaccount = Account.fromAddress(toaddress);
                 if (uiBlock.currency != "NAS") {
-                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + unit.nasToBasic(amount).toString(10) + "\"]", "binary": "", "type": "call"};
+
+                    var transfer_amount;
+                    if(uiBlock.currency === "NAX") {
+                        transfer_amount = unit.toBasic(amount, "gwei").toString();
+                    } else {
+                        transfer_amount = unit.nasToBasic(amount).toString(10);
+                    }
+                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + transfer_amount + "\"]", "binary": "", "type": "call"};
                 }
 
                 if (gLastGenerateInfo.fromaddress != fromaddress ||
