@@ -26,7 +26,6 @@ Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/n
 
 ### TODO list
 - Multiple wallet address import methods.
-- Send transaction (NRC20) [send transaction for NAS and ATP is finished.]
 
 
 Thanks to @luoman for implementing a pre-version [naswallet](https://github.com/nebulasio/explorer/tree/master/nasWallet) for us.
