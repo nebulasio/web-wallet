@@ -1,0 +1,449 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <link rel="icon shortcut" href=img/logo.png type=image/png>
+    <link rel=apple-touch-icon href=img/logo.png>
+    <link rel=stylesheet href=lib/bootstrap-4.0.0-dist/css/bootstrap.min.css>
+    <link rel=stylesheet href=css/base.css>
+    <link rel=stylesheet href=css/ui-block.css>
+    <meta name=viewport content="width=device-width">
+    <style>
+        .transaction {
+            display: none;
+        }
+
+        #qrcode {
+            text-align: center;
+        }
+    </style>
+    <title>NEBULAS</title>
+</head>
+
+<body>
+    <div class=logo-main></div>
+    <div class=header></div>
+
+    <div id=step1 class="container wallet" style="display:none">
+        <div id=generate_infomation>
+            <h1 data-i18n=send-offline/step1>Step 1: Generate Information (Online Computer)</h1>
+            <div class=form-group>
+                <div data-i18n=send-nas/from-address>From Address</div>
+                <div class="from icon-address"></div>
+            </div>
+            <button id=generate-infomation class="btn btn-block" data-i18n=send-offline/gen-info>Inquire Information</button>
+            <div class="form-group row" id=information style=display:none;>
+                <div class=col>
+                    <label for=fa_gasprice data-i18n=gas-price>Gas Price:</label>
+                    <input type=text id=fa_gasprice class=form-control>
+                </div>
+                <div class=col>
+                    <label for=fa_nonce data-i18n=send-offline/nonce>Nonce: (next transaction nonce)</label>
+                    <input type=text id=fa_nonce class=form-control>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id=step2 class="container wallet">
+        <div id=generate_transaction>
+            <h1>Sign message (Offline Computer)</h1>
+            <div class="form-group row">
+                <div class=col>
+                    <label data-i18n=send-nas/from-address>From Address</label>
+                    <div class="icon-address from" data-disabled></div>
+                </div>
+                <div class=col style="display:none">
+                    <label data-i18n=send-nas/to-address>To Address</label>
+                    <div class="icon-address to"></div>
+                </div>
+            </div>
+            <div class="form-group row" style="display:none">
+                <div class=col>
+                    <label data-i18n=send-nas/amount>Value / Amount to Send</label>
+                    <div class=number-comma data-data-i18n=amount data-id=amount data-unit=currency data-validate="required number eqgt0" data-currency-selector></div>
+                </div>
+                <div class=col>
+                    <label>Nonce</label>
+                    <input type=text class=form-control id=nonce data-validate-order-matters="required number gt0">
+                </div>
+            </div>
+            <div class="form-group row" style="display:none">
+                <div class=col>
+                    <label>
+                        <span data-i18n=gas-limit>Gas Limit</span>
+                    </label>
+                    <div class=number-comma data-data-i18n=amount data-id=limit data-validate="required number gt0" data-value=200000></div>
+                </div>
+                <div class=col>
+                    <label>
+                        <span data-i18n=gas-price>Gas Price</span>
+                        <i>( 1 NAS = 1EWei = 10
+                            <sup>18</sup> Wei )</i>
+                    </label>
+                    <div class=number-comma data-data-i18n=amount data-id=price data-unit=wei data-validate="required number gt0" data-value=20000000000></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container select-wallet-file"></div>
+
+    <div class="container transaction">
+        <button id=generate class="btn btn-block">Sign</button>
+        <div class=row>
+            <div class=col>
+                <div class=form-group>
+                    <label for=raw >Raw Data</label>
+                    <textarea class=form-control rows=8 id=raw></textarea>
+                </div>
+            </div>
+            <div class=col>
+                <div class=form-group>
+                    <label for=signed >Signed Data</label>
+                    <textarea class=form-control rows=8 id=signed disabled></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id=step3 class="container wallet" style="display:none">
+        <h1 data-i18n=send-offline/step3>Step 3: Send / Publish Transaction (Online Computer)</h1>
+        <div class="form-group row">
+            <div class=col>
+                <label for=signedoffline data-i18n=send-nas/signed>Signed Transaction</label>
+                <textarea class=form-control rows=8 id=signedoffline></textarea>
+            </div>
+            <div class=col>
+                <div id=qrcode style=text-align:center;>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button data-toggle=modal data-target=#exampleModal class="btn btn-block send" data-i18n=send-nas/send>Send Transaction</button>
+        </div>
+    </div>
+
+    <div class="container" id="receipt_div" style="display: none;">
+        <span data-i18n=contract/txhash></span>
+        <i data-i18n=contract/clickToCheck></i>&darr;
+        <a id=receipt></a>
+        <div class=form-group>
+            <label for=signed data-i18n=send-nas/receipt>receipt :</label>
+            <textarea id=receipt_state rows=6 class=form-control disabled></textarea>
+        </div>
+    </div>
+
+    <div class="fade modal" id=exampleModal tabindex=-1 role=dialog aria-labelledby=exampleModalLabel aria-hidden=true>
+        <div class=modal-dialog role=document>
+            <div class=modal-content>
+                <div class=modal-header>
+                    <h5 class=modal-title id=exampleModalLabel data-i18n=send-nas/transfer_msg>transfer message :</h5>
+                    <button type=button class=close data-dismiss=modal aria-label=Close>
+                        <span aria-hidden=true>&times;</span>
+                    </button>
+                </div>
+                <div class=modal-body>
+                    <div>
+                        <label data-i18n=send-nas/from-address>From Address</label>
+                        <input type=text class=form-control id=for_addr disabled>
+                    </div>
+                    <div>
+                        <label data-i18n=send-nas/to-address>To Address</label>
+                        <input type=text class=form-control id=to_addr disabled>
+                    </div>
+                    <div>
+                        <label for=amount data-i18n=send-nas/amount>Value / Amount to Send</label>
+                        <div id=value_container class=number-comma data-data-i18n=amount data-id=value data-unit=currency data-disabled></div>
+                    </div>
+                    <!-- <div class=data>
+                        <label>data</label>
+                        <input type=text class=data id=data disabled style="width: 100%;">
+                    </div> -->
+                </div>
+                <div class=modal-footer>
+                    <button class="btn btn-secondary" data-dismiss=modal data-i18n=send-nas/close>Close</button>
+                    <button class="btn btn-primary send" data-dismiss=modal data-i18n=send-nas/check></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fade modal" tabindex=-1 id=info role=dialog>
+        <div class=modal-dialog role=document>
+            <div class=modal-content>
+                <div class=modal-header>
+                    <button type=button class=close data-dismiss=modal aria-label=Close>
+                        <span aria-hidden=true>&times;</span>
+                    </button>
+                    <h4 class=modal-title>info</h4>
+                </div>
+                <div class=modal-body>
+                    <p>unlocking&hellip;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class=footer></div>
+
+    <script src=lib/jquery-3.3.1.min.js></script>
+    <script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
+    <script src=lib/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
+    <script src=lib/jquery.qrcode.min.js data-depends=jquery></script>
+    <script src=lib/blockies.min.js></script>
+    <script src=lib/nebulas.js></script>
+    <script src=js/1-localSave.js></script>
+    <script src=js/home.v1.js></script>
+    <script src=js/i18n.js data-depends=jquery.slim></script>
+    <script src=js/ui-block.js data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
+    <script>
+        "use strict";
+
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            Neb = nebulas.Neb,
+            Transaction = nebulas.Transaction,
+            CryptoUtils = nebulas.CryptoUtils,
+            utils = nebulas.Utils,
+            unit = nebulas.Unit,
+            neb = new Neb(),
+            gAccount = new Account(),
+            gLastGenerateInfo = {},
+            validateStep1 = uiBlock.validate("#step1"),
+            validateStep2 = uiBlock.validate("#step2"),
+            gFromState;
+
+        neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix") || "https://testnet.nebulas.io/"));
+        //$("#exampleModal .send").on("click", onClickExampleModalSend);
+        $("#generate").on("click", onClickGenerate);
+        $("#generate-infomation").on("click", onClickGenerateInfomation);
+        $("#signedoffline").on({
+            focus: onFocusSignedOffline,
+            input: onInputSignedOffline
+        });
+        $("#step3 .send").on("click", onClickStep3Send);
+
+        uiBlock.insert({
+            footer: ".footer",
+            header: ".header",
+            iconAddress: ".icon-address",
+            logoMain: ".logo-main",
+            numberComma: ".number-comma",
+            selectWalletFile: [".select-wallet-file", onUnlockFile]
+        });
+
+        function onUnlockFile(swf, fileJson, account, password) {
+            var address;
+            // test11
+            try {
+                account.fromKey(fileJson, password);
+                address = account.getAddressString();
+                gAccount = account;
+
+                $("#step2 .icon-address.from input").val(address).trigger("input");
+                $(".transaction").show();
+            } catch (e) {
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: localSave.getItem("lang") == "en" ? e : "keystore 文件错误, 或者密码错误",
+                    size: "large",
+                    title: "Error"
+                });
+            }
+        }
+
+        function onClickStep3Send() {
+            var val = $("#signedoffline").val(), tx;
+
+            if (val) try {
+                tx = Transaction.prototype.fromProto(val);
+                var to = tx.to.getAddressString();
+                var value = tx.value;
+                var currency = "NAS"
+                if (tx.data.payload) {
+                    var data = eval("var d = " + nebulas.CryptoUtils.toBuffer(tx.data.payload).toString() + "; d");
+                    var args = eval("var args = " + data["Args"]+"; args");
+                    currency = uiBlock.getCurrencyByContractAddr(tx.to.getAddressString());
+                    to = args[0];
+                    value = args[1]
+                }
+                $("#value_container").attr("data-unit", currency);
+                $("#for_addr").val(tx.from.getAddressString());
+                $("#to_addr").val(to);
+
+                var balance;
+                if(uiBlock.currency === "NAX") {
+                    balance = unit.fromBasic(value, "gwei").toString();
+                } else {
+                    balance = unit.fromBasic(value, "nas").toString(10);
+                }
+
+                $("#value").val(balance).trigger("input");
+            } catch (err) {
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: localSave.getItem("lang") == "en" ? err.message : "无效的签名交易",
+                    size: "large",
+                    title: "Error"
+                });
+            }
+        }
+
+        function onClickGenerate() {
+            let raw = $("#raw").val();
+            if (raw.indexOf("0x") < 0) {
+                raw = "0x" + raw;
+            }
+            let signed = CryptoUtils.sign(raw, gAccount.getPrivateKey());
+            $("#signed").val(signed.toString("hex"));
+            return;
+
+            var fromaddress, toaddress, amount, nonce, gaslimit, gasprice, toaccount, tx;
+
+            if (validateStep2()) {
+                fromaddress = $(".icon-address.from input").val();
+                toaddress = $(".icon-address.to input").val().trim();
+                amount = $("#amount").val();
+                nonce = $("#nonce").val();
+                gaslimit = $("#limit").val();
+                gasprice = $("#price").val();
+                var contract = null;
+
+                toaccount = Account.fromAddress(toaddress);
+                if (uiBlock.currency != "NAS") {
+
+                    var transfer_amount;
+                    if(uiBlock.currency === "NAX") {
+                        transfer_amount = unit.toBasic(amount, "gwei").toString();
+                    } else {
+                        transfer_amount = unit.nasToBasic(amount).toString(10);
+                    }
+                    contract = {"source": "", "sourceType": "js", "function": "transfer", "args": "[\"" + toaccount.getAddressString() + "\", \"" + transfer_amount + "\"]", "binary": "", "type": "call"};
+                }
+
+                if (gLastGenerateInfo.fromaddress != fromaddress ||
+                    gLastGenerateInfo.toaddress != toaddress ||
+                    gLastGenerateInfo.amount != amount ||
+                    gLastGenerateInfo.nonce != nonce ||
+                    gLastGenerateInfo.gaslimit != gaslimit ||
+                    gLastGenerateInfo.gasprice != gasprice ||
+                    gLastGenerateInfo.contract != contract) try {
+                        var a = amount.split(".");
+                        var amountValid = a.length == 1 || a[1].length <= 18;
+                        if (uiBlock.currency == "NAS") {
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18nas) ");
+                            tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, toaccount.getAddressString(), unit.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+                        } else {
+                            if (!amountValid) throw new Error("Invalid value! The minimum unit is wei (1^-18" + uiBlock.currency.toLowerCase() + ") ");
+                            tx = new Transaction(parseInt(localSave.getItem("chainId")), gAccount, uiBlock.getContractAddr(uiBlock.currency), unit.nasToBasic("0"), parseInt(nonce), gasprice, gaslimit, contract);
+                        }
+                        tx.signTransaction();
+
+                        
+                        $("#signedoffline").val(tx.toProtoString());
+                        // $("#qrcode").qrcode(tx.toProtoString());
+
+                        $("<div id=qrcode style=text-align:center;></div>")
+                            .qrcode(tx.toProtoString())
+                            .replaceAll('#qrcode');
+
+                        $(".transaction").show();
+
+                        gLastGenerateInfo.fromaddress = fromaddress;
+                        gLastGenerateInfo.toaddress = toaddress;
+                        gLastGenerateInfo.amount = amount;
+                        gLastGenerateInfo.nonce = nonce;
+                        gLastGenerateInfo.gaslimit = gaslimit;
+                        gLastGenerateInfo.gasprice = gasprice;
+                        gLastGenerateInfo.contract = contract;
+                    } catch (e) {
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: e,
+                            size: "large",
+                            title: "Error"
+                        });
+                    }
+            }
+        }
+
+        function onClickGenerateInfomation() {
+            var fromaddress = $(".icon-address.from input").val();
+
+            if (validateStep1())
+                try {
+                    neb.api.gasPrice()
+                        .then(function (resp) {
+                            $("#fa_gasprice").val(resp.gas_price);
+                            $("#price").val(resp.gas_price);
+
+                            return neb.api.getAccountState(fromaddress);
+                        })
+                        .then(function (resp) {
+                            gFromState = {
+                                balance: resp.balance,
+                                nonce: resp.nonce
+                            };
+
+                            $("#fa_nonce").val(parseInt(resp.nonce) + 1);
+                            $("#nonce").val(parseInt(resp.nonce) + 1);
+                            $("#information").show();
+                        })
+                        .catch(function (e) {
+                            // https://stackoverflow.com/questions/30715367/why-can-i-not-throw-inside-a-promise-catch-handler
+                            bootbox.dialog({
+                                backdrop: true,
+                                onEscape: true,
+                                message: e,
+                                size: "large",
+                                title: "Error"
+                            });
+                        });
+                } catch (e) {
+                    bootbox.dialog({
+                        backdrop: true,
+                        onEscape: true,
+                        message: e,
+                        size: "large",
+                        title: "Error"
+                    });
+                }
+        }
+
+        function onFocusSignedOffline() {
+            $("[data-validate-order-matters]").removeClass("invalid").popover("hide");
+        }
+
+        function onInputSignedOffline() {
+            $("<div id=qrcode></div>")
+                .qrcode($("#signedoffline").val())
+                .replaceAll('#qrcode');
+        }
+
+        function onClickExampleModalSend() {
+            neb.api.sendRawTransaction($("#signedoffline").val())
+                .then(function (resp) {
+                    return neb.api.getTransactionReceipt(resp.txhash);
+                }).then(function (resp) {
+                    $("#receipt_state").val(JSON.stringify(resp));
+                    $("#receipt").text(resp.hash).prop("href", "check.html?" + resp.hash);
+                    $("#receipt_div").show();
+                }).catch(function (o) {
+                    bootbox.dialog({
+                        backdrop: true,
+                        onEscape: true,
+                        message: i18n.apiErrorToText(o.message),
+                        size: "large",
+                        title: "Error"
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
