@@ -123,7 +123,7 @@ var uiBlock = function () {
                 .addClass("container footer")
                 .html(
                     "<a href='https://nebulas.io/' target='_blank'><div class=logo></div></a>" +
-                    '<div class="copyright text-center">Copyright &copy; 2019 Nebulas.io</div>'));
+                    '<div class="copyright text-center">Copyright &copy; 2020 Nebulas.io</div>'));
         }
 
         function header(selector) {
