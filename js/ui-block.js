@@ -123,7 +123,7 @@ var uiBlock = function () {
                 .addClass("container footer")
                 .html(
                     "<a href='https://nebulas.io/' target='_blank'><div class=logo></div></a>" +
-                    '<div class="copyright text-center">Copyright &copy; 2019 Nebulas.io</div>'));
+                    '<div class="copyright text-center">Copyright &copy; 2020 Nebulas.io</div>'));
         }
 
         function header(selector) {
@@ -134,7 +134,8 @@ var uiBlock = function () {
                     "sendOffline.html",
                     "viewWalletInfo.html",
                     "check.html",
-                    "contract.html"
+                    "contract.html",
+                    "contractOffline.html",
                 ];
 
             for (i = 0, len = arr.length; i < len; ++i)
@@ -151,6 +152,8 @@ var uiBlock = function () {
                     "    <a href=" + arr[3] + " data-i18n=header/view></a>" +
                     "    <a href=" + arr[4] + " data-i18n=header/check></a>" +
                     "    <a href=" + arr[5] + " data-i18n=header/contract></a>" +
+                    "    <a href=" + arr[6] + " data-i18n=contract/call_contract_offline></a>" +
+
                     "</div>" +
                     "<hr>"));
         }
