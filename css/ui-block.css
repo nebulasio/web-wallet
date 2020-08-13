@@ -99,6 +99,7 @@ body {
 .logo-main .col:first-child {
     background: url(../img/logo-b.png) left center no-repeat content-box;
     height: 70px;
+    margin: 15px 0;
 }
 
 .logo-main .col:last-child {
