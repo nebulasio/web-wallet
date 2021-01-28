@@ -597,6 +597,7 @@
                             $("#call_result").text("");
                             $(".next").removeClass("active1");
                         }
+                        $("#call").attr("disabled", false);
                     })
                     .catch(function (err) {
                         $("#call_test_result").text(JSON.stringify(err));
